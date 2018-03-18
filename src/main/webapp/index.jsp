@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>CodeU Chat App By Ken</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
