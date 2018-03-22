@@ -38,6 +38,7 @@ public class User {
     this.password = password;
     this.creation = creation;
   }
+  
   /**
   * Returns the password of this User.
   */
