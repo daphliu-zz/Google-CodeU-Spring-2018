@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
-
+ 
   /**
    * Set up state for handling login-related requests. This method is only called when running in a
    * server, not when running in a test.
@@ -77,7 +77,8 @@ public class LoginServlet extends HttpServlet {
     }
 
     if (!userStore.isUserRegistered(username)) {
-      User user = new User(UUID.randomUUID(), username, Instant.now());
+      //TODO: add password
+      User user = new User(UUID.randomUUID(), username, null, Instant.now());
       userStore.addUser(user);
     }
 
