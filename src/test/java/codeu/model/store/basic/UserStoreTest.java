@@ -65,7 +65,7 @@ public class UserStoreTest {
 
   @Test
   public void testAddUser() {
-    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());//made change here
+    User inputUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now());
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");
