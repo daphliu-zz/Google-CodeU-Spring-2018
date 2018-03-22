@@ -18,6 +18,12 @@
 <head>
   <title>Login</title>
   <link rel="stylesheet" href="/css/main.css">
+  <style> 
+      label {
+        display: inline-block;
+        width: 100px;
+      }
+   </style> 
 </head>
 <body>
 
@@ -29,7 +35,7 @@
     <% } else{ %>
       <a href="/login">Login</a>
     <% } %>
-    <a href="/about.jsp">About</a>
+    <a href="/about">About</a>
   </nav>
 
   <div id="container">
@@ -42,6 +48,10 @@
     <form action="/login" method="POST">
       <label for="username">Username: </label>
       <input type="text" name="username" id="username">
+      <br/>
+      <label for="password">Password: </label>
+      <input type="password" name="password" id="password">
+      <br/><br/>
       <button type="submit">Login</button>
     </form>
   </div>
