@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RegisterServlet extends HttpServlet {
 
+  String username = request.getParameter("username");
+  String password = request.getParameter("password");
+  String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
