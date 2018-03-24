@@ -65,6 +65,7 @@ public class PersistentDataStore {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        Boolean is_admin = (Boolean) entity.getProperty("is_admin"); 
         User user = new User(uuid, userName, creationTime);
         users.add(user);
       } catch (Exception e) {
@@ -151,6 +152,7 @@ public class PersistentDataStore {
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", user.getAdminStatus().toString()); 
     datastore.put(userEntity);
   }
 
