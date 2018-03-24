@@ -22,6 +22,7 @@ public class User {
   private final UUID id;
   private final String name;
   private final Instant creation;
+  private final Boolean is_admin; 
 
   /**
    * Constructs a new User.
@@ -29,6 +30,7 @@ public class User {
    * @param id the ID of this User
    * @param name the username of this User
    * @param creation the creation time of this User
+   * @param is_admin the admin status of the user 
    */
   public User(UUID id, String name, Instant creation, Boolean is_admin) {
     this.id = id;
