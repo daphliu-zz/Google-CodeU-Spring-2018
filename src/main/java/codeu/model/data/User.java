@@ -30,10 +30,11 @@ public class User {
    * @param name the username of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, Instant creation) {
+  public User(UUID id, String name, Instant creation, Boolean is_admin) {
     this.id = id;
     this.name = name;
     this.creation = creation;
+    this.is_admin = false; 
   }
 
   /** Returns the ID of this User. */
@@ -50,4 +51,9 @@ public class User {
   public Instant getCreationTime() {
     return creation;
   }
+
+  /** Returns the is_admin status of this User. */
+  public Instant getAdminStatus() {
+    return is_admin;
+  }  
 }
