@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
-import java.util.*;
+import java.lang.Boolean;
 
 public class UserTest {
 

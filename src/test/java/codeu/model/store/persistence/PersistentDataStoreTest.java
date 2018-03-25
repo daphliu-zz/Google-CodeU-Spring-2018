@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.*;
+import java.lang.Boolean;
 
 /**
  * Test class for PersistentDataStore. The PersistentDataStore class relies on DatastoreService,
