@@ -153,7 +153,7 @@ public class PersistentDataStore {
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
-    userEntity.setProperty("is_admin", user.getAdminStatus().toString()); 
+    userEntity.setProperty("is_admin", user.getAdminStatus()); 
     datastore.put(userEntity);
   }
 
