@@ -37,7 +37,7 @@ public class User {
     this.id = id;
     this.name = name;
     this.creation = creation;
-    this.is_admin = false; 
+    this.is_admin = is_admin; 
   }
 
   /** Returns the ID of this User. */
@@ -56,7 +56,7 @@ public class User {
   }
 
   /** Returns the is_admin status of this User. */
-  public Instant getAdminStatus() {
+  public Boolean getAdminStatus() {
     return is_admin;
   }  
 }

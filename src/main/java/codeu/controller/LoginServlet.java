@@ -74,7 +74,8 @@ public class LoginServlet extends HttpServlet {
     }
 
     if (!userStore.isUserRegistered(username)) {
-      User user = new User(UUID.randomUUID(), username, Instant.now());
+      // New users default to non-admins
+      User user = new User(UUID.randomUUID(), username, Instant.now(), false);
       userStore.addUser(user);
     }
 

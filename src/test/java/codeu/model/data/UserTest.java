@@ -34,6 +34,6 @@ public class UserTest {
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
     Assert.assertEquals(creation, user.getCreationTime());
-    Assert.assertEquals(is_admin, user.getAdmin()); 
+    Assert.assertEquals(is_admin, user.getAdminStatus()); 
   }
 }
