@@ -63,7 +63,6 @@ public class LoginServlet extends HttpServlet {
    * the submitted form data, checks that they're valid, and either adds the user to the session
    * so we know the user is logged in or shows an error to the user.
    */
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
