@@ -66,7 +66,7 @@ public class LoginServletTest {
 
   @Test
   public void testDoPost_BadPassword() throws IOException, ServletException {
-Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("abcdtest");
 
     UserStore mockUserStore = Mockito.mock(UserStore.class);
