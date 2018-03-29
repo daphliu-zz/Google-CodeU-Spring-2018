@@ -52,7 +52,6 @@ public class LoginServletTest {
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
-
   @Test
   public void testDoPost_NonExistingUser() throws IOException, ServletException {
     UserStore mockUserStore = Mockito.mock(UserStore.class);
