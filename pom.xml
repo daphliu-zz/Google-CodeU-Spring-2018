@@ -32,6 +32,12 @@
   </properties>
 
   <dependencies>
+  
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
+    </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -92,12 +98,6 @@
       <artifactId>appengine-tools-sdk</artifactId>
       <version>1.9.60</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.mindrot</groupId>
-      <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
     </dependency>
 
   </dependencies>
