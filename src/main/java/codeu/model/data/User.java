@@ -21,7 +21,7 @@ import java.util.UUID;
 public class User {
   private final UUID id;
   private final String name;
-  private final String password;
+  private final String hashedPassword ;
   private final Instant creation;
 
   /**
@@ -29,13 +29,13 @@ public class User {
    *
    * @param id the ID of this User
    * @param name the username of this User
-   * @param password the password of this User
+   * @param hashedPassword the hashedPassword of this User
    * @param creation the creation time of this User
    */
   public User(UUID id, String name, String password, Instant creation) {
     this.id = id;
     this.name = name;
-    this.password = password;
+    this.hashedPassword  = password;
     this.creation = creation;
   }
   
@@ -43,7 +43,7 @@ public class User {
   * Returns the password of this User.
   */
   public String getPassword(){
-    return password;
+    return hashedPassword ;
   }
 
   /** Returns the ID of this User. */
