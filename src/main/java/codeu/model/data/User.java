@@ -32,10 +32,10 @@ public class User {
    * @param hashedPassword the hashedPassword of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String hashedPassword, Instant creation) {
     this.id = id;
     this.name = name;
-    this.hashedPassword  = password;
+    this.hashedPassword  = hashedPassword;
     this.creation = creation;
   }
   
