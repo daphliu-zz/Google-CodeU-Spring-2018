@@ -32,7 +32,7 @@ public class UserTest {
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
-    Assert.assertEquals(password, user.getPassword());
+    Assert.assertEquals(password, user.getHashedPassword());
     Assert.assertEquals(creation, user.getCreationTime());
   }
 }
