@@ -66,7 +66,7 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-    Assert.assertTrue(BCrypt.checkpw("abcdtest", userArgumentCaptor.getValue().getPassword()));
+    Assert.assertTrue(BCrypt.checkpw("abcdtest", userArgumentCaptor.getValue().getHashedPassword()));
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 

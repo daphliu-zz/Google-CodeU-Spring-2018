@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
 
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if(BCrypt.checkpw(password, user.getPassword())) {
+      if(BCrypt.checkpw(password, user.getHashedPassword())) {
         request.getSession().setAttribute("user", username);
         response.sendRedirect("/conversations");
       }

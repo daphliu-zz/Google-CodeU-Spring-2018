@@ -42,7 +42,7 @@ public class User {
   /**
   * Returns the password of this User.
   */
-  public String getPassword(){
+  public String getHashedPassword(){
     return hashedPassword;
   }
 

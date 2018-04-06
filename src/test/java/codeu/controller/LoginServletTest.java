@@ -75,7 +75,7 @@ public class LoginServletTest {
 
     User mockUser = Mockito.mock(User.class);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
-    Mockito.when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("wrong password", BCrypt.gensalt()));
+    Mockito.when(mockUser.getHashedPassword()).thenReturn(BCrypt.hashpw("wrong password", BCrypt.gensalt()));
 
     HttpSession mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
@@ -96,7 +96,7 @@ public class LoginServletTest {
 
     User mockUser = Mockito.mock(User.class);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
-    Mockito.when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("abcdtest", BCrypt.gensalt()));
+    Mockito.when(mockUser.getHashedPassword()).thenReturn(BCrypt.hashpw("abcdtest", BCrypt.gensalt()));
 
     HttpSession mockSession = Mockito.mock(HttpSession.class);
     Mockito.when(mockRequest.getSession()).thenReturn(mockSession);

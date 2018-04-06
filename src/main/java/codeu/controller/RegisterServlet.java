@@ -16,7 +16,6 @@ public class RegisterServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
-   
   /**
    * Set up state for handling registration-related requests. This method is only called when
    * running in a server, not when running in a test.
@@ -63,7 +62,6 @@ public class RegisterServlet extends HttpServlet {
 
     User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
     userStore.addUser(user);
-  
     response.sendRedirect("/login");
   }
 }
