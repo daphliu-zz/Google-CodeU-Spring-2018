@@ -26,6 +26,8 @@
       <p>Users: <%= request.getAttribute("numUsers")%></p>
       <p>Conversations: <%= request.getAttribute("numConversations")%></p>
       <p>Messages: <%= request.getAttribute("numMessages")%></p>
+      <p>Newest User: <%= request.getAttribute("newestUser")%></p>
+
     </form>
   </div>
     <div id="container">

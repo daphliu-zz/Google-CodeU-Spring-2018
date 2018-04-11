@@ -65,9 +65,14 @@ public class AdminStats extends HttpServlet {
     int numUsers = userStore.numUsers();
     int numConversations = conversationStore.getNumConversations();
     int numMessages = messageStore.getNumMessages();
+    String newestUser = "";
+    if (userStore.getLastUser()!=null){
+      newestUser = userStore.getLastUser().getName();
+    }
     request.setAttribute("numUsers", numUsers);
     request.setAttribute("numConversations", numConversations);
     request.setAttribute("numMessages", numMessages);
+    request.setAttribute("newestUser", newestUser);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 

@@ -131,4 +131,12 @@ public class UserStore {
     return 0;
   }
 
+  /**Returns the last user added*/
+  public User getLastUser(){
+    if (!users.isEmpty()){
+      return users.get(users.size()-1);
+    }
+    return null;
+  }
+
 }
