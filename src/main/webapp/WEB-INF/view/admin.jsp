@@ -18,6 +18,14 @@
     <a href="/about.jsp">About</a>
   </nav>
 
+  <% if(request.getAttribute("error") != null){ %>
+    <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+  <% } %>
+
+  <% if(request.getAttribute("success") != null){ %>
+    <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+  <% } %>
+
   <div id="container">
     <h1>Site Statistics</h1>
     <p>This will display data for admin to view.</p>
