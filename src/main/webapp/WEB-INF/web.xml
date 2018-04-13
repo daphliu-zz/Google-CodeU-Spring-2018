@@ -65,7 +65,7 @@
     <servlet-name>TestDataServlet</servlet-name>
     <url-pattern>/testdata</url-pattern>
   </servlet-mapping>
-  
+
   <servlet>
  	<servlet-name>RegisterServlet</servlet-name>
  	<servlet-class>codeu.controller.RegisterServlet</servlet-class>
@@ -74,6 +74,18 @@
   <servlet-mapping>
  	<servlet-name>RegisterServlet</servlet-name>
  	<url-pattern>/register</url-pattern>
+  </servlet-mapping>
+
+
+
+  <servlet>
+    <servlet-name>AdminStats</servlet-name>
+    <servlet-class>codeu.controller.AdminStats</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>AdminStats</servlet-name>
+    <url-pattern>/adminStats</url-pattern>
   </servlet-mapping>
 
 </web-app>
