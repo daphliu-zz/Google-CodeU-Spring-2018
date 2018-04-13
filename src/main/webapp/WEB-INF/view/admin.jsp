@@ -29,6 +29,7 @@
       <p>Newest User: <%= request.getAttribute("newestUser")%></p>
 
     </form>
+  
   </div>
     <div id="container">
       <h1> Import Data</h1>
@@ -37,6 +38,19 @@
       <input name="myFile" type="file">
       <button type="submit" value="confirm" name="confirm">Submit</button>
       <%-- TODO: have Submit button reload page to show data for file uploaded--%>
+    </div>
+
+    </div>
+    <div id="container">
+      <h1> Manage Admins</h1>
+      <%-- Allow for admins to promote or demote an user to/from admin status--%>
+      <form action="/adminStats" method="POST">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username">
+        <br/><br/>
+        <button type="submit" value="promote" name="promote_user">Promote</button>
+        <button type="submit" value="demote" name="promote_user">Demote</button>
+      </form>
     </div>
 </body>
 </html>
