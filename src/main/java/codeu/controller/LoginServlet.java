@@ -78,6 +78,13 @@ public class LoginServlet extends HttpServlet {
       User user = new User(UUID.randomUUID(), username, Instant.now(), false);
       userStore.addUser(user);
     }
+    else {
+      User user = userStore.getUser(username);
+      if(user.getAdminStatus()){
+      // if user is admin, fires API 
+      response.sendRedirect("/AdminStats");
+      } 
+    }
 
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/conversations");
