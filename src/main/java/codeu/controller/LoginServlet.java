@@ -76,7 +76,7 @@ public class LoginServlet extends HttpServlet {
         request.getSession().setAttribute("user", username);
         if (user.getAdminStatus()) {
           // if a registered user is admin, fires API call to AdminStats page 
-          response.sendRedirect("/AdminStats"); 
+          response.sendRedirect("/conversations"); // will be AdminStats once uiadmin branch is merged  
           return; 
         } 
         response.sendRedirect("/conversations");
