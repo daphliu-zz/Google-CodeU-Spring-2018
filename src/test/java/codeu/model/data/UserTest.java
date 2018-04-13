@@ -18,7 +18,6 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
-import java.lang.Boolean;
 
 public class UserTest {
 
@@ -28,7 +27,7 @@ public class UserTest {
     String name = "test_username";
     String password = "password";
     Instant creation = Instant.now();
-    Boolean is_admin = false;
+    boolean is_admin = false;
 
     User user = new User(id, name, password, creation, is_admin);
 

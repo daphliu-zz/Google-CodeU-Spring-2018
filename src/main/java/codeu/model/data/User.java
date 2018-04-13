@@ -16,7 +16,6 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
-import java.lang.Boolean;
 
 /** Class representing a registered user. */
 public class User {
@@ -24,7 +23,7 @@ public class User {
   private final String name;
   private final String hashedPassword;
   private final Instant creation;
-  private final Boolean is_admin; 
+  private final boolean is_admin; 
 
   /**
    * Constructs a new User.
@@ -35,7 +34,7 @@ public class User {
    * @param creation the creation time of this User
    * @param is_admin the admin status of the user 
    */
-  public User(UUID id, String name, String hashedPassword, Instant creation, Boolean is_admin) {
+  public User(UUID id, String name, String hashedPassword, Instant creation, boolean is_admin) {
     this.id = id;
     this.name = name;
     this.hashedPassword  = hashedPassword;
@@ -66,7 +65,7 @@ public class User {
   }
 
   /** Returns the is_admin status of this User. */
-  public Boolean getAdminStatus() {
+  public boolean getAdminStatus() {
     return is_admin;
   }  
 }

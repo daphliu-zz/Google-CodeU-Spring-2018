@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import java.lang.Boolean;
 
 /**
  * Test class for PersistentDataStore. The PersistentDataStore class relies on DatastoreService,
@@ -43,14 +42,14 @@ public class PersistentDataStoreTest {
     String nameOne = "test_username_one";
     String passwordOne = "password_one";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    Boolean adminStatusOne = false; 
+    boolean adminStatusOne = false; 
     User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne, adminStatusOne);
 
     UUID idTwo = UUID.randomUUID();
     String nameTwo = "test_username_two";
     String passwordTwo = "password_two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    Boolean adminStatusTwo = true;
+    boolean adminStatusTwo = true;
     User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo, adminStatusTwo);
 
     // save

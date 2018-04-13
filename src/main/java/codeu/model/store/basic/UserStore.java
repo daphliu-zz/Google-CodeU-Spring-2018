@@ -140,7 +140,7 @@ public class UserStore {
   }
 
   /**Returns the user with flipped is_admin flag*/
-  public User setIsAdmin(User user, Boolean is_admin){
+  public User setIsAdmin(User user, boolean is_admin){
     User newUser = new User(
       user.getId(), 
       user.getName(), 
