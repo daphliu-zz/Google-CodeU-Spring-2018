@@ -23,13 +23,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the login page. */
 public class LoginServlet extends HttpServlet {
 
   /** Store class that gives access to Users. */
   private UserStore userStore;
-
+ 
   /**
    * Set up state for handling login-related requests. This method is only called when running in a
    * server, not when running in a test.
@@ -59,36 +60,35 @@ public class LoginServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user submits the login form. It gets the username from the submitted
-   * form data, and then adds it to the session so we know the user is logged in.
+   * This function fires when a user submits the login form. It gets the username and password from
+   * the submitted form data, checks that they're valid, and either adds the user to the session
+   * so we know the user is logged in or shows an error to the user.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String username = request.getParameter("username");
+    String password = request.getParameter("password");
 
-    if (!username.matches("[\\w*\\s*]*")) {
-      request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
-      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-      return;
-    }
-
-    if (!userStore.isUserRegistered(username)) {
-      // New users default to non-admins
-      User user = new User(UUID.randomUUID(), username, Instant.now(), false);
-      userStore.addUser(user);
-    }
-    else {
+    if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if(user.getAdminStatus()){
-      // if a registered user is admin, fires API call to AdminStats page 
-      response.sendRedirect("/AdminStats");
-      } 
-      request.getSession().setAttribute("user", username);
-      return; 
+      if(BCrypt.checkpw(password, user.getHashedPassword())) {
+        request.getSession().setAttribute("user", username);
+        if (user.getAdminStatus()) {
+          // if a registered user is admin, fires API call to AdminStats page 
+          response.sendRedirect("/AdminStats"); 
+          return; 
+        } 
+        response.sendRedirect("/conversations");
+      }
+      else {
+        request.setAttribute("error", "Invalid password.");
+        request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      }
+    } 
+    else {
+      request.setAttribute("error", "That username was not found.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
-
-    request.getSession().setAttribute("user", username);
-    response.sendRedirect("/conversations");
   }
 }

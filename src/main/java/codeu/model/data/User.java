@@ -22,6 +22,7 @@ import java.lang.Boolean;
 public class User {
   private final UUID id;
   private final String name;
+  private final String hashedPassword;
   private final Instant creation;
   private final Boolean is_admin; 
 
@@ -30,14 +31,23 @@ public class User {
    *
    * @param id the ID of this User
    * @param name the username of this User
+   * @param hashedPassword the hashedPassword of this User
    * @param creation the creation time of this User
    * @param is_admin the admin status of the user 
    */
-  public User(UUID id, String name, Instant creation, Boolean is_admin) {
+  public User(UUID id, String name, String hashedPassword, Instant creation, Boolean is_admin) {
     this.id = id;
     this.name = name;
+    this.hashedPassword  = hashedPassword;
     this.creation = creation;
     this.is_admin = is_admin; 
+  }
+  
+  /**
+  * Returns the password of this User.
+  */
+  public String getHashedPassword(){
+    return hashedPassword;
   }
 
   /** Returns the ID of this User. */
