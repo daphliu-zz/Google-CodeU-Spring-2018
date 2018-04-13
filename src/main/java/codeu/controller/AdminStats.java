@@ -74,6 +74,7 @@ public class AdminStats extends HttpServlet {
     request.setAttribute("numConversations", numConversations);
     request.setAttribute("numMessages", numMessages);
     request.setAttribute("newestUser", newestUser);
+ 
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 
@@ -95,6 +96,7 @@ public class AdminStats extends HttpServlet {
       }
       else { 
         UserStore.getInstance().setIsAdmin(user, true);
+        request.setAttribute("success", "Promoted the user to admin!");
       }
     } 
     else if(promoteButton == "demote") {
@@ -103,6 +105,7 @@ public class AdminStats extends HttpServlet {
       }
       else {
         UserStore.getInstance().setIsAdmin(user, false);
+        request.setAttribute("success", "We demoted the admin to user :(");
       }
     }
     else if (confirmButton != null) {
