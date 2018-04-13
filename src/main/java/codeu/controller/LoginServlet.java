@@ -81,9 +81,11 @@ public class LoginServlet extends HttpServlet {
     else {
       User user = userStore.getUser(username);
       if(user.getAdminStatus()){
-      // if user is admin, fires API 
+      // if a registered user is admin, fires API call to AdminStats page 
       response.sendRedirect("/AdminStats");
       } 
+      request.getSession().setAttribute("user", username);
+      return; 
     }
 
     request.getSession().setAttribute("user", username);
