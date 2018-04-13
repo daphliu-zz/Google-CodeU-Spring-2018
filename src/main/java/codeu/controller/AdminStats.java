@@ -85,34 +85,31 @@ public class AdminStats extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String promoteButton = request.getParameter("promote_user");
-    String demoteButton = request.getParameter("demote_user");
     String confirmButton = request.getParameter("confirm");
     String username = request.getParameter("username");
     User user = userStore.getUser(username);
 
-    if (promoteButton != null) {
+    if (promoteButton == "promote") {
       if (user.getAdminStatus()){
         request.setAttribute("error", "User is already an admin.");
       }
-      else {
-
+      else { 
+        UserStore.getInstance().setIsAdmin(user, true);
       }
     } 
-    else if(demoteButton != null) {
+    else if(promoteButton == "demote") {
       if (!user.getAdminStatus()){
         request.setAttribute("error", "User is not an admin already.");
       }
       else {
-
+        UserStore.getInstance().setIsAdmin(user, false);
       }
-
     }
     else if (confirmButton != null) {
       userStore.loadTestData();
       conversationStore.loadTestData();
       messageStore.loadTestData();
     }
-
     response.sendRedirect("/");
   }
 }

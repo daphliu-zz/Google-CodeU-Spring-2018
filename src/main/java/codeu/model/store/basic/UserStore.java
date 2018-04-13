@@ -140,14 +140,17 @@ public class UserStore {
   }
 
   /**Returns the user with flipped is_admin flag*/
-  public User setisAdmin(User user, Boolean is_admin){
-    User newUser; 
-    if (is_admin) {
-      newUser = new User(user.getId(), user.getName(), user.getHashedPassword(), user.getCreationTime(), false);
-    }
-    else {
-    newUser = new User(user.getId(), user.getName(), user.getHashedPassword(), user.getCreationTime(), true);
-    } 
+  public User setIsAdmin(User user, Boolean is_admin){
+    User newUser = new User(
+      user.getId(), 
+      user.getName(), 
+      user.getHashedPassword(), 
+      user.getCreationTime(), 
+      is_admin
+    ); 
+    persistentStorageAgent.writeThrough(newUser); 
+    //update database with new user, 
+    // the expected behavior that it overrides the previous user 
     return newUser;
   }
 }
