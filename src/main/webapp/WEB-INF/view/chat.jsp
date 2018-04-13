@@ -28,6 +28,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   <title><%= conversation.getTitle() %></title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
 
+ 
   <style>
     #chat {
       background-color: white;
@@ -43,6 +44,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
   </script>
+  
 </head>
 <body onload="scrollChat()">
 
@@ -80,20 +82,35 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     </div>
 
     <hr/>
-
+   
+	 <script src="http://localhost:8080/js/TextEditor.js"></script>
     <% if (request.getSession().getAttribute("user") != null) { %>
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-        <input type="text" name="message">
+   		 <p>
+    		<input type="button" id="bBtn" value="B" style="font-weight:bold" onclick="setBold('editor');" />
+		</p>
+         <p>
+   		    <iframe id="editor" width="800px" height="80px" style="border:solid 1px;"></iframe>
+		</p>
         <br/>
-        <button type="submit">Send</button>
+        <input type="submit" value="Submit">
     </form>
+    
+   <script>
+	init('editor');
+   </script>
+  
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
 
     <hr/>
+    
+
 
   </div>
+  
+
 
 </body>
 </html>
