@@ -139,4 +139,15 @@ public class UserStore {
     return null;
   }
 
+  /**Returns the user with flipped is_admin flag*/
+  public User setisAdmin(User user, Boolean is_admin){
+    User newUser; 
+    if (is_admin) {
+      newUser = new User(user.getId(), user.getName(), user.getHashedPassword(), user.getCreationTime(), false);
+    }
+    else {
+    newUser = new User(user.getId(), user.getName(), user.getHashedPassword(), user.getCreationTime(), true);
+    } 
+    return newUser;
+  }
 }
