@@ -1,5 +1,6 @@
 package codeu.controller;
 
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
@@ -83,9 +84,30 @@ public class AdminStats extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+    String promoteButton = request.getParameter("promote_user");
+    String demoteButton = request.getParameter("demote_user");
     String confirmButton = request.getParameter("confirm");
+    String username = request.getParameter("username");
+    User user = userStore.getUser(username);
 
-    if (confirmButton != null) {
+    if (promoteButton != null) {
+      if (user.getAdminStatus()){
+        request.setAttribute("error", "User is already an admin.");
+      }
+      else {
+
+      }
+    } 
+    else if(demoteButton != null) {
+      if (!user.getAdminStatus()){
+        request.setAttribute("error", "User is not an admin already.");
+      }
+      else {
+
+      }
+
+    }
+    else if (confirmButton != null) {
       userStore.loadTestData();
       conversationStore.loadTestData();
       messageStore.loadTestData();
