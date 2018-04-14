@@ -48,17 +48,17 @@
         <label for="username">Username: </label>
         <input type="text" name="username" id="username">
         <br/><br/>
-        <button type="submit" value="promote" name="promote_user">Promote</button>
-        <button type="submit" value="demote" name="promote_user">Demote</button>
+        <button type="submit" value="promote" name="change_admin_status">Promote</button>
+        <button type="submit" value="demote" name="change_admin_status">Demote</button>
       </form>
+
+      <% if(request.getAttribute("error") != null){ %>
+        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+      <% } %>
+
+      <% if(request.getAttribute("success") != null){ %>
+        <h2 style="color:green"><%= request.getAttribute("success") %></h2>
+      <% } %>
     </div>
-
-     <% if(request.getAttribute("error") != null){ %>
-    <h2 style="color:red"><%= request.getAttribute("error") %></h2>
-  <% } %>
-
-  <% if(request.getAttribute("success") != null){ %>
-    <h2 style="color:green"><%= request.getAttribute("success") %></h2>
-  <% } %>
 </body>
 </html>

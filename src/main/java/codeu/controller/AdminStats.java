@@ -87,16 +87,16 @@ public class AdminStats extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String promoteButton = request.getParameter("promote_user");
+    String changeAdminStatusButton = request.getParameter("change_admin_status");
     String confirmButton = request.getParameter("confirm");
     String username = request.getParameter("username");
     User user = userStore.getUser(username);
 
-    if (promoteButton != null) {
+    if (changeAdminStatusButton != null) {
       if (user == null) {
         request.setAttribute("error", "Not a user.");
       } else {
-        if (promoteButton.equals("promote")) {
+        if (changeAdminStatusButton.equals("promote")) {
           if (user.getAdminStatus()) {
             request.setAttribute("error", "User is already an admin.");
           }
@@ -105,12 +105,12 @@ public class AdminStats extends HttpServlet {
             request.setAttribute("success", "Promoted the user to admin!");
           }
         } else {
-          if (!user.getAdminStatus()){
-            request.setAttribute("error", "User is not an admin already.");
+          if (user.getAdminStatus()){
+            UserStore.getInstance().setIsAdmin(user, false);
+            request.setAttribute("success", "Demoted the admin to user :(");
           }
           else {
-            UserStore.getInstance().setIsAdmin(user, false);
-            request.setAttribute("success", "We demoted the admin to user :(");
+            request.setAttribute("error", "User is already not an admin.");
           }
         }
       }
