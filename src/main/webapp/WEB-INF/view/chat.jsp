@@ -27,7 +27,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 <head>
   <title><%= conversation.getTitle() %></title>
   <link rel="stylesheet" href="/css/main.css" type="text/css">
-
+  <link rel="stylesheet" href="/css/iframe.css">
  
   <style>
     #chat {
@@ -83,17 +83,18 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <hr/>
    
-	 <script src="http://localhost:8080/js/TextEditor.js"></script>
+	<script src="http://localhost:8080/js/TextEditor.js"></script>
     <% if (request.getSession().getAttribute("user") != null) { %>
-    <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+    <form action="/chat/<%= conversation.getTitle() %>" id = "form" method="POST">
    		 <p>
     		<input type="button" id="bBtn" value="B" style="font-weight:bold" onclick="setBold('editor');" />
 		</p>
          <p>
-   		    <iframe id="editor" width="800px" height="80px" style="border:solid 1px;"></iframe>
+   		    <iframe id="editor" width="800px" height="60px" style="border:0px; marginheight:2px;marginwidth:2px "></iframe>
 		</p>
         <br/>
-        <input type="submit" value="Submit">
+        <input type="hidden" id="inHTML" name = "message" />
+        <button type="button" value = "Send" onclick="doSubmitForm()">Submit</button>
     </form>
     
    <script>
