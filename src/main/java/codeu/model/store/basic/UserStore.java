@@ -160,6 +160,7 @@ public class UserStore {
       user.getCreationTime(), 
       is_admin
     ); 
+    users.remove(user);
     persistentStorageAgent.writeThrough(newUser); 
     //update database with new user, 
     // the expected behavior that it overrides the previous user 
