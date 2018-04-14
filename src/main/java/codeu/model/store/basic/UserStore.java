@@ -65,6 +65,17 @@ public class UserStore {
     users = new ArrayList<>();
   }
 
+  private void debug() {
+    System.out.println("-----");
+    for (User user : users) {
+      System.out.printf("%s: is %s\n", 
+        user.getName(), 
+        user.getAdminStatus() ? "admin" : "not admin"
+      );
+    }
+    System.out.println("-----");
+  }
+
   /** Load a set of randomly-generated Message objects. */
   public void loadTestData() {
     users.addAll(DefaultDataStore.getInstance().getAllUsers());
@@ -125,6 +136,7 @@ public class UserStore {
 
   /**Returns the number of users in UserStore*/
   public int numUsers(){
+    debug();
     if (users!=null){
       return users.size();
     }
