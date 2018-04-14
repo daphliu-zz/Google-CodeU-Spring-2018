@@ -21,6 +21,9 @@ import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.time.Instant;
@@ -150,8 +153,15 @@ public class PersistentDataStore {
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users");
-    userEntity.setProperty("uuid", user.getId().toString());
+    String uuid = user.getId().toString();
+    Entity userEntity;
+    try {
+      Key key = KeyFactory.createKey("chat-users", uuid);
+      userEntity = datastore.get(key);
+    } catch (EntityNotFoundException e) {
+      userEntity = new Entity("chat-users", uuid);
+    }
+    userEntity.setProperty("uuid", uuid);
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getHashedPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());

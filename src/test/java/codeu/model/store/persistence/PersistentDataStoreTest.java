@@ -36,6 +36,15 @@ public class PersistentDataStoreTest {
     appEngineTestHelper.tearDown();
   }
 
+  private User findUser(Iterable<User> users, String name) {
+    for (User user : users) {
+      if (user.getName().equals(name)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
@@ -60,14 +69,14 @@ public class PersistentDataStoreTest {
     List<User> resultUsers = persistentDataStore.loadUsers();
 
     // confirm that what we saved matches what we loaded
-    User resultUserOne = resultUsers.get(0);
+    User resultUserOne = findUser(resultUsers, "test_username_one");
     Assert.assertEquals(idOne, resultUserOne.getId());
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(passwordOne, resultUserOne.getHashedPassword());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(adminStatusOne, resultUserOne.getAdminStatus());
 
-    User resultUserTwo = resultUsers.get(1);
+    User resultUserTwo = findUser(resultUsers, "test_username_two");
     Assert.assertEquals(idTwo, resultUserTwo.getId());
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordTwo, resultUserTwo.getHashedPassword());

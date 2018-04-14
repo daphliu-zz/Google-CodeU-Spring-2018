@@ -19,6 +19,9 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import javax.management.RuntimeErrorException;
+
 import java.util.*;
 
 /**
@@ -63,17 +66,6 @@ public class UserStore {
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     users = new ArrayList<>();
-  }
-
-  private void debug() {
-    System.out.println("-----");
-    for (User user : users) {
-      System.out.printf("%s: is %s\n", 
-        user.getName(), 
-        user.getAdminStatus() ? "admin" : "not admin"
-      );
-    }
-    System.out.println("-----");
   }
 
   /** Load a set of randomly-generated Message objects. */
@@ -136,7 +128,6 @@ public class UserStore {
 
   /**Returns the number of users in UserStore*/
   public int numUsers(){
-    debug();
     if (users!=null){
       return users.size();
     }
@@ -159,11 +150,17 @@ public class UserStore {
       user.getHashedPassword(), 
       user.getCreationTime(), 
       is_admin
-    ); 
-    users.remove(user);
+    );  
     persistentStorageAgent.writeThrough(newUser); 
-    //update database with new user, 
-    // the expected behavior that it overrides the previous user 
+
+    //update database with new user 
+    for (int i = 0; i < users.size(); i++) {
+      if (users.get(i).getName().equals(newUser.getName())) {
+        users.set(i, newUser);
+        break;
+      }
+    }
+
     return newUser;
   }
 }
