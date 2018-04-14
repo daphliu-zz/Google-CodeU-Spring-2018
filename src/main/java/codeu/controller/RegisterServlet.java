@@ -1,5 +1,7 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -8,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
-import codeu.model.data.User;
-import codeu.model.store.basic.UserStore;
 
 /** Servlet class responsible for user registration. */
 public class RegisterServlet extends HttpServlet {

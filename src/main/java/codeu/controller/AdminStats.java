@@ -60,7 +60,7 @@ public class AdminStats extends HttpServlet {
     int numConversations = conversationStore.getNumConversations();
     int numMessages = messageStore.getNumMessages();
     String newestUser = "";
-    if (userStore.getLastUser()!=null){
+    if (userStore.getLastUser() != null) {
       newestUser = userStore.getLastUser().getName();
     }
     request.setAttribute("numUsers", numUsers);
@@ -99,17 +99,15 @@ public class AdminStats extends HttpServlet {
         if (changeAdminStatusButton.equals("promote")) {
           if (user.getAdminStatus()) {
             request.setAttribute("error", "User is already an admin.");
-          }
-          else { 
+          } else {
             UserStore.getInstance().setIsAdmin(user, true);
             request.setAttribute("success", "Promoted the user to admin!");
           }
         } else {
-          if (user.getAdminStatus()){
+          if (user.getAdminStatus()) {
             UserStore.getInstance().setIsAdmin(user, false);
             request.setAttribute("success", "Demoted the admin to user :(");
-          }
-          else {
+          } else {
             request.setAttribute("error", "User is already not an admin.");
           }
         }
@@ -117,8 +115,7 @@ public class AdminStats extends HttpServlet {
       loadStats(request);
       request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
       return;
-    }
-    else if (confirmButton != null) {
+    } else if (confirmButton != null) {
       userStore.loadTestData();
       conversationStore.loadTestData();
       messageStore.loadTestData();

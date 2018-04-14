@@ -122,34 +122,34 @@ public class UserStore {
     this.users = users;
   }
 
-  /**Returns the number of users in UserStore*/
-  public int numUsers(){
-    if (users!=null){
+  /** Returns the number of users in UserStore */
+  public int numUsers() {
+    if (users != null) {
       return users.size();
     }
     return 0;
   }
 
-  /**Returns the last user added*/
-  public User getLastUser(){
-    if (!users.isEmpty()){
-      return users.get(users.size()-1);
+  /** Returns the last user added */
+  public User getLastUser() {
+    if (!users.isEmpty()) {
+      return users.get(users.size() - 1);
     }
     return null;
   }
 
-  /**Returns the user with flipped is_admin flag*/
-  public User setIsAdmin(User user, boolean is_admin){
-    User newUser = new User(
-      user.getId(), 
-      user.getName(), 
-      user.getHashedPassword(), 
-      user.getCreationTime(), 
-      is_admin
-    );  
-    persistentStorageAgent.writeThrough(newUser); 
+  /** Returns the user with flipped is_admin flag */
+  public User setIsAdmin(User user, boolean is_admin) {
+    User newUser =
+        new User(
+            user.getId(),
+            user.getName(),
+            user.getHashedPassword(),
+            user.getCreationTime(),
+            is_admin);
+    persistentStorageAgent.writeThrough(newUser);
 
-    //update database with new user 
+    // update database with new user
     for (int i = 0; i < users.size(); i++) {
       if (users.get(i).getName().equals(newUser.getName())) {
         users.set(i, newUser);
