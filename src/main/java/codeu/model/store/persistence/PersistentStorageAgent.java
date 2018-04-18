@@ -97,8 +97,8 @@ public class PersistentStorageAgent {
   }
 
   /** Updates a User object to the Datastore service. */
-  public void updateThrough(User user) throws EntityNotFoundException {
-      persistentDataStore.updateThrough(user);
+  public void updateThrough(User user, boolean is_admin) throws EntityNotFoundException {
+      persistentDataStore.updateThrough(user, is_admin);
   }
 
   /** Write a Message object to the Datastore service. */

@@ -4,6 +4,7 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.persistence.PersistentDataStoreException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -92,33 +93,39 @@ public class AdminStats extends HttpServlet {
     String username = request.getParameter("username");
     User user = userStore.getUser(username);
 
-    if (changeAdminStatusButton != null) {
-      if (user == null) {
-        request.setAttribute("error", "Not a user.");
-      } else {
-        if (changeAdminStatusButton.equals("promote")) {
-          if (user.getAdminStatus()) {
-            request.setAttribute("error", "User is already an admin.");
-          } else {
-            UserStore.getInstance().setIsAdmin(user, true);
-            request.setAttribute("success", "Promoted the user to admin!");
-          }
+    try {
+
+      if (changeAdminStatusButton != null) {
+        if (user == null) {
+          request.setAttribute("error", "Not a user.");
         } else {
-          if (user.getAdminStatus()) {
-            UserStore.getInstance().setIsAdmin(user, false);
-            request.setAttribute("success", "Demoted the admin to user :(");
+          if (changeAdminStatusButton.equals("promote")) {
+            if (user.getAdminStatus()) {
+              request.setAttribute("error", "User is already an admin.");
+            } else {
+              UserStore.getInstance().setIsAdmin(user, true);
+              request.setAttribute("success", "Promoted the user to admin!");
+            }
           } else {
-            request.setAttribute("error", "User is already not an admin.");
+            if (user.getAdminStatus()) {
+              UserStore.getInstance().setIsAdmin(user, false);
+              request.setAttribute("success", "Demoted the admin to user :(");
+            } else {
+              request.setAttribute("error", "User is already not an admin.");
+            }
           }
         }
+        loadStats(request);
+        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+        return;
+      } else if (confirmButton != null) {
+        userStore.loadTestData();
+        conversationStore.loadTestData();
+        messageStore.loadTestData();
       }
-      loadStats(request);
-      request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-      return;
-    } else if (confirmButton != null) {
-      userStore.loadTestData();
-      conversationStore.loadTestData();
-      messageStore.loadTestData();
+
+    } catch (PersistentDataStoreException e) {
+      request.setAttribute("error", "Internal error");
     }
 
     response.sendRedirect("/");

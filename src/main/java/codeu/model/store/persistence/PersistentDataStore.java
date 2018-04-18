@@ -164,7 +164,7 @@ public class PersistentDataStore {
   }
 
   /** Update a User object to the Datastore service. */
-  public void updateThrough(User user) throws EntityNotFoundException {
+  public void updateThrough(User user, boolean is_admin) throws EntityNotFoundException {
     String uuid = user.getId().toString();
     Key key = KeyFactory.createKey("chat-users", uuid);
     Entity userEntity = datastore.get(key);
@@ -172,7 +172,7 @@ public class PersistentDataStore {
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getHashedPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
-    userEntity.setProperty("is_admin", user.getAdminStatus());
+    userEntity.setProperty("is_admin", is_admin);
     datastore.put(userEntity);
   }
 
