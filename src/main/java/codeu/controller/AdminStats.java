@@ -103,31 +103,32 @@ public class AdminStats extends HttpServlet {
             if (user.getAdminStatus()) {
               request.setAttribute("error", "User is already an admin.");
             } else {
-              UserStore.getInstance().setIsAdmin(user, true);
+              userStore.setIsAdmin(user, true);
               request.setAttribute("success", "Promoted the user to admin!");
             }
           } else {
             if (user.getAdminStatus()) {
-              UserStore.getInstance().setIsAdmin(user, false);
+              userStore.setIsAdmin(user, false);
               request.setAttribute("success", "Demoted the admin to user :(");
             } else {
               request.setAttribute("error", "User is already not an admin.");
             }
           }
         }
-        loadStats(request);
-        request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-        return;
       } else if (confirmButton != null) {
         userStore.loadTestData();
         conversationStore.loadTestData();
         messageStore.loadTestData();
-      }
+
+        response.sendRedirect("/");
+        return;
+      } 
 
     } catch (PersistentDataStoreException e) {
       request.setAttribute("error", "Internal error");
     }
 
-    response.sendRedirect("/");
+    loadStats(request);
+    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);    
   }
 }
