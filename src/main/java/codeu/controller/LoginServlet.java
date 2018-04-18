@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException{
+      throws IOException, ServletException {
     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
   }
 
@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException{
+      throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
