@@ -51,11 +51,10 @@ public class PersistentDataStore {
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the 
-   * Datastore service 
-   * 
-   * @throws PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
@@ -72,8 +71,7 @@ public class PersistentDataStore {
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         boolean is_admin = (boolean) entity.getProperty("is_admin");
-        User user =
-            new User(uuid, userName, password, creationTime, is_admin);
+        User user = new User(uuid, userName, password, creationTime, is_admin);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -89,8 +87,8 @@ public class PersistentDataStore {
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
@@ -122,8 +120,8 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
@@ -153,16 +151,23 @@ public class PersistentDataStore {
     return messages;
   }
 
-  /** Write a User object to the Datastore service. */
+  /** Write a new User object to the Datastore service. */
   public void writeThrough(User user) {
     String uuid = user.getId().toString();
-    Entity userEntity;
-    try {
-      Key key = KeyFactory.createKey("chat-users", uuid);
-      userEntity = datastore.get(key);
-    } catch (EntityNotFoundException e) {
-      userEntity = new Entity("chat-users", uuid);
-    }
+    Entity userEntity = new Entity("chat-users", uuid);
+    userEntity.setProperty("uuid", uuid);
+    userEntity.setProperty("username", user.getName());
+    userEntity.setProperty("password", user.getHashedPassword());
+    userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", user.getAdminStatus());
+    datastore.put(userEntity);
+  }
+
+  /** Update a User object to the Datastore service. */
+  public void updateThrough(User user) throws EntityNotFoundException {
+    String uuid = user.getId().toString();
+    Key key = KeyFactory.createKey("chat-users", uuid);
+    Entity userEntity = datastore.get(key);
     userEntity.setProperty("uuid", uuid);
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getHashedPassword());
