@@ -32,7 +32,9 @@
     <% } %>
     <a href="/about.jsp">About</a>
     <a href="/testdata">Load Test Data</a>
-    <a href="/adminStats">Admin Stats</a>
+    <% if(request.getSession().getAttribute("is_admin") != null){ %>
+      <a href="/adminStats">Admin Stats</a>
+    <% } %>
   </nav>
 
   <div id="container">

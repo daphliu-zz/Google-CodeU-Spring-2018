@@ -90,25 +90,32 @@ public class AdminStats extends HttpServlet {
       throws IOException, ServletException {
     String changeAdminStatusButton = request.getParameter("change_admin_status");
     String confirmButton = request.getParameter("confirm");
-    String username = request.getParameter("username");
-    User user = userStore.getUser(username);
+    String editUsername = request.getParameter("username");
+    User editUser = userStore.getUser(editUsername);
+    String meUsername = (String) request.getSession().getAttribute("user");
+    User meUser = userStore.getUser(meUsername);
+
+    if (meUser == null || !meUser.getAdminStatus()) {
+      // user is not an admin
+      response.sendRedirect("/");
+      return;
+    }
 
     try {
-
       if (changeAdminStatusButton != null) {
-        if (user == null) {
+        if (editUser == null) {
           request.setAttribute("error", "Not a user.");
         } else {
           if (changeAdminStatusButton.equals("promote")) {
-            if (user.getAdminStatus()) {
+            if (editUser.getAdminStatus()) {
               request.setAttribute("error", "User is already an admin.");
             } else {
-              userStore.setIsAdmin(user, true);
+              userStore.setIsAdmin(editUser, true);
               request.setAttribute("success", "Promoted the user to admin!");
             }
           } else {
-            if (user.getAdminStatus()) {
-              userStore.setIsAdmin(user, false);
+            if (editUser.getAdminStatus()) {
+              userStore.setIsAdmin(editUser, false);
               request.setAttribute("success", "Demoted the admin to user :(");
             } else {
               request.setAttribute("error", "User is already not an admin.");

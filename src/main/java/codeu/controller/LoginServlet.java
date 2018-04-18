@@ -73,7 +73,8 @@ public class LoginServlet extends HttpServlet {
       if (BCrypt.checkpw(password, user.getHashedPassword())) {
         request.getSession().setAttribute("user", username);
         if (user.getAdminStatus()) {  
-          response.sendRedirect("/conversations"); // will be AdminStats once uiadmin branch is merged
+          request.getSession().setAttribute("is_admin", true);
+          response.sendRedirect("/adminStats"); // will be AdminStats once uiadmin branch is merged
           return;
         }
         response.sendRedirect("/conversations");
