@@ -51,7 +51,10 @@ public class PersistentDataStore {
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   * @throws PersistentDataStoreException if an error was detected during the load from the 
+   * Datastore service 
+   * 
+   * @throws PersistentDataStoreException if an error was detected
    *     during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
@@ -86,7 +89,7 @@ public class PersistentDataStore {
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   * @throws PersistentDataStoreException if an error was detected
    *     during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
@@ -119,7 +122,7 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   * @throws PersistentDataStoreException if an error was detected
    *     during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
