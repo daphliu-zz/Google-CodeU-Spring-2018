@@ -103,7 +103,7 @@ public class UserStore {
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     users.add(user);
-    persistentStorageAgent.writeThrough(user);
+    persistentStorageAgent.createUser(user);
   }
 
   /** Return true if the given username is known to the application. */
@@ -143,7 +143,7 @@ public class UserStore {
   /** Returns the user with flipped is_admin flag */
   public void setIsAdmin(User user, boolean is_admin) throws PersistentDataStoreException  {
     try {
-      persistentStorageAgent.updateThrough(user, is_admin);
+      persistentStorageAgent.updateUserAdminStatus(user, is_admin);
     } catch (EntityNotFoundException e) {
       throw new RuntimeException("user does not exist in database");
     }

@@ -91,14 +91,14 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadMessages();
   }
 
-  /** Write a User object to the Datastore service. */
-  public void writeThrough(User user) {
-    persistentDataStore.writeThrough(user);
+  /** Write a new User object to the Datastore service. */
+  public void createUser(User user) {
+    persistentDataStore.createUser(user);
   }
 
-  /** Updates a User object to the Datastore service. */
-  public void updateThrough(User user, boolean is_admin) throws EntityNotFoundException {
-      persistentDataStore.updateThrough(user, is_admin);
+ /** Update a User object to the Datastore service. */
+  public void updateUserAdminStatus(User user, boolean is_admin) throws EntityNotFoundException {
+      persistentDataStore.updateUserAdminStatus(user, is_admin);
   }
 
   /** Write a Message object to the Datastore service. */

@@ -62,8 +62,8 @@ public class PersistentDataStoreTest {
     User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo, adminStatusTwo);
 
     // save
-    persistentDataStore.writeThrough(inputUserOne);
-    persistentDataStore.writeThrough(inputUserTwo);
+    persistentDataStore.createUser(inputUserOne);
+    persistentDataStore.createUser(inputUserTwo);
 
     // load
     List<User> resultUsers = persistentDataStore.loadUsers();

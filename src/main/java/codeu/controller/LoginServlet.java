@@ -72,10 +72,8 @@ public class LoginServlet extends HttpServlet {
       User user = userStore.getUser(username);
       if (BCrypt.checkpw(password, user.getHashedPassword())) {
         request.getSession().setAttribute("user", username);
-        if (user.getAdminStatus()) {
-          // if a registered user is admin, fires API call to AdminStats page
-          response.sendRedirect(
-              "/conversations"); // will be AdminStats once uiadmin branch is merged
+        if (user.getAdminStatus()) {  
+          response.sendRedirect("/conversations"); // will be AdminStats once uiadmin branch is merged
           return;
         }
         response.sendRedirect("/conversations");

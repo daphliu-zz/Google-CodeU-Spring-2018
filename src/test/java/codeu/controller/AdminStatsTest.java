@@ -76,7 +76,6 @@ public class AdminStatsTest {
     Mockito.when(mockRequest.getParameter("change_admin_status")).thenReturn("promote");
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(null);
-
     adminStats.doPost(mockRequest, mockResponse); 
     Mockito.verify(mockRequest).setAttribute("error", "Not a user.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -86,7 +85,6 @@ public class AdminStatsTest {
   public void testDoPost_nullButtons() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("change_admin_status")).thenReturn(null); 
     Mockito.when(mockRequest.getParameter("confirm")).thenReturn(null); 
-
     adminStats.doPost(mockRequest, mockResponse); 
     Mockito.verify(mockRequest, never()).setAttribute("error", "Not a user.");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -98,9 +96,7 @@ public class AdminStatsTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
     User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
-
     adminStats.doPost(mockRequest, mockResponse);
-
     Mockito.verify(mockUserStore).setIsAdmin(fakeUser, true);
     Mockito.verify(mockRequest).setAttribute("success", "Promoted the user to admin!");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -112,9 +108,7 @@ public class AdminStatsTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
     User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), true);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
-
     adminStats.doPost(mockRequest, mockResponse);
-
     Mockito.verify(mockRequest).setAttribute("error", "User is already an admin."); 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
@@ -125,9 +119,7 @@ public class AdminStatsTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
     User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), true);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
-
     adminStats.doPost(mockRequest, mockResponse);
-
     Mockito.verify(mockUserStore).setIsAdmin(fakeUser, false);
      Mockito.verify(mockRequest).setAttribute("success", "Demoted the admin to user :(");
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
@@ -139,11 +131,8 @@ public class AdminStatsTest {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("test_username");
     User fakeUser = new User(UUID.randomUUID(), "test_username", "password", Instant.now(), false);
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
-
     adminStats.doPost(mockRequest, mockResponse);
-
     Mockito.verify(mockRequest).setAttribute("error", "User is already not an admin."); 
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
-
 }

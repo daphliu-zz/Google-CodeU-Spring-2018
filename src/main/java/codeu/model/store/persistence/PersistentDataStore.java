@@ -53,8 +53,6 @@ public class PersistentDataStore {
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
@@ -147,12 +145,11 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
     return messages;
   }
 
   /** Write a new User object to the Datastore service. */
-  public void writeThrough(User user) {
+  public void createUser(User user) {
     String uuid = user.getId().toString();
     Entity userEntity = new Entity("chat-users", uuid);
     userEntity.setProperty("uuid", uuid);
@@ -164,7 +161,7 @@ public class PersistentDataStore {
   }
 
   /** Update a User object to the Datastore service. */
-  public void updateThrough(User user, boolean is_admin) throws EntityNotFoundException {
+  public void updateUserAdminStatus(User user, boolean is_admin) throws EntityNotFoundException {
     String uuid = user.getId().toString();
     Key key = KeyFactory.createKey("chat-users", uuid);
     Entity userEntity = datastore.get(key);

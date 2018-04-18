@@ -71,7 +71,7 @@ public class UserStoreTest {
     User resultUser = userStore.getUser("test_username");
 
     assertEquals(inputUser, resultUser);
-    Mockito.verify(mockPersistentStorageAgent).writeThrough(inputUser);
+    Mockito.verify(mockPersistentStorageAgent).createUser(inputUser);
   }
 
   @Test
