@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the login page. */
 public class LoginServlet extends HttpServlet {
@@ -58,33 +59,31 @@ public class LoginServlet extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
   }
 
-/**
-  * This function fires when a user submits the login form. It gets the username and password from
-  * the submitted form data, checks that they're valid, and either adds the user to the session
-  * so we know the user is logged in or shows an error to the user.
-  */
+  /**
+   * This function fires when a user submits the login form. It gets the username and password from
+   * the submitted form data, checks that they're valid, and either adds the user to the session
+   * so we know the user is logged in or shows an error to the user.
+   */
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
 
- @Override
- public void doPost(HttpServletRequest request, HttpServletResponse response)
-     throws IOException, ServletException {
-   String username = request.getParameter("username");
-   String password = request.getParameter("password");
-
-   if (userStore.isUserRegistered(username)) {
-     User user = userStore.getUser(username);
-     if(password.equals(user.getPassword())) {
-       request.getSession().setAttribute("user", username);
-       response.sendRedirect("/conversations");
-     }
-     else {
-       request.setAttribute("error", "Invalid password.");
-       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-     }
-   }
-   else {
-     request.setAttribute("error", "That username was not found.");
-     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
-   }
- }
-
+    if (userStore.isUserRegistered(username)) {
+      User user = userStore.getUser(username);
+      if(BCrypt.checkpw(password, user.getHashedPassword())) {
+        request.getSession().setAttribute("user", username);
+        response.sendRedirect("/conversations");
+      }
+      else {
+        request.setAttribute("error", "Invalid password.");
+        request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      }
+    }
+    else {
+      request.setAttribute("error", "That username was not found.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+    }
+  }
 }
