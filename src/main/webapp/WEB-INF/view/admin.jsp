@@ -27,6 +27,7 @@
       <p>Conversations: <%= request.getAttribute("numConversations")%></p>
       <p>Messages: <%= request.getAttribute("numMessages")%></p>
       <p>Newest User: <%= request.getAttribute("newestUser")%></p>
+      <p>Most Active User: <%= request.getAttribute("mostActiveUser")%></p>
 
     </form>
   </div>
@@ -35,6 +36,7 @@
       <%-- Allow for user upload data--%>
       <label for = "file"> Choose file to upload</label>
       <input name="myFile" type="file">
+      <p></p>
       <button type="submit" value="confirm" name="confirm">Submit</button>
       <%-- TODO: have Submit button reload page to show data for file uploaded--%>
     </div>
