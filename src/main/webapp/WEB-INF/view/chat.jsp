@@ -13,106 +13,129 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.util.List" %>
-<%@ page import="codeu.model.data.Conversation" %>
-<%@ page import="codeu.model.data.Message" %>
-<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.util.List"%>
+<%@ page import="codeu.model.data.Conversation"%>
+<%@ page import="codeu.model.data.Message"%>
+<%@ page import="codeu.model.store.basic.UserStore"%>
 <%
-Conversation conversation = (Conversation) request.getAttribute("conversation");
-List<Message> messages = (List<Message>) request.getAttribute("messages");
+	Conversation conversation = (Conversation) request.getAttribute("conversation");
+	List<Message> messages = (List<Message>) request.getAttribute("messages");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= conversation.getTitle() %></title>
-  <link rel="stylesheet" href="/css/main.css" type="text/css">
-  <link rel="stylesheet" href="/css/iframe.css">
- 
-  <style>
-    #chat {
-      background-color: white;
-      height: 500px;
-      overflow-y: scroll
-    }
-  </style>
+<title><%=conversation.getTitle()%></title>
+<link rel="stylesheet" href="/css/main.css" type="text/css">
+<link rel="stylesheet" href="/css/iframe.css">
 
-  <script>
-    // scroll the chat div to the bottom
-    function scrollChat() {
-      var chatDiv = document.getElementById('chat');
-      chatDiv.scrollTop = chatDiv.scrollHeight;
-    };
-  </script>
-  
+<style>
+#chat {
+	background-color: white;
+	height: 500px;
+	overflow-y: scroll
+}
+</style>
+
+<script>
+	// scroll the chat div to the bottom
+	function scrollChat() {
+		var chatDiv = document.getElementById('chat');
+		chatDiv.scrollTop = chatDiv.scrollHeight;
+	};
+</script>
+
 </head>
 <body onload="scrollChat()">
 
-  <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/conversations">Conversations</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else { %>
-      <a href="/login">Login</a>
-      <a href="/register">Register</a>
-    <% } %>
-    <a href="/about.jsp">About</a>
-  </nav>
+	<nav>
+		<a id="navTitle" href="/">CodeU Chat App</a> <a href="/conversations">Conversations</a>
+		<%
+			if (request.getSession().getAttribute("user") != null) {
+		%>
+		<a>Hello <%=request.getSession().getAttribute("user")%>!
+		</a>
+		<%
+			} else {
+		%>
+		<a href="/login">Login</a> <a href="/register">Register</a>
+		<%
+			}
+		%>
+		<a href="/about.jsp">About</a>
+	</nav>
 
-  <div id="container">
+	<div id="container">
 
-    <h1><%= conversation.getTitle() %>
-      <a href="" style="float: right">&#8635;</a></h1>
+		<h1><%=conversation.getTitle()%>
+			<a href="" style="float: right">&#8635;</a>
+		</h1>
 
-    <hr/>
+		<hr />
 
-    <div id="chat">
-      <ul>
-    <%
-      for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
-    %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
-    <%
-      }
-    %>
-      </ul>
-    </div>
+		<div id="chat">
+			<ul>
+				<%
+					for (Message message : messages) {
+						String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+				%>
+				<li><strong><%=author%>:</strong> <%=message.getContent()%></li>
+				<%
+					}
+				%>
+			</ul>
+		</div>
 
-    <hr/>
+		<hr />
 
-	<script src="http://localhost:8080/js/TextEditor.js"></script>
-    <% if (request.getSession().getAttribute("user") != null) { %>
-    <form action="/chat/<%= conversation.getTitle() %>" id = "form" method="POST">
-   		 <p>
-    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Bold');" />B</button>
-    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Italic');" />I</button>
-    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Underline');" />U</button>
+		<script src="http://localhost:8080/js/TextEditor.js"></script>
+		<%
+			if (request.getSession().getAttribute("user") != null) {
+		%>
+		<form action="/chat/<%=conversation.getTitle()%>" id="form"
+			method="POST">
+			<p>
+				<button class="editor-button" type="button" id="bBtn"
+					style="font-weight: bold" onclick="setFunction('Bold');" />
+				B
+				</button>
+				<button class="editor-button" type="button" id="bBtn"
+					style="font-weight: bold" onclick="setFunction('Italic');" />
+				I
+				</button>
+				<button class="editor-button" type="button" id="bBtn"
+					style="font-weight: bold" onclick="setFunction('Underline');" />
+				U
+				</button>
+			</p>
+			<p>
+				<iframe id="editor" width="800px" height="60px"
+					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
+			</p>
+			<br /> <input type="hidden" id="inHTML" name="message" />
+			<button type="button" value="Send" onclick="doSubmitForm()">Submit</button>
+		</form>
+
+		<script>
+			init('editor');
+		</script>
+
+		<%
+			} else {
+		%>
+		<p>
+			<a href="/login">Login</a> to send a message.
 		</p>
-         <p>
-   		    <iframe id="editor" width="800px" height="60px" style="border:0px; marginheight:2px;marginwidth:2px "></iframe>
-		</p>
-        <br/>
-        <input type="hidden" id="inHTML" name = "message" />
-        <button type="button" value = "Send" onclick="doSubmitForm()">Submit</button>
-    </form>
-    
-   <script>
-	init('editor');
-   </script>
-  
-    <% } else { %>
-      <p><a href="/login">Login</a> to send a message.</p>
-    <% } %>
+		<%
+			}
+		%>
 
-    <hr/>
-    
+		<hr />
 
 
-  </div>
-  
+
+	</div>
+
 
 
 </body>
