@@ -82,12 +82,14 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     </div>
 
     <hr/>
-   
+
 	<script src="http://localhost:8080/js/TextEditor.js"></script>
     <% if (request.getSession().getAttribute("user") != null) { %>
     <form action="/chat/<%= conversation.getTitle() %>" id = "form" method="POST">
    		 <p>
-    		<input type="button" id="bBtn" value="B" style="font-weight:bold" onclick="setBold('editor');" />
+    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Bold');" />B</button>
+    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Italic');" />I</button>
+    		<button class = "editor-button" type="button" id="bBtn"  style="font-weight:bold" onclick="setFunction('Underline');" />U</button>
 		</p>
          <p>
    		    <iframe id="editor" width="800px" height="60px" style="border:0px; marginheight:2px;marginwidth:2px "></iframe>

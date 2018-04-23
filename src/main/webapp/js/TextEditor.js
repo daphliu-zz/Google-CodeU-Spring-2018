@@ -15,11 +15,26 @@ function init(id)
 	doc.write('<html><head><style>body{ margin:3px; word-wrap:break-word; word-break: break-all; }</style></head><body>CodeUtest</body></html>') ;
 };
 //TODO: make into a switch statement while adding more functions
-function setBold(id)
+function setFunction(method)
 {
-	var currWin = document.getElementById(id).contentWindow;
-	currWin.document.execCommand("Bold", false, null);
-	currWin.focus();
+	switch(method){
+	case 'Bold':
+		var currWin = document.getElementById('editor').contentWindow;
+		currWin.document.execCommand("Bold", false, null);
+		currWin.focus();
+		break;
+	case 'Italic':
+		var currWin = document.getElementById('editor').contentWindow;
+		currWin.document.execCommand("Italic", false, null);
+		currWin.focus();
+		break;
+	case 'Underline':
+		var currWin = document.getElementById('editor').contentWindow;
+		currWin.document.execCommand("Underline", false, null);
+		currWin.focus();
+		break;
+	}
+	
 };
 //Onclick to submit the form
 function doSubmitForm()
