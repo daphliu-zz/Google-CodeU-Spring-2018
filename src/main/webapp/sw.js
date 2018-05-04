@@ -23,7 +23,8 @@ async function load(request) {
         return await fetch(request);
     } catch (err) {
         // If no internet, return from cache instead
-        const response = await caches.match(request);
+        const response = await caches.match(request); 
+        // expect only /css/main.css match 
         if (response == null) return findOfflinePage(request);
         else return response;
     }
@@ -35,9 +36,13 @@ async function load(request) {
  */
 async function findOfflinePage(request) {
     const url = new URL(request.url);
-    if (url.pathname === "/") return caches.match("/?offline");
-
-    return caches.match("/offline.html")
+    switch (url.pathname) {
+        case "/":
+        case "/about.jsp":
+            return caches.match(url.pathname + "?offline");
+        default:
+            return caches.match("/offline.html");
+    }
 }
 
 // runs when sw first installs, which is when user first runs page 
