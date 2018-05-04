@@ -4,10 +4,12 @@
  * Caches resources that don't change often (ex. CSS, images)
  */
 async function installDeps() {
-    const cache = await caches.open('codeu-chat');
+    const cache = await caches.open('codeu-chat');  // codeu-chat is arbitrary name of chat 
     return cache.addAll([
         "/css/main.css",
-        "/offline.html",
+        "/offline.html", // General error page
+        "/?offline", // Homepage
+        "/about.jsp?offline", // About
     ]);
 }
 
@@ -22,10 +24,20 @@ async function load(request) {
     } catch (err) {
         // If no internet, return from cache instead
         const response = await caches.match(request);
-
-        if (response == null) return caches.match("/offline.html")
+        if (response == null) return findOfflinePage(request);
         else return response;
     }
+}
+
+/**
+ * @param {Request} request from user
+ * @returns response from cache
+ */
+async function findOfflinePage(request) {
+    const url = new URL(request.url);
+    if (url.pathname === "/") return caches.match("/?offline");
+
+    return caches.match("/offline.html")
 }
 
 // runs when sw first installs, which is when user first runs page 
