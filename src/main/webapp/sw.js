@@ -1,14 +1,16 @@
 // Service Worker
 
-const CACHE_NAME = "codeu-chat"
+const CACHE_NAME = "codeu-chat"  // codeu-chat is arbitrary name of chat 
 
 /**
- * Caches resources that don't change often (ex. CSS, images)
+ * Caches resources that don't change often (ex. CSS, images),
+ * and resources needed for the service worker (ex. error pages, alternate offline versions)
  */
 async function installDeps() {
-    const cache = await caches.open(CACHE_NAME);  // codeu-chat is arbitrary name of chat 
+    const cache = await caches.open(CACHE_NAME); 
     return cache.addAll([
         "/css/main.css",
+
         "/offline.html", // General error page
         "/?offline", // Homepage
         "/about.jsp?offline", // About
@@ -16,25 +18,29 @@ async function installDeps() {
 }
 
 /**
+ * Called to load a response from the network or cache.
  * @param {Request} request from user
  * @returns response from server or cache
  */
 async function load(request) {
+    let response;
     try {
-        // Attempt to load from internet
-        const response = await fetch(request);
-        await storeConversation(request, response);  // Conversation is put in try block b/c it updates constantly
-        return response;
+        response = await fetch(request);
     } catch (err) {
         // If no internet, return from cache instead
         const response = await caches.match(request); 
-        // expect only /css/main.css match 
+        // if no matching cache item, return a special response
         if (response == null) return findOfflinePage(request);
         else return response;
     }
+
+    await storeConversation(request, response); // Conversation is put in try block b/c it updates constantly
+    return response;
 }
 
 /**
+ * Find a version of the page to return for offline users. 
+ * Otherwise, return an error page.
  * @param {Request} request from user
  * @returns response from cache
  */
@@ -54,6 +60,7 @@ async function findOfflinePage(request) {
  * it in the cache.
  * @param {Request} request from user
  * @param {Response} response from server
+ * @returns {Promise<void>}
  */
 async function storeConversation(request, response) {
     const url = new URL(request.url);
