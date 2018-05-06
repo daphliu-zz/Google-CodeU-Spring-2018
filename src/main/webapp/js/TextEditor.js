@@ -11,8 +11,6 @@ function init(id) {
 	// Make iframe into a text editor
 	doc.designMode = "on";
 	doc.contentEditable = true;
-	doc
-			.write('<html><head><style>body{ margin:3px; word-wrap:break-word; word-break: break-all; }</style></head><body>CodeUtest</body></html>');
 };
 // TODO: make into a switch statement while adding more functions
 function setFunction(method) {
@@ -32,16 +30,34 @@ function setFunction(method) {
 		currWin.document.execCommand("Underline", false, null);
 		currWin.focus();
 		break;
-	}
-
+	//TODO: resize the img file if too large
+	case 'InsertIMG':
+		var currWin = document.getElementById('editor').contentWindow;
+		var fl = document.getElementById("btn_file");
+		var file = null;
+		var url = null;
+		var img = new Image;	
+		var files = fl.files;
+			if(files && files.length > 0){
+				file = files[0];
+			try{
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					var url = e.target.result;				            
+					var img = '<img src="' + url + '"/>';
+					currWin.document.execCommand('insertHTML', false, img);	 
+			}
+			reader.readAsDataURL(file);
+		    }
+			catch(e){}
+			}
+		break;
+	};
 };
 // Onclick to submit the form
 function doSubmitForm() {
 	var iframe = document.getElementById('editor');
 	var doc = iframe.contentDocument;
-
-	// for test innerhtml usage
-	alert(doc.body.innerHTML);
 
 	document.getElementById('inHTML').value = doc.body.innerHTML;
 	document.getElementById('form').submit();

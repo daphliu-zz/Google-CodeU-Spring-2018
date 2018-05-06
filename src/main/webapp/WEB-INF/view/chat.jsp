@@ -87,7 +87,8 @@
 		</div>
 
 		<hr />
-
+		<input type="file" id="btn_file" accept="image/*" onchange="setFunction('InsertIMG')" style="display:none">
+		<img src="" id="output">
 		<script src="http://localhost:8080/js/TextEditor.js"></script>
 		<%
 			if (request.getSession().getAttribute("user") != null) {
@@ -106,6 +107,9 @@
 				<button class="editor-button" type="button" id="bBtn"
 					style="font-weight: bold" onclick="setFunction('Underline');" />
 				U
+				</button>
+				<button class="editor-button" type="button" id="bBtn"
+					style="font-weight: bold" onclick="btn_file.click()"/>P
 				</button>
 			</p>
 			<p>
