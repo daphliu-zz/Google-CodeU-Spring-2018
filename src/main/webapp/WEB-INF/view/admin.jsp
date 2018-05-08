@@ -37,6 +37,7 @@
       <label for = "file"> Choose file to upload</label>
       <input name="myFile" type="file">
       <p></p>
+      <form action="/adminStats" method="POST">
       <button type="submit" value="confirm" name="confirm">Submit</button>
       <%-- TODO: have Submit button reload page to show data for file uploaded--%>
     </div>
