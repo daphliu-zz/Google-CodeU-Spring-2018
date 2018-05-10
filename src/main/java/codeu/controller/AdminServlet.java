@@ -325,9 +325,8 @@ public class AdminServlet extends HttpServlet {
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
       } catch (Exception e) {
-
-        e.printStackTrace(System.out);
-        System.out.println("DIDNT OPEN");
+        //  e.printStackTrace(System.out);
+          System.out.println("DIDNT OPEN");
       }
     }
     response.sendRedirect("/");
