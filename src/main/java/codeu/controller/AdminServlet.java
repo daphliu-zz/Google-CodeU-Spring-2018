@@ -236,10 +236,12 @@ public class AdminServlet extends HttpServlet {
     boolean addToLine = false;
     String charactersWord = "";
     String savedLine = null;
+    String lastLine = "";
     // use the readLine method of the BufferedReader to read one line at a time.
     // the readLine method returns null when there is nothing else to read.
     while ((line = bufferedReader.readLine()) != null) {
-      savedLine = line;
+      savedLine = charactersWord;
+      lastLine =line;
       boolean addNewUser = false;
       String firstWord = line;
       if (firstWord.contains("ACT")) {
@@ -282,7 +284,8 @@ public class AdminServlet extends HttpServlet {
           }
       }
     }
-    appendMessage(savedLine);
+    String lastM = savedLine + " " + lastLine;
+    appendMessage(lastM);//TODO: should be the whole character
   }
 
   @Override
