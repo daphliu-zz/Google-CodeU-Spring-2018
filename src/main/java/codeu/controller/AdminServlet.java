@@ -88,6 +88,8 @@ public class AdminServlet extends HttpServlet {
       List<Message> messagesinCurrConvo = messageStore.getMessagesInConversation(currConvo.getId());
       for (int j = 0; j < messagesinCurrConvo.size(); j++) {
         Message oneMessage = messagesinCurrConvo.get(j);
+        // get author &
+        // User getUser(UUID id) {
         UUID messageAuthorID = oneMessage.getAuthorId();
         User messageAuthor = userStore.getUser(messageAuthorID);
         if (usersToMessages.containsKey(messageAuthor)) {
@@ -145,8 +147,8 @@ public class AdminServlet extends HttpServlet {
     return true;
   }
 
-  /*puts user into PersistentDataStore & creates new user if needed as well as
-  * updates currentUser*/
+  // puts user into PersistentDataStore & creates new user if needed as well as
+  // updates currentUser
   void appendUser(String userName) {
     if (!userStore.isUserRegistered(userName)) {
       User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
@@ -159,7 +161,7 @@ public class AdminServlet extends HttpServlet {
     }
   }
 
-  /*Puts a message into PersistentDataStore*/
+  // Puts a message into PersistentDataStore
   void appendMessage(String line) {
     Conversation conversation = currentConversation;
     User author = currentUser;
@@ -170,6 +172,9 @@ public class AdminServlet extends HttpServlet {
     messageStore.addMessage(message);
     messages.add(message);
   }
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
   /*adds conversation to persistent data store*/
   void appendConversation(String line){
     User user = userStore.getUser("NARRATOR");
@@ -181,6 +186,18 @@ public class AdminServlet extends HttpServlet {
     currentConversation = conversation;
   }
   /* Saves the character's message to the character before switching to a new user*/
+=======
+
+  // Saves the character's message to the character before switching to a new user
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+
+  // Saves the character's message to the character before switching to a new user
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+
+  // Saves the character's message to the character before switching to a new user
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
   void changeToNewUser(String charactersWord, String newUser) {
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
@@ -191,6 +208,9 @@ public class AdminServlet extends HttpServlet {
       appendUser(newUser);
     }
   }
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
 
   boolean foundWordNarratorDictates(String firstWord, String charactersWord){
     boolean didFind = true;
@@ -224,6 +244,12 @@ public class AdminServlet extends HttpServlet {
       }
       return didFind;
   }
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
 
   /**
    * TODO: read from file; store in database; somehow send back to doGet method? or create a
@@ -243,6 +269,7 @@ public class AdminServlet extends HttpServlet {
       savedLine = charactersWord;
       lastLine =line;
       boolean addNewUser = false;
+      // TODO: conversation @ new SCENE
       String firstWord = line;
       if (firstWord.contains("ACT")) {
         firstWord = "ACT";
@@ -261,7 +288,7 @@ public class AdminServlet extends HttpServlet {
             }
             break;
           case "SCENE":
-            { //Narrator dictates that a new scene has started
+            {
               changeToNewUser(charactersWord, "NARRATOR");
               charactersWord = line;
             }
@@ -277,15 +304,68 @@ public class AdminServlet extends HttpServlet {
           charactersWord = "";
         }
       } else {
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
           if (foundWordNarratorDictates(firstWord, charactersWord)){
+=======
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+        switch (firstWord) {
+          case ("**Exit"):
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
               charactersWord = line;
-          } else{
-            charactersWord = charactersWord + " " + line;
-          }
+            }
+            break;
+          case ("Enter"):
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+              charactersWord = line;
+            }
+            break;
+          case ("**Exeunt"):
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+              charactersWord = line;
+            }
+            break;
+            case ("Re-enter"):
+              {
+                changeToNewUser(charactersWord, "NARRATOR");
+                charactersWord = line;
+              }
+              break;
+          default:
+            { // append user's message
+              charactersWord = charactersWord + " " + line;
+            }
+            break;
+        }
       }
     }
+<<<<<<< HEAD
     String lastM = savedLine + " " + lastLine;
     appendMessage(lastM);//TODO: should be the whole character
+=======
+    appendMessage(savedLine);
+    // TESTING ARRAY: System.out.println("this is user size: ");
+    // System.out.print(users.size());
+    // for (int i = 0; i < users.size(); i++){
+    //   User currUser = users.get(i);
+    //   System.out.println(currUser.getName());
+    // } //only prints out first time since starts off empty
+    //bufferedReader.close();
+>>>>>>> 2b0a2a49104f3178a2e58ff94a0e13bc59bac075
   }
 
   @Override
@@ -312,7 +392,9 @@ public class AdminServlet extends HttpServlet {
         specificFile = "tempest.txt";
         currentTitle="Tempest";
       }
+        System.out.println(selectedValue);
         try {
+          //TODO: load each file and just have their arrays load up like Default does
           String findFile = "../../src/main/java/codeu/controller/"+specificFile;
           BufferedReader bufferedReader =
               new BufferedReader(
@@ -322,7 +404,8 @@ public class AdminServlet extends HttpServlet {
           readFile(bufferedReader); //works with files that begin with ACT
           bufferedReader.close();
         } catch (Exception e) {
-          //e.printStackTrace(System.out);
+
+          e.printStackTrace(System.out);
           System.out.println("DIDNT OPEN");
         }
 
