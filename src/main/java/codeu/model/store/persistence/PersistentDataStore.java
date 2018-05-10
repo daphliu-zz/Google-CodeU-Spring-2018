@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Text;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,7 +133,7 @@ public class PersistentDataStore {
         UUID conversationUuid = UUID.fromString((String) entity.getProperty("conv_uuid"));
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String content = (String) entity.getProperty("content");
+        String content = (String)entity.getProperty("content");
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {

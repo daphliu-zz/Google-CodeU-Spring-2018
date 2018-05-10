@@ -185,6 +185,7 @@ public class AdminStats extends HttpServlet {
       if (!charactersWord.equals("")){
         appendMessage(charactersWord);
       }
+
        appendUser(newUser);
     } else{
       appendUser(newUser);
@@ -224,7 +225,9 @@ public class AdminStats extends HttpServlet {
              case "ACT":
              //new CONVERSATION
              {
-                appendUser("NARRATOR");
+                changeToNewUser(charactersWord,"NARRATOR");
+                charactersWord="";
+                //appendUser("NARRATOR");
                 User user = userStore.getUser("NARRATOR");
                 String title = line;
                 Conversation conversation =
@@ -232,6 +235,7 @@ public class AdminStats extends HttpServlet {
                 conversationStore.addConversation(conversation);
                 conversations.add(conversation);
                 currentConversation = conversation;//secondtime may not have?
+                //charactersWord = line
               }
                 break;
              case "SCENE":
@@ -263,7 +267,7 @@ public class AdminStats extends HttpServlet {
                 charactersWord = line;
             }break;
             default:
-              {System.out.println("in default");
+              { //System.out.println("in default");
               //System.out.println(line);
                 charactersWord= charactersWord + " " + line;}
               break;
@@ -293,6 +297,8 @@ public class AdminStats extends HttpServlet {
         BufferedReader bufferedReader = new BufferedReader(new FileReader("../../src/main/java/codeu/controller/testing.txt"));
         readFile(bufferedReader);
       } catch(Exception e){
+
+          e.printStackTrace(System.out);
         System.out.println("DIDNT OPEN");
       }
     }
