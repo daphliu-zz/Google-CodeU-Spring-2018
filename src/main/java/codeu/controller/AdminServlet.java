@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet class responsible for loading test data. */
-public class AdminStats extends HttpServlet {
+public class AdminServlet extends HttpServlet {
 
   private List<User> users;
   private List<Conversation> conversations;
