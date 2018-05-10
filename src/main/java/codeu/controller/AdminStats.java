@@ -170,7 +170,16 @@ public class AdminStats extends HttpServlet {
     messageStore.addMessage(message);
     messages.add(message);
   }
-
+  /*adds conversation to persistent data store*/
+  void appendConversation(String line){
+    User user = userStore.getUser("NARRATOR");
+    String title = currentTitle+"_"+ line;
+    Conversation conversation =
+        new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+    conversationStore.addConversation(conversation);
+    conversations.add(conversation);
+    currentConversation = conversation;
+  }
   /* Saves the character's message to the character before switching to a new user*/
   void changeToNewUser(String charactersWord, String newUser) {
     if (currentUser != null) {
@@ -182,6 +191,7 @@ public class AdminStats extends HttpServlet {
       appendUser(newUser);
     }
   }
+
   boolean foundWordNarratorDictates(String firstWord, String charactersWord){
     boolean didFind = true;
     switch (firstWord) {
@@ -241,18 +251,11 @@ public class AdminStats extends HttpServlet {
         addToLine = true;
         String userName = line;
         switch (firstWord) {
-          case "ACT":
-            // new CONVERSATION
+          case "ACT":    // new CONVERSATION
             {
               changeToNewUser(charactersWord, "NARRATOR");
               charactersWord = "";
-              User user = userStore.getUser("NARRATOR");
-              String title = currentTitle+"_"+ line;
-              Conversation conversation =
-                  new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
-              conversationStore.addConversation(conversation);
-              conversations.add(conversation);
-              currentConversation = conversation; // secondtime may not have?
+              appendConversation(line);
             }
             break;
           case "SCENE":
@@ -313,7 +316,7 @@ public class AdminStats extends HttpServlet {
                   new FileReader(findFile));
           System.out.println("opened this file");
           System.out.println(findFile);
-          readFile(bufferedReader);
+          readFile(bufferedReader); //works with files that begin with ACT
           bufferedReader.close();
         } catch (Exception e) {
           //e.printStackTrace(System.out);
