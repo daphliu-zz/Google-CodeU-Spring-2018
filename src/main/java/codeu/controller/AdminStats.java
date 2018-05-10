@@ -88,8 +88,6 @@ public class AdminStats extends HttpServlet {
       List<Message> messagesinCurrConvo = messageStore.getMessagesInConversation(currConvo.getId());
       for (int j = 0; j < messagesinCurrConvo.size(); j++) {
         Message oneMessage = messagesinCurrConvo.get(j);
-        // get author &
-        // User getUser(UUID id) {
         UUID messageAuthorID = oneMessage.getAuthorId();
         User messageAuthor = userStore.getUser(messageAuthorID);
         if (usersToMessages.containsKey(messageAuthor)) {
@@ -147,8 +145,8 @@ public class AdminStats extends HttpServlet {
     return true;
   }
 
-  // puts user into PersistentDataStore & creates new user if needed as well as
-  // updates currentUser
+  /*puts user into PersistentDataStore & creates new user if needed as well as
+  * updates currentUser*/
   void appendUser(String userName) {
     if (!userStore.isUserRegistered(userName)) {
       User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
@@ -161,7 +159,7 @@ public class AdminStats extends HttpServlet {
     }
   }
 
-  // Puts a message into PersistentDataStore
+  /*Puts a message into PersistentDataStore*/
   void appendMessage(String line) {
     Conversation conversation = currentConversation;
     User author = currentUser;
@@ -173,7 +171,7 @@ public class AdminStats extends HttpServlet {
     messages.add(message);
   }
 
-  // Saves the character's message to the character before switching to a new user
+  /* Saves the character's message to the character before switching to a new user*/
   void changeToNewUser(String charactersWord, String newUser) {
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
@@ -183,6 +181,38 @@ public class AdminStats extends HttpServlet {
     } else {
       appendUser(newUser);
     }
+  }
+  boolean foundWordNarratorDictates(String firstWord, String charactersWord){
+    boolean didFind = true;
+    switch (firstWord) {
+      //these are phrases that the NARRATOR dictates
+      case ("**Exit"):
+        {
+          changeToNewUser(charactersWord, "NARRATOR");
+        }
+        break;
+      case ("Enter"):
+        {
+          changeToNewUser(charactersWord, "NARRATOR");
+        }
+        break;
+      case ("**Exeunt"):
+        {
+          changeToNewUser(charactersWord, "NARRATOR");
+        }
+        break;
+        case ("Re-enter"):
+          {
+            changeToNewUser(charactersWord, "NARRATOR");
+          }
+          break;
+      default:
+        { // append user's message if character's words continue onto next lines
+          didFind = false;
+        }
+        break;
+      }
+      return didFind;
   }
 
   /**
@@ -201,7 +231,6 @@ public class AdminStats extends HttpServlet {
     while ((line = bufferedReader.readLine()) != null) {
       savedLine = line;
       boolean addNewUser = false;
-      // TODO: conversation @ new SCENE
       String firstWord = line;
       if (firstWord.contains("ACT")) {
         firstWord = "ACT";
@@ -227,7 +256,7 @@ public class AdminStats extends HttpServlet {
             }
             break;
           case "SCENE":
-            {
+            { //Narrator dictates that a new scene has started
               changeToNewUser(charactersWord, "NARRATOR");
               charactersWord = line;
             }
@@ -243,47 +272,14 @@ public class AdminStats extends HttpServlet {
           charactersWord = "";
         }
       } else {
-        switch (firstWord) {
-          case ("**Exit"):
-            {
-              changeToNewUser(charactersWord, "NARRATOR");
+          if (foundWordNarratorDictates(firstWord,charactersWord)){
               charactersWord = line;
-            }
-            break;
-          case ("Enter"):
-            {
-              changeToNewUser(charactersWord, "NARRATOR");
-              charactersWord = line;
-            }
-            break;
-          case ("**Exeunt"):
-            {
-              changeToNewUser(charactersWord, "NARRATOR");
-              charactersWord = line;
-            }
-            break;
-            case ("Re-enter"):
-              {
-                changeToNewUser(charactersWord, "NARRATOR");
-                charactersWord = line;
-              }
-              break;
-          default:
-            { // append user's message
-              charactersWord = charactersWord + " " + line;
-            }
-            break;
-        }
+          } else{
+            charactersWord = charactersWord + " " + line;
+          }
       }
     }
     appendMessage(savedLine);
-    // TESTING ARRAY: System.out.println("this is user size: ");
-    // System.out.print(users.size());
-    // for (int i = 0; i < users.size(); i++){
-    //   User currUser = users.get(i);
-    //   System.out.println(currUser.getName());
-    // } //only prints out first time since starts off empty
-    //bufferedReader.close();
   }
 
   @Override
@@ -310,9 +306,7 @@ public class AdminStats extends HttpServlet {
         specificFile = "tempest.txt";
         currentTitle="Tempest";
       }
-        System.out.println(selectedValue);
         try {
-          //TODO: load each file and just have their arrays load up like Default does
           String findFile = "../../src/main/java/codeu/controller/"+specificFile;
           BufferedReader bufferedReader =
               new BufferedReader(
@@ -322,8 +316,7 @@ public class AdminStats extends HttpServlet {
           readFile(bufferedReader);
           bufferedReader.close();
         } catch (Exception e) {
-
-          e.printStackTrace(System.out);
+          //e.printStackTrace(System.out);
           System.out.println("DIDNT OPEN");
         }
 
