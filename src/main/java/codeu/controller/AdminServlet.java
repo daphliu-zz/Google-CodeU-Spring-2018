@@ -173,6 +173,7 @@ public class AdminServlet extends HttpServlet {
     messages.add(message);
   }
 <<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
   /*adds conversation to persistent data store*/
   void appendConversation(String line){
     User user = userStore.getUser("NARRATOR");
@@ -188,6 +189,10 @@ public class AdminServlet extends HttpServlet {
 
   // Saves the character's message to the character before switching to a new user
 >>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
+
+  // Saves the character's message to the character before switching to a new user
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
   void changeToNewUser(String charactersWord, String newUser) {
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
@@ -198,6 +203,7 @@ public class AdminServlet extends HttpServlet {
       appendUser(newUser);
     }
   }
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
 <<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
 
   boolean foundWordNarratorDictates(String firstWord, String charactersWord){
@@ -232,6 +238,8 @@ public class AdminServlet extends HttpServlet {
       }
       return didFind;
   }
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
 =======
 >>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
 
@@ -287,12 +295,18 @@ public class AdminServlet extends HttpServlet {
         }
       } else {
 <<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
           if (foundWordNarratorDictates(firstWord, charactersWord)){
 =======
+=======
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
         switch (firstWord) {
           case ("**Exit"):
             {
               changeToNewUser(charactersWord, "NARRATOR");
+<<<<<<< HEAD:src/main/java/codeu/controller/AdminServlet.java
+>>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
+=======
 >>>>>>> parent of 7d00f72... adding more options on select & cleaning up text files to parse easier also cleaning up code:src/main/java/codeu/controller/AdminStats.java
               charactersWord = line;
             }
