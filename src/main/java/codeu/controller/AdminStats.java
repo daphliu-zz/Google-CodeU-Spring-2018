@@ -272,7 +272,7 @@ public class AdminStats extends HttpServlet {
           charactersWord = "";
         }
       } else {
-          if (foundWordNarratorDictates(firstWord,charactersWord)){
+          if (foundWordNarratorDictates(firstWord, charactersWord)){
               charactersWord = line;
           } else{
             charactersWord = charactersWord + " " + line;
