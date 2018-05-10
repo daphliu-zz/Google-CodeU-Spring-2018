@@ -91,7 +91,7 @@ public class PersistentDataStore {
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    Query query = new Query("chat-conversations");
+    Query query = new Query("chat-conversations").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -133,7 +133,7 @@ public class PersistentDataStore {
         UUID conversationUuid = UUID.fromString((String) entity.getProperty("conv_uuid"));
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String content = (String)entity.getProperty("content");
+        String content = ((Text)entity.getProperty("content")).getValue();
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
@@ -163,7 +163,7 @@ public class PersistentDataStore {
     messageEntity.setProperty("uuid", message.getId().toString());
     messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
-    messageEntity.setProperty("content", message.getContent());
+    messageEntity.setProperty("content", new Text(message.getContent()));
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
   }

@@ -1,26 +1,23 @@
 package codeu.controller;
 
+import codeu.model.data.Conversation;
+import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
-import java.io.IOException;
 import java.io.*;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
-import codeu.model.data.Conversation;
-import codeu.model.data.User;
-import codeu.model.data.Message;
-import codeu.model.store.persistence.PersistentStorageAgent;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
-import java.io.*;
 /** Servlet class responsible for loading test data. */
 public class AdminStats extends HttpServlet {
 
@@ -39,6 +36,7 @@ public class AdminStats extends HttpServlet {
 
   private Conversation currentConversation = null;
   private User currentUser = null;
+  private String currentTitle = "";
   /** Set up state for handling the load test data request. */
   @Override
   public void init() throws ServletException {
@@ -75,47 +73,44 @@ public class AdminStats extends HttpServlet {
     this.userStore = userStore;
   }
 
-  /**
-   * Gets the Most Active User based off of the user who has sent the most
-   * messages
-   */
-   String getMostActiveUser(){
-     Map <User, Integer> usersToMessages = new HashMap <User, Integer>();
-     //go through all conversations & gets number of messages &
-     //keeps track of all users number of messages
-     //make helper function to check length of content in messages
-     //to get wordiest user
-     String mostActive = "";
-     int maxCount = 0;
-     for (int i = 0; i < conversationStore.getAllConversations().size(); i++){
-       //get users & keep hashmap??
+  /** Gets the Most Active User based off of the user who has sent the most messages */
+  String getMostActiveUser() {
+    Map<User, Integer> usersToMessages = new HashMap<User, Integer>();
+    // go through all conversations & gets number of messages &
+    // keeps track of all users number of messages
+    // make helper function to check length of content in messages
+    // to get wordiest user
+    String mostActive = "";
+    int maxCount = 0;
+    for (int i = 0; i < conversationStore.getAllConversations().size(); i++) {
+      // get users & keep hashmap??
       Conversation currConvo = conversationStore.getAllConversations().get(i);
       List<Message> messagesinCurrConvo = messageStore.getMessagesInConversation(currConvo.getId());
-      for (int j = 0; j < messagesinCurrConvo.size(); j++){
+      for (int j = 0; j < messagesinCurrConvo.size(); j++) {
         Message oneMessage = messagesinCurrConvo.get(j);
-        //get author &
-        //User getUser(UUID id) {
+        // get author &
+        // User getUser(UUID id) {
         UUID messageAuthorID = oneMessage.getAuthorId();
         User messageAuthor = userStore.getUser(messageAuthorID);
-        if (usersToMessages.containsKey(messageAuthor)){
-            int prevValue = usersToMessages.get(messageAuthor);
-            usersToMessages.put(messageAuthor, prevValue+1);
-            if (prevValue+1>maxCount){
-              maxCount = prevValue+1;
-              mostActive = messageAuthor.getName();
-            }
-        } else{
+        if (usersToMessages.containsKey(messageAuthor)) {
+          int prevValue = usersToMessages.get(messageAuthor);
+          usersToMessages.put(messageAuthor, prevValue + 1);
+          if (prevValue + 1 > maxCount) {
+            maxCount = prevValue + 1;
+            mostActive = messageAuthor.getName();
+          }
+        } else {
           usersToMessages.put(messageAuthor, 1);
-          //assign and check most active user throughout
-          if (maxCount<1){
+          // assign and check most active user throughout
+          if (maxCount < 1) {
             maxCount = 1;
             mostActive = messageAuthor.getName();
           }
         }
       }
-     }
-     return mostActive;
-   }
+    }
+    return mostActive;
+  }
 
   /**
    * This function fires when a user requests the /testdata URL. It simply forwards the request to
@@ -128,7 +123,7 @@ public class AdminStats extends HttpServlet {
     int numConversations = conversationStore.getNumConversations();
     int numMessages = messageStore.getNumMessages();
     String newestUser = "";
-    if (userStore.getLastUser()!=null){
+    if (userStore.getLastUser() != null) {
       newestUser = userStore.getLastUser().getName();
     }
     String mostActiveUser = getMostActiveUser();
@@ -140,35 +135,34 @@ public class AdminStats extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 
-
   /*Takes out capital words letters */
-  boolean checkIfAllCapital(String firstWord){
-    for(int i = 0; i < firstWord.length(); i++){
-       if(!Character.isLetter(firstWord.charAt(i)) || !Character.isUpperCase(firstWord.charAt(i))){
-          return false;
+  boolean checkIfAllCapital(String firstWord) {
+    for (int i = 0; i < firstWord.length(); i++) {
+      if (!Character.isLetter(firstWord.charAt(i)) || !Character.isUpperCase(firstWord.charAt(i))) {
+        return false;
       }
     }
-    if (firstWord.length()<2) return false;
-    //Then is a title/scene/character/
+    if (firstWord.length() < 2) return false;
+    // Then is a title/scene/character/
     return true;
   }
 
-  //puts user into PersistentDataStore & creates new user if needed as well as
-  //updates currentUser
-  void appendUser(String userName){
-    if (!userStore.isUserRegistered(userName)){
-       User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
-       userStore.addUser(user);
-       users.add(user);
-       currentUser = user;
-     } else{
-       User foundUser = userStore.getUser(userName);
-       currentUser = foundUser;
-     }
+  // puts user into PersistentDataStore & creates new user if needed as well as
+  // updates currentUser
+  void appendUser(String userName) {
+    if (!userStore.isUserRegistered(userName)) {
+      User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
+      userStore.addUser(user);
+      users.add(user);
+      currentUser = user;
+    } else {
+        User foundUser = userStore.getUser(userName);
+        currentUser = foundUser;
+    }
   }
 
-  //Puts a message into PersistentDataStore
-  void appendMessage(String line){
+  // Puts a message into PersistentDataStore
+  void appendMessage(String line) {
     Conversation conversation = currentConversation;
     User author = currentUser;
     String content = line;
@@ -179,128 +173,160 @@ public class AdminStats extends HttpServlet {
     messages.add(message);
   }
 
-//Saves the character's message to the character before switching to a new user
-  void changeToNewUser(String charactersWord, String newUser){
-    if (currentUser!=null){
-      if (!charactersWord.equals("")){
+  // Saves the character's message to the character before switching to a new user
+  void changeToNewUser(String charactersWord, String newUser) {
+    if (currentUser != null) {
+      if (!charactersWord.equals("")) {
         appendMessage(charactersWord);
       }
-
-       appendUser(newUser);
-    } else{
+      appendUser(newUser);
+    } else {
       appendUser(newUser);
     }
   }
 
   /**
-   * TODO: read from file; store in database; somehow send back to doGet method? or
-   *      create a function that clears previous database & loads only file data
-   * This function fires when a user submits the testdata form. It loads file data if the user
-   * clicked the confirm button.
+   * TODO: read from file; store in database; somehow send back to doGet method? or create a
+   * function that clears previous database & loads only file data This function fires when a user
+   * submits the testdata form. It loads file data if the user clicked the confirm button.
    */
-   void readFile(BufferedReader bufferedReader) throws Exception{
-     String line = null;
-     boolean addToLine = false;
-     String charactersWord = "";
-     String savedLine = null;
-     // use the readLine method of the BufferedReader to read one line at a time.
-     // the readLine method returns null when there is nothing else to read.
-     while ((line = bufferedReader.readLine()) != null)
-     {
+  void readFile(BufferedReader bufferedReader) throws Exception {
+    //TODO: if NARRATOR Interrupts use last user to continue text conversation if no user
+    String line = null;
+    boolean addToLine = false;
+    String charactersWord = "";
+    String savedLine = null;
+    // use the readLine method of the BufferedReader to read one line at a time.
+    // the readLine method returns null when there is nothing else to read.
+    while ((line = bufferedReader.readLine()) != null) {
       savedLine = line;
-       boolean addNewUser = false;
-       //TODO: conversation @ new SCENE
-       String firstWord = line;
-       if (firstWord.contains("ACT")){
-         firstWord = "ACT";
-       }
-       else if(firstWord.contains(" ")){
-         firstWord= firstWord.substring(0, firstWord.indexOf(" "));
-       }
-       if (checkIfAllCapital(firstWord)){
-
-           addToLine = true;
-           String userName = line;
-           switch(firstWord){
-             case "ACT":
-             //new CONVERSATION
-             {
-                changeToNewUser(charactersWord,"NARRATOR");
-                charactersWord="";
-                //appendUser("NARRATOR");
-                User user = userStore.getUser("NARRATOR");
-                String title = line;
-                Conversation conversation =
+      boolean addNewUser = false;
+      // TODO: conversation @ new SCENE
+      String firstWord = line;
+      if (firstWord.contains("ACT")) {
+        firstWord = "ACT";
+      } else if (firstWord.contains(" ")) {
+        firstWord = firstWord.substring(0, firstWord.indexOf(" "));
+      }
+      if (checkIfAllCapital(firstWord)) {
+        addToLine = true;
+        String userName = line;
+        switch (firstWord) {
+          case "ACT":
+            // new CONVERSATION
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+              charactersWord = "";
+              User user = userStore.getUser("NARRATOR");
+              String title = currentTitle+"_"+ line;
+              Conversation conversation =
                   new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
-                conversationStore.addConversation(conversation);
-                conversations.add(conversation);
-                currentConversation = conversation;//secondtime may not have?
-                //charactersWord = line
-              }
-                break;
-             case "SCENE":
-                { changeToNewUser(charactersWord, "NARRATOR");
-                  charactersWord = line;
-              }
-             break;
-             default:
-              { addNewUser = true;}
-             break;
-           }
-           if (addNewUser){
-             changeToNewUser(charactersWord, userName);
-             charactersWord = "";
-           }
-       } else{
-          switch (firstWord){
-            case ("**Exit"):
+              conversationStore.addConversation(conversation);
+              conversations.add(conversation);
+              currentConversation = conversation; // secondtime may not have?
+            }
+            break;
+          case "SCENE":
             {
               changeToNewUser(charactersWord, "NARRATOR");
               charactersWord = line;
-            }break;
-            case ("Enter"): {
+            }
+            break;
+          default:
+            {
+              addNewUser = true;
+            }
+            break;
+        }
+        if (addNewUser) {
+          changeToNewUser(charactersWord, userName);
+          charactersWord = "";
+        }
+      } else {
+        switch (firstWord) {
+          case ("**Exit"):
+            {
               changeToNewUser(charactersWord, "NARRATOR");
               charactersWord = line;
-            }break;
-            case ("**Exeunt"): {
+            }
+            break;
+          case ("Enter"):
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+              charactersWord = line;
+            }
+            break;
+          case ("**Exeunt"):
+            {
+              changeToNewUser(charactersWord, "NARRATOR");
+              charactersWord = line;
+            }
+            break;
+            case ("Re-enter"):
+              {
                 changeToNewUser(charactersWord, "NARRATOR");
                 charactersWord = line;
-            }break;
-            default:
-              { //System.out.println("in default");
-              //System.out.println(line);
-                charactersWord= charactersWord + " " + line;}
+              }
               break;
+          default:
+            { // append user's message
+              charactersWord = charactersWord + " " + line;
+            }
+            break;
         }
-       }
-     }
-     appendMessage(savedLine);
-     // TESTING ARRAY: System.out.println("this is user size: ");
-     // System.out.print(users.size());
-     // for (int i = 0; i < users.size(); i++){
-     //   User currUser = users.get(i);
-     //   System.out.println(currUser.getName());
-     // } //only prints out first time since starts off empty
-     bufferedReader.close();
-   }
-
-
+      }
+    }
+    appendMessage(savedLine);
+    // TESTING ARRAY: System.out.println("this is user size: ");
+    // System.out.print(users.size());
+    // for (int i = 0; i < users.size(); i++){
+    //   User currUser = users.get(i);
+    //   System.out.println(currUser.getName());
+    // } //only prints out first time since starts off empty
+    //bufferedReader.close();
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException{
-
+      throws IOException, ServletException {
+    String selectedValue = request.getParameter("titles");
     String confirmButton = request.getParameter("confirm");
 
     if (confirmButton != null) {
-      try{
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("../../src/main/java/codeu/controller/testing.txt"));
-        readFile(bufferedReader);
-      } catch(Exception e){
+      String specificFile = "";
+      if (selectedValue.equals("romandjul")) {
+        specificFile = "romandjul.txt";
+        currentTitle = "R&J";
+      }
+      if (selectedValue.equals("julcaesar")){
+        specificFile = "julcaesar.txt";
+        currentTitle="JulC";
+      }
+      if (selectedValue.equals("midsumDream")){
+        specificFile = "midsumDream.txt";
+        currentTitle="MidsumDream";
+      }
+      if (selectedValue.equals("tempest")){
+        specificFile = "tempest.txt";
+        currentTitle="Tempest";
+      }
+        System.out.println(selectedValue);
+        try {
+          //TODO: load each file and just have their arrays load up like Default does
+          String findFile = "../../src/main/java/codeu/controller/"+specificFile;
+          BufferedReader bufferedReader =
+              new BufferedReader(
+                  new FileReader(findFile));
+          System.out.println("opened this file");
+          System.out.println(findFile);
+          readFile(bufferedReader);
+          bufferedReader.close();
+        } catch (Exception e) {
 
           e.printStackTrace(System.out);
-        System.out.println("DIDNT OPEN");
-      }
+          System.out.println("DIDNT OPEN");
+        }
+
     }
     response.sendRedirect("/");
   }

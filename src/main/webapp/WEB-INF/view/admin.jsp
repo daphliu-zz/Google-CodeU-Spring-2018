@@ -34,11 +34,15 @@
     <div id="container">
       <h1> Import Data</h1>
       <%-- Allow for user upload data--%>
-      <label for = "file"> Choose file to upload</label>
-      <input name="myFile" type="file">
       <p></p>
       <form action="/adminStats" method="POST">
-      <button type="submit" value="confirm" name="confirm">Submit</button>
+      <select name = "titles">
+          <option value="midsumDream">A Midsummer Night's Dream</option>
+          <option value="romandjul">Romeo And Juliet</option>
+          <option value="julcaesar">Julius Caesar</option>
+          <option value="tempest">Tempest</option>
+      </select>
+      <button type="submit" value="confirm" name="confirm">Confirm</button>
       <%-- TODO: have Submit button reload page to show data for file uploaded--%>
     </div>
 </body>

@@ -149,6 +149,7 @@ Thou villain Capulet,--Hold me not, let me go.
 LADY MONTAGUE
 Thou shalt not stir a foot to seek a foe.
 Enter PRINCE, with Attendants
+
 PRINCE
 Rebellious subjects, enemies to peace,
 Profaners of this neighbour-stained steel,--
@@ -174,6 +175,7 @@ To know our further pleasure in this case,
 To old Free-town, our common judgment-place.
 Once more, on pain of death, all men depart.
 **Exeunt all but MONTAGUE, LADY MONTAGUE, and BENVOLIO
+
 MONTAGUE
 Who set this ancient quarrel new abroach?
 Speak, nephew, were you by when it began?
@@ -802,24 +804,24 @@ Strike, drum.
 **Exeunt
 SCENE V. A hall in Capulet's house.
 Musicians waiting. Enter Servingmen with napkins
-FIRST Servant
+FIRST SERVANT
 Where's Potpan, that he helps not to take away? He
 shift a trencher? he scrape a trencher!
-SECOND Servant
+SECOND SERVANT
 When good manners shall lie all in one or two men's
 hands and they unwashed too, 'tis a foul thing.
-FIRST Servant
+FIRST SERVANT
 Away with the joint-stools, remove the
 court-cupboard, look to the plate. Good thou, save
 me a piece of marchpane; and, as thou lovest me, let
 the porter let in Susan Grindstone and Nell.
 Antony, and Potpan!
-SECOND Servant
+SECOND SERVANT
 Ay, boy, ready.
-FIRST Servant
+FIRST SERVANT
 You are looked for and called for, asked for and
 sought for, in the great chamber.
-SECOND Servant
+SECOND SERVANT
 We cannot be here and there too. Cheerly, boys; be
 brisk awhile, and the longer liver take all.
 Enter CAPULET, with JULIET and others of his house, meeting the Guests and Maskers
@@ -3262,12 +3264,12 @@ So many guests invite as here are writ.
 **Exit FIRST Servant
 
 Sirrah, go hire me twenty cunning cooks.
-SECOND Servant
+SECOND SERVANT
 You shall have none ill, sir; for I'll try if they
 can lick their fingers.
 CAPULET
 How canst thou try them so?
-SECOND Servant
+SECOND SERVANT
 Marry, sir, 'tis an ill cook that cannot lick his
 own fingers: therefore he that cannot lick his
 fingers goes not with me.
@@ -3438,7 +3440,7 @@ Enter three or four Servingmen, with spits, logs, and baskets
 
 Now, fellow,
 What's there?
-FIRST Servant
+FIRST SERVANT
 Things for the cook, sir; but I know not what.
 CAPULET
 Make haste, make haste.
@@ -3446,7 +3448,7 @@ Make haste, make haste.
 
 Sirrah, fetch drier logs:
 Call Peter, he will show thee where they are.
-SECOND Servant
+SECOND SERVANT
 I have a head, sir, that will find out logs,
 And never trouble Peter for the matter.
 **Exit
@@ -3600,48 +3602,48 @@ The heavens do lour upon you for some ill;
 Move them no more by crossing their high will.
 **Exeunt CAPULET, LADY CAPULET, PARIS, and FRIAR LAURENCE
 
-First Musician
+FIRST MUSICIAN
 Faith, we may put up our pipes, and be gone.
 Nurse
 Honest goodfellows, ah, put up, put up;
 For, well you know, this is a pitiful case.
 **Exit
 
-First Musician
+FIRST MUSICIAN
 Ay, by my troth, the case may be amended.
 Enter PETER
 
 PETER
 Musicians, O, musicians, 'Heart's ease, Heart's
 ease:' O, an you will have me live, play 'Heart's ease.'
-First Musician
+FIRST MUSICIAN
 Why 'Heart's ease?'
 PETER
 O, musicians, because my heart itself plays 'My
 heart is full of woe:' O, play me some merry dump,
 to comfort me.
-First Musician
+FIRST MUSICIAN
 Not a dump we; 'tis no time to play now.
 PETER
 You will not, then?
-First Musician
+FIRST MUSICIAN
 No.
 PETER
 I will then give it you soundly.
-First Musician
+FIRST MUSICIAN
 What will you give us?
 PETER
 No money, on my faith, but the gleek;
 I will give you the minstrel.
-First Musician
+FIRST MUSICIAN
 Then I will give you the serving-creature.
 PETER
 Then will I lay the serving-creature's dagger on
 your pate. I will carry no crotchets: I'll re you,
 I'll fa you; do you note me?
-First Musician
+FIRST MUSICIAN
 An you re us and fa us, you note us.
-Second Musician
+SECOND MUSICIAN
 Pray you, put up your dagger, and put out your wit.
 PETER
 Then have at you with my wit! I will dry-beat you
@@ -3656,11 +3658,11 @@ Musician
 Marry, sir, because silver hath a sweet sound.
 PETER
 Pretty! What say you, Hugh Rebeck?
-Second Musician
+SECOND MUSICIAN
 I say 'silver sound,' because musicians sound for silver.
 PETER
 Pretty too! What say you, James Soundpost?
-Third Musician
+THIRD MUSICIAN
 Faith, I know not what to say.
 PETER
 O, I cry you mercy; you are the singer: I will say
@@ -3670,9 +3672,9 @@ because musicians have no gold for sounding:
 With speedy help doth lend redress.'
 **Exit
 
-First Musician
+FIRST MUSICIAN
 What a pestilent knave is this same!
-Second Musician
+SECOND MUSICIAN
 Hang him, Jack! Come, we'll in here; tarry for the
 mourners, and stay dinner.
 **Exeunt
