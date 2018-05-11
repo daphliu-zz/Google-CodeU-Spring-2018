@@ -21,10 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 /** Servlet class responsible for loading test data. */
 public class AdminServlet extends HttpServlet {
 
-  private List<User> users;
-  private List<Conversation> conversations;
-  private List<Message> messages;
-
   /** Store class that gives access to Conversations. */
   private ConversationStore conversationStore;
 
@@ -44,9 +40,6 @@ public class AdminServlet extends HttpServlet {
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
     setUserStore(UserStore.getInstance());
-    users = new ArrayList<>();
-    conversations = new ArrayList<>();
-    messages = new ArrayList<>();
   }
 
   /**
@@ -151,7 +144,6 @@ public class AdminServlet extends HttpServlet {
     if (!userStore.isUserRegistered(userName)) {
       User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
       userStore.addUser(user);
-      users.add(user);
       currentUser = user;
     } else {
       User foundUser = userStore.getUser(userName);
@@ -168,7 +160,6 @@ public class AdminServlet extends HttpServlet {
         new Message(
             UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
     messageStore.addMessage(message);
-    messages.add(message);
   }
 
   /*adds conversation to persistent data store*/
@@ -178,7 +169,6 @@ public class AdminServlet extends HttpServlet {
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
     conversationStore.addConversation(conversation);
-    conversations.add(conversation);
     currentConversation = conversation;
   }
 
