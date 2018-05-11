@@ -10,7 +10,6 @@ async function installDeps() {
     const cache = await caches.open(CACHE_NAME); 
     return cache.addAll([
         "/css/main.css",
-
         "/offline.html", // General error page
         "/?offline", // Homepage
         "/about.jsp?offline", // About
@@ -33,7 +32,6 @@ async function load(request) {
         if (response == null) return findOfflinePage(request);
         else return response;
     }
-
     await storeConversation(request, response); // Conversation is put in try block b/c it updates constantly
     return response;
 }
@@ -70,7 +68,6 @@ async function storeConversation(request, response) {
         cache.put(request, response.clone());
     }
 }
-
 // runs when sw first installs, which is when user first runs page 
 self.addEventListener('install', event => {
     event.waitUntil(installDeps());
