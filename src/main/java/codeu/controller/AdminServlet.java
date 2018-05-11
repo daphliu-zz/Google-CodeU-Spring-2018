@@ -196,34 +196,12 @@ public class AdminServlet extends HttpServlet {
 
   boolean foundWordNarratorDictates(String firstWord, String charactersWord) {
     boolean didFind = true;
-    switch (firstWord) {
-        // these are phrases that the NARRATOR dictates
-      case ("**Exit"):
-        {
+    if (firstWord.equals("**Exit") || firstWord.equals("Enter")  ||
+        firstWord.equals("**Exeunt") || firstWord.equals("Re-enter")){
           changeToNewUser(charactersWord, "NARRATOR");
-        }
-        break;
-      case ("Enter"):
-        {
-          changeToNewUser(charactersWord, "NARRATOR");
-        }
-        break;
-      case ("**Exeunt"):
-        {
-          changeToNewUser(charactersWord, "NARRATOR");
-        }
-        break;
-      case ("Re-enter"):
-        {
-          changeToNewUser(charactersWord, "NARRATOR");
-        }
-        break;
-      default:
-        { // append user's message if character's words continue onto next lines
+        } else{
           didFind = false;
         }
-        break;
-    }
     return didFind;
   }
 
@@ -237,13 +215,13 @@ public class AdminServlet extends HttpServlet {
     String line = null;
     boolean addToLine = false;
     String charactersWord = "";
-    String savedLine = null;
+    String savedLine = "";
     String lastLine = "";
     // use the readLine method of the BufferedReader to read one line at a time.
     // the readLine method returns null when there is nothing else to read.
     while ((line = bufferedReader.readLine()) != null) {
-      savedLine = charactersWord;
       lastLine = line;
+
       boolean addNewUser = false;
       // TODO: conversation @ new SCENE
       String firstWord = line;
@@ -279,15 +257,21 @@ public class AdminServlet extends HttpServlet {
           changeToNewUser(charactersWord, userName);
           charactersWord = "";
         }
+
       } else {
         if (foundWordNarratorDictates(firstWord, charactersWord)) {
           charactersWord = line;
         } else {
           charactersWord = charactersWord + " " + line;
         }
+
       }
+            savedLine = charactersWord;
     }
-    String lastM = savedLine + " " + lastLine;
+    String lastM = savedLine;// + " " + lastLine;
+    // if (savedLine.equals(lastLine)){
+    //   lastM = savedLine;
+    // }
     appendMessage(lastM);
   }
 
@@ -325,7 +309,7 @@ public class AdminServlet extends HttpServlet {
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
       } catch (Exception e) {
-        //  e.printStackTrace(System.out);
+          e.printStackTrace(System.out);
           System.out.println("DIDNT OPEN");
       }
     }
