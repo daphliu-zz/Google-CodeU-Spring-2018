@@ -13,6 +13,7 @@ async function installDeps() {
         "/offline.html", // General error page
         "/?offline", // Homepage
         "/about.jsp?offline", // About
+        // Homepage and About are cached separately b/c the are static 
     ]);
 }
 
@@ -25,14 +26,14 @@ async function load(request) {
     let response;
     try {
         response = await fetch(request);
-    } catch (err) {
+    } catch (err) { 
         // If no internet, return from cache instead
-        const response = await caches.match(request); 
+        const response = await caches.match(request);           // handles conversation and CSS
         // if no matching cache item, return a special response
-        if (response == null) return findOfflinePage(request);
+        if (response == null) return findOfflinePage(request);  // handles About page 
         else return response;
     }
-    await storeConversation(request, response); // Conversation is put in try block b/c it updates constantly
+    await storeConversation(request, response); // Conversation is put outside b/c it updates constantly
     return response;
 }
 
@@ -46,10 +47,10 @@ async function findOfflinePage(request) {
     const url = new URL(request.url);
     switch (url.pathname) {
         case "/":
-        case "/about.jsp":
-            return caches.match(url.pathname + "?offline");
+        case "/about.jsp":                                      
+            return caches.match(url.pathname + "?offline");  //returns the offline version of about "/about.jsp?offline",
         default:
-            return caches.match("/offline.html");
+            return caches.match("/offline.html");            // default displays error page 
     }
 }
 
@@ -64,6 +65,7 @@ async function storeConversation(request, response) {
     const url = new URL(request.url);
 
     if (url.pathname === "/conversations" || url.pathname.startsWith("/chat")) {
+        // conversations is for main conversation page; /chat is for individual chat which has different conversation number
         const cache = await caches.open(CACHE_NAME)
         cache.put(request, response.clone());
     }

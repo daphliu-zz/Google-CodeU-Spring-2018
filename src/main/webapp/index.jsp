@@ -19,8 +19,10 @@
   <title>CodeU Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
   <script>
+    if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
       .then(() => console.log('ServiceWorker registration successful'))
+    }
   </script>
 </head>
 <body>
