@@ -9,7 +9,7 @@ const CACHE_NAME = "codeu-chat"  // codeu-chat is arbitrary name of chat
 async function installDeps() {
     const cache = await caches.open(CACHE_NAME); 
     return cache.addAll([
-        // Homepage and About are cached separately b/c the are static 
+        // Homepage and About are cached separately b/c they are static 
         "/css/main.css",
         "/offline.html",      // General error page
         "/?offline",          // Homepage
