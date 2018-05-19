@@ -30,29 +30,31 @@ function setFunction(method) {
 		currWin.document.execCommand("Underline", false, null);
 		currWin.focus();
 		break;
-	//TODO: resize the img file if too large
+	// TODO: resize the img file if too large
 	case 'InsertIMG':
 		var currWin = document.getElementById('editor').contentWindow;
 		var fl = document.getElementById("btn_file");
 		var file = null;
 		var url = null;
-		var img = new Image;	
+		var img = new Image;
 		var files = fl.files;
-			if(files && files.length > 0){
-				file = files[0];
-			try{
+		if (files && files.length > 0) {
+			file = files[0];
+			try {
 				var reader = new FileReader();
 				reader.onload = function(e) {
-					var url = e.target.result;				            
+					var url = e.target.result;
 					var img = '<img src="' + url + '"/>';
-					currWin.document.execCommand('insertHTML', false, img);	 
+					currWin.document.execCommand('insertHTML', false, img);
+					currWin.focus();
+				}
+				reader.readAsDataURL(file);
+			} catch (e) {
 			}
-			reader.readAsDataURL(file);
-		    }
-			catch(e){}
-			}
+		}
 		break;
-	};
+	}
+	;
 };
 // Onclick to submit the form
 function doSubmitForm() {

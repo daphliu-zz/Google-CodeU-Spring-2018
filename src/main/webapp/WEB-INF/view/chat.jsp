@@ -18,8 +18,8 @@
 <%@ page import="codeu.model.data.Message"%>
 <%@ page import="codeu.model.store.basic.UserStore"%>
 <%
-	Conversation conversation = (Conversation) request.getAttribute("conversation");
-	List<Message> messages = (List<Message>) request.getAttribute("messages");
+  Conversation conversation = (Conversation) request.getAttribute("conversation");
+			List<Message> messages = (List<Message>) request.getAttribute("messages");
 %>
 
 <!DOCTYPE html>
@@ -51,16 +51,16 @@
 	<nav>
 		<a id="navTitle" href="/">CodeU Chat App</a> <a href="/conversations">Conversations</a>
 		<%
-			if (request.getSession().getAttribute("user") != null) {
+		  if (request.getSession().getAttribute("user") != null) {
 		%>
 		<a>Hello <%=request.getSession().getAttribute("user")%>!
 		</a>
 		<%
-			} else {
+		  } else {
 		%>
 		<a href="/login">Login</a> <a href="/register">Register</a>
 		<%
-			}
+		  }
 		%>
 		<a href="/about.jsp">About</a>
 	</nav>
@@ -73,25 +73,50 @@
 
 		<hr />
 
-		<div id="chat">
-			<ul>
+		<div class="chat">
+			<div class="msglist" id="words">
+
 				<%
-					for (Message message : messages) {
-						String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+				  for (Message message : messages) {
+								String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
 				%>
-				<li><strong><%=author%>:</strong> <%=message.getContent()%></li>
+
 				<%
-					}
+				  if (!author.equals(request.getSession().getAttribute("user"))) {
 				%>
-			</ul>
+
+				<div class="notusertalk">
+					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
+					</span>
+				</div>
+
+				<%
+				  } else {
+				%>
+
+				<div class="usertalk">
+					<span> <strong>You:</strong> <%=message.getContent()%>
+					</span>
+				</div>
+
+				<%
+				  }
+				%>
+
+				<%
+				  }
+				%>
+			</div>
+
 		</div>
 
 		<hr />
-		<input type="file" id="btn_file" accept="image/*" onchange="setFunction('InsertIMG')" style="display:none">
-		<img src="" id="output">
+		<input type="file" id="btn_file" accept="image/*"
+			onchange="setFunction('InsertIMG')" style="display: none"> <img
+			src="" id="output">
 		<script src="http://localhost:8080/js/TextEditor.js"></script>
 		<%
-			if (request.getSession().getAttribute("user") != null) {
+		  if (request.getSession().getAttribute("user") != null) {
 		%>
 		<form action="/chat/<%=conversation.getTitle()%>" id="form"
 			method="POST">
@@ -109,15 +134,19 @@
 				U
 				</button>
 				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="btn_file.click()"/>P
+					style="font-weight: bold" onclick="btn_file.click()" />
+				P
 				</button>
 			</p>
 			<p>
-				<iframe id="editor" width="800px" height="60px"
+				<iframe id="editor" width="700px" height="60px"
 					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
+
+				<input type="hidden" id="inHTML" name="message" />
+				<button type="button" class="btn" value="Send"
+					onclick="doSubmitForm()">Submit</button>
+				<br />
 			</p>
-			<br /> <input type="hidden" id="inHTML" name="message" />
-			<button type="button" value="Send" onclick="doSubmitForm()">Submit</button>
 		</form>
 
 		<script>
