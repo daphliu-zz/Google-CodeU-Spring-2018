@@ -63,7 +63,5 @@ public class RegisterServlet extends HttpServlet {
     userStore.addUser(user);
 
     response.sendRedirect("/login");
-    
-    
   }
 }

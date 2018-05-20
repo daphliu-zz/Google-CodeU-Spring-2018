@@ -146,7 +146,7 @@ public class ChatServletTest {
     Mockito.verify(mockMessageStore, Mockito.never()).addMessage(Mockito.any(Message.class));
     Mockito.verify(mockResponse).sendRedirect("/conversations");
   }
-  /*
+
   @Test
   public void testDoPost_StoresMessage() throws IOException, ServletException {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
@@ -160,17 +160,18 @@ public class ChatServletTest {
     Mockito.when(mockConversationStore.getConversationWithTitle("test_conversation"))
         .thenReturn(fakeConversation);
 
-    Mockito.when(mockRequest.getParameter("content")).thenReturn("Test message.");
+    Mockito.when(mockRequest.getParameter("message")).thenReturn("Test message.");
 
     chatServlet.doPost(mockRequest, mockResponse);
 
     ArgumentCaptor<Message> messageArgumentCaptor = ArgumentCaptor.forClass(Message.class);
     Mockito.verify(mockMessageStore).addMessage(messageArgumentCaptor.capture());
+    System.out.println(messageArgumentCaptor.getValue().getContent());
     Assert.assertEquals("Test message.", messageArgumentCaptor.getValue().getContent());
-
+   
     Mockito.verify(mockResponse).sendRedirect("/chat/test_conversation");
   }
-  */
+
 
   /*
   @Test

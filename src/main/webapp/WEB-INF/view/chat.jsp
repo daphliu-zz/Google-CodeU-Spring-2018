@@ -86,8 +86,10 @@
 				%>
 
 				<div class="notusertalk">
+
 					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
 					</span>
+					
 				</div>
 
 				<%
@@ -132,10 +134,6 @@
 				<button class="editor-button" type="button" id="bBtn"
 					style="font-weight: bold" onclick="setFunction('Underline');" />
 				U
-				</button>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="btn_file.click()" />
-				P
 				</button>
 			</p>
 			<p>
