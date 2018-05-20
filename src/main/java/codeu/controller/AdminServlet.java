@@ -304,7 +304,6 @@ public class AdminServlet extends HttpServlet {
       }
       System.out.println(selectedValue);
       try {
-        // A thought: load each file and just have their arrays load up like Default does
         String findFile = "../../src/main/java/codeu/controller/" + specificFile;
         BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
         System.out.println("opened this file");
