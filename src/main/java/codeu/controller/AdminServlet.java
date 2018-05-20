@@ -35,6 +35,7 @@ public class AdminServlet extends HttpServlet {
   private Conversation currentConversation = null;
   private User currentUser = null;
   private String currentTitle = "";
+  private static final String NARRATOR = "NARRATOR";
   /** Set up state for handling the load test data request. */
   @Override
   public void init() throws ServletException {
@@ -86,10 +87,9 @@ public class AdminServlet extends HttpServlet {
         UUID messageAuthorID = oneMessage.getAuthorId();
         User messageAuthor  = null;
         try {
-          messageAuthor = PersistentStorageAgent.getInstance().getUserFromPDatabase(messageAuthorID.toString());
-} catch(Exception e){
-
-}
+          messageAuthor = userStore.getUserFromPD(messageAuthorID.toString());
+        } catch(Exception e){
+        }
         if (usersToMessages.containsKey(messageAuthor)) {
           int prevValue = usersToMessages.get(messageAuthor);
           usersToMessages.put(messageAuthor, prevValue + 1);
@@ -151,7 +151,7 @@ public class AdminServlet extends HttpServlet {
     String userNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User foundUser = null;
     try{ //see if user is in database
-      foundUser = PersistentStorageAgent.getInstance().getUserFromPDatabase(userNameUUID);
+      foundUser = userStore.getUserFromPD(userNameUUID);
       currentUser = foundUser;
     } catch(Exception e) { //user is not in database
       User user = new User(UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
@@ -173,11 +173,11 @@ public class AdminServlet extends HttpServlet {
 
   /*adds conversation to persistent data store*/
   void appendConversation(String line) {
-    String userName = "NARRATOR";
+    String userName = NARRATOR;
     String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User user = null;
     try {
-       user= PersistentStorageAgent.getInstance().getUserFromPDatabase(narratorNameUUID);
+       user= userStore.getUserFromPD(narratorNameUUID);
     } catch (Exception e){
 
     }
@@ -204,7 +204,7 @@ public class AdminServlet extends HttpServlet {
     boolean didFind = true;
     if (firstWord.equals("**Exit") || firstWord.equals("Enter")  ||
         firstWord.equals("**Exeunt") || firstWord.equals("Re-enter")){
-          changeToNewUser(charactersWord, "NARRATOR");
+          changeToNewUser(charactersWord, NARRATOR);
         } else{
           didFind = false;
         }
@@ -242,14 +242,14 @@ public class AdminServlet extends HttpServlet {
         switch (firstWord) {
           case "ACT": // new CONVERSATION
             {
-              changeToNewUser(charactersWord, "NARRATOR");
+              changeToNewUser(charactersWord, NARRATOR);
               charactersWord = "";
               appendConversation(line);
             }
             break;
           case "SCENE":
             {
-              changeToNewUser(charactersWord, "NARRATOR");
+              changeToNewUser(charactersWord, NARRATOR);
               charactersWord = line;
             }
             break;
