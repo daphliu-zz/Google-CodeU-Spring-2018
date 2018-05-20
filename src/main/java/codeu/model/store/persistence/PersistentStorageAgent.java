@@ -19,7 +19,10 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
-
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
+import java.util.UUID;
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
  * interactions with Google App Engine's Datastore service. Currently this class simply passes
@@ -69,6 +72,10 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadUsers();
   }
 
+
+  public User getUserFromPDatabase(String userN) throws EntityNotFoundException{
+    return persistentDataStore.getUserFromPDatabase(userN);
+  }
   /**
    * Retrieve all Conversation objects from the Datastore service. The returned list may be empty.
    *

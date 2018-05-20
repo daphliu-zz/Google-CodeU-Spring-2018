@@ -21,6 +21,9 @@ import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Text;
@@ -79,6 +82,18 @@ public class PersistentDataStore {
 
     return users;
   }
+
+/*Retrieves a User Object given User UUID as string*/
+  public User getUserFromPDatabase(String userN) throws EntityNotFoundException{
+    Key key = KeyFactory.createKey("chat-users", userN);
+    Entity entity = datastore.get(key);
+    UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+    String userName = (String) entity.getProperty("username");
+    String password = (String) entity.getProperty("password");
+    Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+    User user = new User(uuid, userName, password, creationTime);
+    return user;
+}
 
   /**ß
    * Loads all Conversation objects from the Datastore service and returns them in a List.
@@ -149,7 +164,7 @@ public class PersistentDataStore {
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users");
+    Entity userEntity = new Entity("chat-users", user.getId().toString()); //setting Key to be userName
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());

@@ -17,6 +17,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import codeu.model.store.persistence.PersistentStorageAgent;
+
 
 /** Servlet class responsible for loading test data. */
 public class AdminServlet extends HttpServlet {
@@ -82,7 +84,12 @@ public class AdminServlet extends HttpServlet {
       for (int j = 0; j < messagesinCurrConvo.size(); j++) {
         Message oneMessage = messagesinCurrConvo.get(j);
         UUID messageAuthorID = oneMessage.getAuthorId();
-        User messageAuthor = userStore.getUser(messageAuthorID);
+        User messageAuthor  = null;
+        try {
+          messageAuthor = PersistentStorageAgent.getInstance().getUserFromPDatabase(messageAuthorID.toString());
+} catch(Exception e){
+
+}
         if (usersToMessages.containsKey(messageAuthor)) {
           int prevValue = usersToMessages.get(messageAuthor);
           usersToMessages.put(messageAuthor, prevValue + 1);
@@ -141,13 +148,15 @@ public class AdminServlet extends HttpServlet {
   /*puts user into PersistentDataStore & creates new user if needed as well as
   updates currentUser*/
   void appendUser(String userName) {
-    if (!userStore.isUserRegistered(userName)) {
-      User user = new User(UUID.randomUUID(), userName, "password", Instant.now());
+    String userNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
+    User foundUser = null;
+    try{ //see if user is in database
+      foundUser = PersistentStorageAgent.getInstance().getUserFromPDatabase(userNameUUID);
+      currentUser = foundUser;
+    } catch(Exception e) { //user is not in database
+      User user = new User(UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
       userStore.addUser(user);
       currentUser = user;
-    } else {
-      User foundUser = userStore.getUser(userName);
-      currentUser = foundUser;
     }
   }
 
@@ -164,7 +173,14 @@ public class AdminServlet extends HttpServlet {
 
   /*adds conversation to persistent data store*/
   void appendConversation(String line) {
-    User user = userStore.getUser("NARRATOR");
+    String userName = "NARRATOR";
+    String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
+    User user = null;
+    try {
+       user= PersistentStorageAgent.getInstance().getUserFromPDatabase(narratorNameUUID);
+    } catch (Exception e){
+
+    }
     String title = currentTitle + "_" + line;
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
