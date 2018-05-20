@@ -10,15 +10,12 @@ import java.io.*;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import codeu.model.store.persistence.PersistentStorageAgent;
-
 
 /** Servlet class responsible for loading test data. */
 public class AdminServlet extends HttpServlet {
@@ -85,10 +82,10 @@ public class AdminServlet extends HttpServlet {
       for (int j = 0; j < messagesinCurrConvo.size(); j++) {
         Message oneMessage = messagesinCurrConvo.get(j);
         UUID messageAuthorID = oneMessage.getAuthorId();
-        User messageAuthor  = null;
+        User messageAuthor = null;
         try {
           messageAuthor = userStore.getUserFromPD(messageAuthorID.toString());
-        } catch(Exception e){
+        } catch (Exception e) {
         }
         if (usersToMessages.containsKey(messageAuthor)) {
           int prevValue = usersToMessages.get(messageAuthor);
@@ -150,11 +147,13 @@ public class AdminServlet extends HttpServlet {
   void appendUser(String userName) {
     String userNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User foundUser = null;
-    try{ //see if user is in database
+    try { // see if user is in database
       foundUser = userStore.getUserFromPD(userNameUUID);
       currentUser = foundUser;
-    } catch(Exception e) { //user is not in database
-      User user = new User(UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
+    } catch (Exception e) { // user is not in database
+      User user =
+          new User(
+              UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
       userStore.addUser(user);
       currentUser = user;
     }
@@ -177,9 +176,10 @@ public class AdminServlet extends HttpServlet {
     String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User user = null;
     try {
-       user= userStore.getUserFromPD(narratorNameUUID);
-    } catch (Exception e){
-
+      user = userStore.getUserFromPD(narratorNameUUID);
+    } catch (Exception e) {
+      //make new Narrator user if doesn't exist
+      appendUser(userName);
     }
     String title = currentTitle + "_" + line;
     Conversation conversation =
@@ -202,12 +202,14 @@ public class AdminServlet extends HttpServlet {
 
   boolean foundWordNarratorDictates(String firstWord, String charactersWord) {
     boolean didFind = true;
-    if (firstWord.equals("**Exit") || firstWord.equals("Enter")  ||
-        firstWord.equals("**Exeunt") || firstWord.equals("Re-enter")){
-          changeToNewUser(charactersWord, NARRATOR);
-        } else{
-          didFind = false;
-        }
+    if (firstWord.equals("**Exit")
+        || firstWord.equals("Enter")
+        || firstWord.equals("**Exeunt")
+        || firstWord.equals("Re-enter")) {
+      changeToNewUser(charactersWord, NARRATOR);
+    } else {
+      didFind = false;
+    }
     return didFind;
   }
 
@@ -229,7 +231,6 @@ public class AdminServlet extends HttpServlet {
       lastLine = line;
 
       boolean addNewUser = false;
-      // TODO: conversation @ new SCENE
       String firstWord = line;
       if (firstWord.contains("ACT")) {
         firstWord = "ACT";
@@ -270,14 +271,10 @@ public class AdminServlet extends HttpServlet {
         } else {
           charactersWord = charactersWord + " " + line;
         }
-
       }
-            savedLine = charactersWord;
+      savedLine = charactersWord;
     }
-    String lastM = savedLine;// + " " + lastLine;
-    // if (savedLine.equals(lastLine)){
-    //   lastM = savedLine;
-    // }
+    String lastM = savedLine;
     appendMessage(lastM);
   }
 
@@ -315,8 +312,8 @@ public class AdminServlet extends HttpServlet {
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
       } catch (Exception e) {
-          e.printStackTrace(System.out);
-          System.out.println("DIDNT OPEN");
+        e.printStackTrace(System.out);
+        System.out.println("DIDNT OPEN");
       }
     }
     response.sendRedirect("/");

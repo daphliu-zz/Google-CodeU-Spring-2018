@@ -164,7 +164,7 @@ public class PersistentDataStore {
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users", user.getId().toString()); //setting Key to be userName
+    Entity userEntity = new Entity("chat-users", user.getId().toString()); //setting Key to be UUID 
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());

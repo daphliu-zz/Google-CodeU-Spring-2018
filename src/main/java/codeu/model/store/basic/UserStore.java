@@ -16,11 +16,12 @@ package codeu.model.store.basic;
 
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.*;
-import com.google.appengine.api.datastore.EntityNotFoundException;
+
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
  * saves to PersistentStorageAgent. It's a singleton so all servlet classes can access the same
@@ -84,7 +85,11 @@ public class UserStore {
     }
     return null;
   }
-  public User getUserFromPD(String userUUID) throws EntityNotFoundException{
+
+  /*
+  * Gets user directly from persistent database
+  */
+  public User getUserFromPD(String userUUID) throws EntityNotFoundException {
     return persistentStorageAgent.getUserFromPDatabase(userUUID);
   }
 
@@ -126,20 +131,19 @@ public class UserStore {
     this.users = users;
   }
 
-  /**Returns the number of users in UserStore*/
-  public int numUsers(){
-    if (users!=null){
+  /** Returns the number of users in UserStore */
+  public int numUsers() {
+    if (users != null) {
       return users.size();
     }
     return 0;
   }
 
-  /**Returns the last user added*/
-  public User getLastUser(){
-    if (!users.isEmpty()){
-      return users.get(users.size()-1);
+  /** Returns the last user added */
+  public User getLastUser() {
+    if (!users.isEmpty()) {
+      return users.get(users.size() - 1);
     }
     return null;
   }
-
 }
