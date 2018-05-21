@@ -17,12 +17,11 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -51,30 +50,30 @@ public class PersistentDataStore {
   }
 
   /*Retrieves a User Object given User UUID as string*/
-    public User getUserFromPDatabase(String userN) throws EntityNotFoundException{
-      Key key = KeyFactory.createKey("chat-users", userN);
-      Entity entity = datastore.get(key);
-      UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
-      String userName = (String) entity.getProperty("username");
-      String password = (String) entity.getProperty("password");
-      Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-      User user = new User(uuid, userName, password, creationTime);
-      return user;
+  public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
+    Key key = KeyFactory.createKey("chat-users", userN);
+    Entity entity = datastore.get(key);
+    UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+    String userName = (String) entity.getProperty("username");
+    String password = (String) entity.getProperty("password");
+    Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+    User user = new User(uuid, userName, password, creationTime);
+    return user;
   }
 
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
-   //& sorts users in retrieval of database by creation time to make getting
-   // latest user added retrieval simpler
+    // & sorts users in retrieval of database by creation time to make getting
+    // latest user added retrieval simpler
     Query query = new Query("chat-users").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -97,11 +96,11 @@ public class PersistentDataStore {
     return users;
   }
 
-  /**ß
+  /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
@@ -135,16 +134,16 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    //& sorts messages in database by creation time to display the flow of the
-    //messages in the order that makes sense to the user
+    // & sorts messages in database by creation time to display the flow of the
+    // messages in the order that makes sense to the user
     Query query = new Query("chat-messages").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -154,7 +153,7 @@ public class PersistentDataStore {
         UUID conversationUuid = UUID.fromString((String) entity.getProperty("conv_uuid"));
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String content = ((Text)entity.getProperty("content")).getValue();
+        String content = ((Text) entity.getProperty("content")).getValue();
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
@@ -170,7 +169,7 @@ public class PersistentDataStore {
 
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users", user.getId().toString()); //setting Key to be UUID
+    Entity userEntity = new Entity("chat-users", user.getId().toString()); // setting Key to be UUID
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getPassword());
