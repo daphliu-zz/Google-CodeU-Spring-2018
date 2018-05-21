@@ -76,7 +76,7 @@ public class AdminServlet extends HttpServlet {
     String mostActive = "";
     int maxCount = 0;
     for (int i = 0; i < conversationStore.getAllConversations().size(); i++) {
-      // get users & keep hashmap??
+      // get users & updates hashmap with messages sent by that specific user
       Conversation currConvo = conversationStore.getAllConversations().get(i);
       List<Message> messagesinCurrConvo = messageStore.getMessagesInConversation(currConvo.getId());
       for (int j = 0; j < messagesinCurrConvo.size(); j++) {
@@ -214,12 +214,9 @@ public class AdminServlet extends HttpServlet {
   }
 
   /**
-   * read from file; store in database; somehow send back to doGet method? or create a function that
-   * clears previous database & loads only file data This function fires when a user submits the
-   * testdata form. It loads file data if the user clicked the confirm button.
+   * read from file & parses text to store in database
    */
   void readFile(BufferedReader bufferedReader) throws Exception {
-    // TODO: if NARRATOR Interrupts use last user to continue text conversation if no user
     String line = null;
     boolean addToLine = false;
     String charactersWord = "";
@@ -278,6 +275,10 @@ public class AdminServlet extends HttpServlet {
     appendMessage(lastM);
   }
 
+/*
+* Displays new messages from user of a selected text file & updates stats to
+* include the new messages
+*/
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -302,17 +303,12 @@ public class AdminServlet extends HttpServlet {
         specificFile = "tempest.txt";
         currentTitle = "Tempest";
       }
-      System.out.println(selectedValue);
       try {
         String findFile = "../../src/main/java/codeu/controller/" + specificFile;
         BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
-        System.out.println("opened this file");
-        System.out.println(findFile);
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
       } catch (Exception e) {
-        e.printStackTrace(System.out);
-        System.out.println("DIDNT OPEN");
       }
     }
     response.sendRedirect("/");
