@@ -17,7 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
-import codeu.model.store.persistence.PersistentDataStore;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.List;
 
 /**
@@ -68,7 +68,12 @@ public class PersistentStorageAgent {
   public List<User> loadUsers() throws PersistentDataStoreException {
     return persistentDataStore.loadUsers();
   }
-
+  /*
+  * Retrieves a User Object given userUUID from Datastore
+  */
+  public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
+    return persistentDataStore.getUserFromPDatabase(userN);
+  }
   /**
    * Retrieve all Conversation objects from the Datastore service. The returned list may be empty.
    *
