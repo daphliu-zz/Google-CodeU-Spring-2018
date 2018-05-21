@@ -222,7 +222,7 @@ public class AdminServlet extends HttpServlet {
   /**
    * read from file & parses text to store in database
    */
-  void readFile(BufferedReader bufferedReader) throws Exception {
+  void readFile(BufferedReader bufferedReader) throws IOException {
     String line = null;
     boolean addToLine = false;
     String charactersWord = "";
@@ -306,10 +306,9 @@ public class AdminServlet extends HttpServlet {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
-      } catch (Exception e) {
+      } catch (IOException e) {
         //error
       }
-
   }
 
   /**
@@ -361,7 +360,6 @@ public class AdminServlet extends HttpServlet {
       response.sendRedirect("/");
       return;
     }
-
     try {
       // If they pressed the button to change admin status
       if (changeAdminStatusButton != null) {
@@ -369,13 +367,13 @@ public class AdminServlet extends HttpServlet {
       // If they pressed the confirm button in the title select form
       } else if (confirmButton != null) {
         postConfirmTitle(request, response);
+        response.sendRedirect("/adminStats");
         return;
       }
     } catch (PersistentDataStoreException e) {
       request.setAttribute("error", "Internal error");
     }
-
-    // loadStats(request);
+    loadStats(request);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response); 
   }
 }
