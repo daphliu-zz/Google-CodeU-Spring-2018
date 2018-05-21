@@ -25,6 +25,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Text;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,18 +49,33 @@ public class PersistentDataStore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  /*Retrieves a User Object given User UUID as string*/
+  public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
+    Key key = KeyFactory.createKey("chat-users", userN);
+    Entity entity = datastore.get(key);
+    UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+    String userName = (String) entity.getProperty("username");
+    boolean is_admin = (boolean) entity.getProperty("is_admin");
+    String password = (String) entity.getProperty("password");
+    Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+    User user = new User(uuid, userName, password, creationTime, is_admin);
+    return user;
+  }
+
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
-    Query query = new Query("chat-users");
+    // & sorts users in retrieval of database by creation time to make getting
+    // latest user added retrieval simpler
+    Query query = new Query("chat-users").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -85,15 +101,17 @@ public class PersistentDataStore {
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    Query query = new Query("chat-conversations");
+    // & sorts conversations in database by creation time to have conversations
+    // display in order created in order to make sense to the user
+    Query query = new Query("chat-conversations").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -118,15 +136,17 @@ public class PersistentDataStore {
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
-   * @throws PersistentDataStoreException if an error was detected during the load from the
-   *     Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
+   *     during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    Query query = new Query("chat-messages");
+    // & sorts messages in database by creation time to display the flow of the
+    // messages in the order that makes sense to the user
+    Query query = new Query("chat-messages").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
     for (Entity entity : results.asIterable()) {
@@ -135,7 +155,7 @@ public class PersistentDataStore {
         UUID conversationUuid = UUID.fromString((String) entity.getProperty("conv_uuid"));
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String content = (String) entity.getProperty("content");
+        String content = ((Text) entity.getProperty("content")).getValue();
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
@@ -179,7 +199,7 @@ public class PersistentDataStore {
     messageEntity.setProperty("uuid", message.getId().toString());
     messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
-    messageEntity.setProperty("content", message.getContent());
+    messageEntity.setProperty("content", new Text(message.getContent()));
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
   }

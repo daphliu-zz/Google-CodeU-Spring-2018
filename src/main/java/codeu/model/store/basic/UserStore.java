@@ -86,6 +86,13 @@ public class UserStore {
     return null;
   }
 
+  /*
+  * Gets user directly from persistent database
+  */
+  public User getUserFromPD(String userUUID) throws EntityNotFoundException {
+    return persistentStorageAgent.getUserFromPDatabase(userUUID);
+  }
+
   /**
    * Access the User object with the given UUID.
    *
