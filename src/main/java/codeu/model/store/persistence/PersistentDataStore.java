@@ -61,6 +61,7 @@ public class PersistentDataStore {
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
+   //& sorts users in retrieval of database by creation time
     Query query = new Query("chat-users").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -106,6 +107,7 @@ public class PersistentDataStore {
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
+    // & sorts conversations in database by creation time
     Query query = new Query("chat-conversations").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -139,6 +141,7 @@ public class PersistentDataStore {
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
+    //& sorts messages in database by creation time
     Query query = new Query("chat-messages").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
