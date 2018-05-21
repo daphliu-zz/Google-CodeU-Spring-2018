@@ -50,6 +50,18 @@ public class PersistentDataStore {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
+  /*Retrieves a User Object given User UUID as string*/
+    public User getUserFromPDatabase(String userN) throws EntityNotFoundException{
+      Key key = KeyFactory.createKey("chat-users", userN);
+      Entity entity = datastore.get(key);
+      UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+      String userName = (String) entity.getProperty("username");
+      String password = (String) entity.getProperty("password");
+      Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+      User user = new User(uuid, userName, password, creationTime);
+      return user;
+  }
+
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
@@ -61,7 +73,8 @@ public class PersistentDataStore {
     List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
-   //& sorts users in retrieval of database by creation time
+   //& sorts users in retrieval of database by creation time to make getting
+   // latest user added retrieval simpler
     Query query = new Query("chat-users").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -84,18 +97,6 @@ public class PersistentDataStore {
     return users;
   }
 
-/*Retrieves a User Object given User UUID as string*/
-  public User getUserFromPDatabase(String userN) throws EntityNotFoundException{
-    Key key = KeyFactory.createKey("chat-users", userN);
-    Entity entity = datastore.get(key);
-    UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
-    String userName = (String) entity.getProperty("username");
-    String password = (String) entity.getProperty("password");
-    Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    User user = new User(uuid, userName, password, creationTime);
-    return user;
-}
-
   /**ß
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
@@ -107,7 +108,8 @@ public class PersistentDataStore {
     List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
-    // & sorts conversations in database by creation time
+    // & sorts conversations in database by creation time to have conversations
+    // display in order created in order to make sense to the user
     Query query = new Query("chat-conversations").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
@@ -141,7 +143,8 @@ public class PersistentDataStore {
     List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
-    //& sorts messages in database by creation time
+    //& sorts messages in database by creation time to display the flow of the
+    //messages in the order that makes sense to the user
     Query query = new Query("chat-messages").addSort("creation_time");
     PreparedQuery results = datastore.prepare(query);
 
