@@ -7,7 +7,6 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
-
 import java.io.*;
 import java.io.IOException;
 import java.time.Instant;
@@ -159,7 +158,11 @@ public class AdminServlet extends HttpServlet {
     } catch (Exception e) { // user is not in database
       User user =
           new User(
-              UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now(), false);
+              UUID.nameUUIDFromBytes(userName.getBytes()),
+              userName,
+              "password",
+              Instant.now(),
+              false);
       userStore.addUser(user);
       currentUser = user;
     }
@@ -184,7 +187,7 @@ public class AdminServlet extends HttpServlet {
     try {
       user = userStore.getUserFromPD(narratorNameUUID);
     } catch (Exception e) {
-      //make new Narrator user if doesn't exist
+      // make new Narrator user if doesn't exist
       appendUser(userName);
     }
     String title = currentTitle + "_" + line;
@@ -219,9 +222,7 @@ public class AdminServlet extends HttpServlet {
     return didFind;
   }
 
-  /**
-   * read from file & parses text to store in database
-   */
+  /** read from file & parses text to store in database */
   void readFile(BufferedReader bufferedReader) throws IOException {
     String line = null;
     boolean addToLine = false;
@@ -282,33 +283,33 @@ public class AdminServlet extends HttpServlet {
   }
 
   private void postConfirmTitle(HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException {
-      String selectedValue = request.getParameter("titles");
-      String specificFile = "";
-      if (selectedValue.equals("romandjul")) {
-        specificFile = "romandjul.txt";
-        currentTitle = "R&J";
-      }
-      if (selectedValue.equals("julcaesar")) {
-        specificFile = "julcaesar.txt";
-        currentTitle = "JulC";
-      }
-      if (selectedValue.equals("midsumDream")) {
-        specificFile = "midsumDream.txt";
-        currentTitle = "MidsumDream";
-      }
-      if (selectedValue.equals("tempest")) {
-        specificFile = "tempest.txt";
-        currentTitle = "Tempest";
-      }
-      try {
-        String findFile = "../../src/main/java/codeu/controller/" + specificFile;
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
-        readFile(bufferedReader); // works with files that begin with ACT
-        bufferedReader.close();
-      } catch (IOException e) {
-        //error
-      }
+      throws IOException, ServletException {
+    String selectedValue = request.getParameter("titles");
+    String specificFile = "";
+    if (selectedValue.equals("romandjul")) {
+      specificFile = "romandjul.txt";
+      currentTitle = "R&J";
+    }
+    if (selectedValue.equals("julcaesar")) {
+      specificFile = "julcaesar.txt";
+      currentTitle = "JulC";
+    }
+    if (selectedValue.equals("midsumDream")) {
+      specificFile = "midsumDream.txt";
+      currentTitle = "MidsumDream";
+    }
+    if (selectedValue.equals("tempest")) {
+      specificFile = "tempest.txt";
+      currentTitle = "Tempest";
+    }
+    try {
+      String findFile = "../../src/main/java/codeu/controller/" + specificFile;
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
+      readFile(bufferedReader); // works with files that begin with ACT
+      bufferedReader.close();
+    } catch (IOException e) {
+      //error
+    }
   }
 
   /**
@@ -343,9 +344,9 @@ public class AdminServlet extends HttpServlet {
   }
 
   /*
-  * Displays new messages from user of a selected text file & updates stats to
-  * include the new messages
-  */
+   * Displays new messages from user of a selected text file & updates stats to
+   * include the new messages
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -364,7 +365,7 @@ public class AdminServlet extends HttpServlet {
       // If they pressed the button to change admin status
       if (changeAdminStatusButton != null) {
         postAdminStatusButton(request, response);
-      // If they pressed the confirm button in the title select form
+        // If they pressed the confirm button in the title select form
       } else if (confirmButton != null) {
         postConfirmTitle(request, response);
         response.sendRedirect("/adminStats");
@@ -374,6 +375,6 @@ public class AdminServlet extends HttpServlet {
       request.setAttribute("error", "Internal error");
     }
     loadStats(request);
-    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response); 
+    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }

@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.never;
 
-public class AdminStatsTest {
+public class AdminServletTest {
 
   private AdminServlet adminStats;
   private HttpServletRequest mockRequest;
