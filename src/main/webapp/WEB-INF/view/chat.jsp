@@ -16,7 +16,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.UUID" %>
 <%
 Conversation conversation = (Conversation) request.getAttribute("conversation");
 List<Message> messages = (List<Message>) request.getAttribute("messages");
@@ -43,6 +47,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       chatDiv.scrollTop = chatDiv.scrollHeight;
     };
   </script>
+
 </head>
 <body onload="scrollChat()">
 
@@ -64,7 +69,35 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <a href="" style="float: right">&#8635;</a></h1>
 
     <hr/>
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'biggerChat')" id = "defaultOpen">Chat</button>
+      <button class="tablinks" onclick="openTab(event, 'addMember')">Members</button>
+    </div>
 
+
+    <div id="addMember" class="tabcontent">
+    <h3>London</h3>
+    <p>London is the capital city of England.</p>
+    <ul>
+      <%
+       Set<UUID> userUUIDs = new HashSet<UUID>();
+        for (Message message : messages) {
+          UUID authorUUID = UserStore.getInstance()
+            .getUser(message.getAuthorId()).getId();
+          String author  = UserStore.getInstance()
+            .getUser(message.getAuthorId()).getName();
+          if (!userUUIDs.contains(authorUUID)){
+            userUUIDs.add(authorUUID);
+      %>
+      <li><%= author %></li>
+      <%
+          }
+        }
+      %>
+    </ul>
+  </div>
+
+<div id = "biggerChat"  class = "tabcontent">
     <div id="chat">
       <ul>
     <%
@@ -92,8 +125,25 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <% } %>
 
     <hr/>
-
+</div>
   </div>
+  <script>
+  function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+  }
 
+  // Get the element with id="defaultOpen" and click on it
+   document.getElementById("defaultOpen").click();
+  </script>
 </body>
 </html>
