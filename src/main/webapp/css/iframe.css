@@ -1,0 +1,67 @@
+p {
+	margin: 2px auto
+}
+
+@font-face {
+	font-family: Helvetica;
+	src: url(../Fonts/helvetica-light.otf);
+}
+
+#editor {
+	font-family: Helvetica;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	color: #999;
+	padding: 10px;
+	border-radius: 6px;
+	box-shadow: 2px 2px 12px #999;
+}
+
+.editor-button { /*Button css */
+	width: 30px;
+	width: 30px;
+	height: 30px;
+	-moz-box-shadow: inset 0px 0px 24px -18px #ffffff;
+	-webkit-box-shadow: inset 0px 0px 24px -18px #ffffff;
+	box-shadow: inset 0px 0px 24px -18px #ffffff;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff
+		), color-stop(1, #f6f6f6));
+	background: -moz-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background: -webkit-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background: -o-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background: -ms-linear-gradient(top, #ffffff 5%, #f6f6f6 100%);
+	background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',
+		endColorstr='#f6f6f6', GradientType=0);
+	background-color: #ffffff;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 9px;
+	border: 2px solid #dcdcdc;
+	display: inline-block;
+	cursor: pointer;
+	color: #666666;
+	font-family: Helvetica;
+	font-size: 13px;
+	text-align: center;
+	font-weight: bold;
+	padding: 5px 8px;
+	text-decoration: none;
+	text-shadow: 0px 13px 14px #ffffff;
+	margin-right: -2px;
+}
+
+.editor-button:hover { /* Activate when hovers on the button */
+	font-family: Helvetica;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f6f6f6
+		), color-stop(1, #ffffff));
+	background: -moz-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background: -webkit-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background: -o-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background: -ms-linear-gradient(top, #f6f6f6 5%, #ffffff 100%);
+	background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6',
+		endColorstr='#ffffff', GradientType=0);
+	background-color: #f6f6f6;
+	margin-right: -2px;
+}
