@@ -118,12 +118,11 @@ public class ConversationStore {
     this.conversations = conversations;
   }
 
-  /**Returns the number of conversations total*/
-  public int getNumConversations(){
-    if (conversations!=null){
+  /** Returns the number of conversations total */
+  public int getNumConversations() {
+    if (conversations != null) {
       return conversations.size();
     }
     return 0;
   }
-
 }

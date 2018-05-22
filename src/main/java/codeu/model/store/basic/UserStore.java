@@ -87,8 +87,8 @@ public class UserStore {
   }
 
   /*
-  * Gets user directly from persistent database
-  */
+   * Gets user directly from persistent database
+   */
   public User getUserFromPD(String userUUID) throws EntityNotFoundException {
     return persistentStorageAgent.getUserFromPDatabase(userUUID);
   }
@@ -146,16 +146,14 @@ public class UserStore {
     }
     return null;
   }
- 
+
   /** Returns the user with flipped is_admin flag */
-  public void setIsAdmin(User user, boolean is_admin) throws PersistentDataStoreException  {
+  public void setIsAdmin(User user, boolean is_admin) throws PersistentDataStoreException {
     try {
       persistentStorageAgent.updateUserAdminStatus(user, is_admin);
     } catch (EntityNotFoundException e) {
       throw new RuntimeException("user does not exist in database");
     }
-
     users = persistentStorageAgent.loadUsers();
- 
   }
 }

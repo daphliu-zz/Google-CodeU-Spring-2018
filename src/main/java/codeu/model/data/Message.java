@@ -17,8 +17,6 @@ package codeu.model.data;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.google.appengine.api.datastore.Text;
-
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
 
@@ -63,9 +61,7 @@ public class Message {
   /** Returns the text content of this Message. */
   public String getContent() {
     return content;
-
   }
-  
 
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {

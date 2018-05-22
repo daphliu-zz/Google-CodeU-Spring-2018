@@ -308,7 +308,7 @@ public class AdminServlet extends HttpServlet {
       readFile(bufferedReader); // works with files that begin with ACT
       bufferedReader.close();
     } catch (IOException e) {
-      //error
+      // error
     }
   }
 

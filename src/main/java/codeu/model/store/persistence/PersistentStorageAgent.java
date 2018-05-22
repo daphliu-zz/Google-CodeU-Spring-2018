@@ -20,8 +20,6 @@ import codeu.model.data.User;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.List;
 
-import com.google.appengine.api.datastore.EntityNotFoundException;
-
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
  * interactions with Google App Engine's Datastore service. Currently this class simply passes
@@ -71,8 +69,8 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadUsers();
   }
   /*
-  * Retrieves a User Object given userUUID from Datastore
-  */
+   * Retrieves a User Object given userUUID from Datastore
+   */
   public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
     return persistentDataStore.getUserFromPDatabase(userN);
   }
@@ -101,9 +99,9 @@ public class PersistentStorageAgent {
     persistentDataStore.createUser(user);
   }
 
- /** Update a User object to the Datastore service. */
+  /** Update a User object to the Datastore service. */
   public void updateUserAdminStatus(User user, boolean is_admin) throws EntityNotFoundException {
-      persistentDataStore.updateUserAdminStatus(user, is_admin);
+    persistentDataStore.updateUserAdminStatus(user, is_admin);
   }
 
   /** Write a Message object to the Datastore service. */
