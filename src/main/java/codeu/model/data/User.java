@@ -38,7 +38,7 @@ public class User {
     this.hashedPassword  = hashedPassword;
     this.creation = creation;
   }
-  
+
   /**
   * Returns the password of this User.
   */

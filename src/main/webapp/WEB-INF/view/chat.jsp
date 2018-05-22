@@ -90,6 +90,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             userUUIDs.add(authorUUID);
       %>
       <li><%= author %></li>
+      <form action="/modMembers" method="POST">
+        <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
+        <button type="submit" value= "<%= author%>" name="remove">Remove</button>
+      </form>
       <%
           }
         }
@@ -140,6 +144,15 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       }
       document.getElementById(tabName).style.display = "block";
       evt.currentTarget.className += " active";
+  }
+  function removeUser(authorUUID){
+      //var val = document.getElementById('value');
+      document.getElementById("remove").value = document.getElementById("remove").textContent;
+      console.log(document.getElementById(authorUUID.id).value);
+      console.log(document.getElementById("remove").textContent);
+      console.log(authorUUID.id);
+      // console.log(value);
+      // console.log(this);
   }
 
   // Get the element with id="defaultOpen" and click on it

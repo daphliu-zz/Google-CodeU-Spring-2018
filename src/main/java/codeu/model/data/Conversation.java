@@ -16,7 +16,8 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
-
+import java.util.HashSet;
+import java.util.Set;
 /**
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
  * created by a User and contain Messages.
@@ -26,7 +27,7 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
-
+  public final Set <UUID> members;
   /**
    * Constructs a new Conversation.
    *
@@ -40,6 +41,8 @@ public class Conversation {
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    members = new HashSet<UUID>();
+    addMember(owner);
   }
 
   /** Returns the ID of this Conversation. */
@@ -60,5 +63,20 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Adds member to this Conversation*/
+  public void addMember(UUID newUser){
+    members.add(newUser);
+  }
+
+  /** Returns the member list of this Conversation*/
+  public Set<UUID> getMembers(){
+    return members;
+  }
+
+  /** Removes a member from the members list*/
+  public void removeMember(UUID removeUser){
+    members.remove(removeUser);
   }
 }

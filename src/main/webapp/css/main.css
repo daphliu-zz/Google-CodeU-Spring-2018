@@ -56,3 +56,6 @@ input {
 button {
   font-size: 18px;
 }
+#id {
+  float: right;
+}
