@@ -96,6 +96,18 @@ public class PersistentDataStore {
     return users;
   }
 
+  /*Retrieves a Conversation Object given Convo UUID as string*/
+  public Conversation getConversationFromPD(String convoUUID) throws EntityNotFoundException {
+    Key key = KeyFactory.createKey("chat-conversation", convoUUID);
+    Entity entity = datastore.get(key);
+    UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+    UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
+    String title = (String) entity.getProperty("title");
+    Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+    Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+    return conversation;
+  }
+
   /**
    * Loads all Conversation objects from the Datastore service and returns them in a List.
    *
@@ -190,7 +202,7 @@ public class PersistentDataStore {
 
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Conversation conversation) {
-    Entity conversationEntity = new Entity("chat-conversations");
+    Entity conversationEntity = new Entity("chat-conversations", conversation.getId().toString());//query based on UUID
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());

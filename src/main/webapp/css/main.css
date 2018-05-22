@@ -59,3 +59,8 @@ button {
 #id {
   float: right;
 }
+
+.oneUser{
+  display: flex;
+  justify-content: space-between;
+}

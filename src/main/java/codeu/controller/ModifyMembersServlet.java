@@ -17,10 +17,44 @@ import java.util.*;
 import java.io.*;
 
 public class ModifyMembersServlet extends HttpServlet {
+  /** Store class that gives access to Conversations. */
+  private ConversationStore conversationStore;
 
+  /** Store class that gives access to Messages. */
+  private MessageStore messageStore;
+
+  /** Store class that gives access to Users. */
+  private UserStore userStore;
+
+  /**
+   * Sets the ConversationStore used by this servlet. This function provides a common setup method
+   * for use by the test framework or the servlet's init() function.
+   */
+  void setConversationStore(ConversationStore conversationStore) {
+    this.conversationStore = conversationStore;
+  }
+
+  /**
+   * Sets the MessageStore used by this servlet. This function provides a common setup method for
+   * use by the test framework or the servlet's init() function.
+   */
+  void setMessageStore(MessageStore messageStore) {
+    this.messageStore = messageStore;
+  }
+
+  /**
+   * Sets the UserStore used by this servlet. This function provides a common setup method for use
+   * by the test framework or the servlet's init() function.
+   */
+  void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
+  }
   @Override
   public void init() throws ServletException {
     super.init();
+    setConversationStore(ConversationStore.getInstance());
+    setMessageStore(MessageStore.getInstance());
+    setUserStore(UserStore.getInstance());
   }
 
  @Override
@@ -35,6 +69,8 @@ public class ModifyMembersServlet extends HttpServlet {
     // Getting request information without the hostname.
 
         String uri = request.getRequestURI();
+        //String boolAppera = request.getParameter("onclick");
+      //  System.out.println(boolAppera);
         System.out.println(uri);
         System.out.println("HELLO");
         String conversationTitle= request.getParameter("chatTitle");

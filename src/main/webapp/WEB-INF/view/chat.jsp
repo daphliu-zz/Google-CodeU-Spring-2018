@@ -76,9 +76,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
 
     <div id="addMember" class="tabcontent">
-    <h3>London</h3>
-    <p>London is the capital city of England.</p>
-    <ul>
+    <h3>Members</h3>
+    <p>These are the members in the Conversation.</p>
       <%
        Set<UUID> userUUIDs = new HashSet<UUID>();
         for (Message message : messages) {
@@ -89,16 +88,17 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
           if (!userUUIDs.contains(authorUUID)){
             userUUIDs.add(authorUUID);
       %>
-      <li><%= author %></li>
-      <form action="/modMembers" method="POST">
+        <div id="oneUser"><%= author %>
+      <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+
+        <span id="removeBtn"><button type="submit" value= "<%= author%>" name="remove" id= "remove">Remove <%= author%></button></span>
         <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
-        <button type="submit" value= "<%= author%>" name="remove">Remove</button>
       </form>
+      </div>
       <%
           }
         }
       %>
-    </ul>
   </div>
 
 <div id = "biggerChat"  class = "tabcontent">
@@ -145,14 +145,10 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       document.getElementById(tabName).style.display = "block";
       evt.currentTarget.className += " active";
   }
-  function removeUser(authorUUID){
-      //var val = document.getElementById('value');
-      document.getElementById("remove").value = document.getElementById("remove").textContent;
-      console.log(document.getElementById(authorUUID.id).value);
-      console.log(document.getElementById("remove").textContent);
-      console.log(authorUUID.id);
-      // console.log(value);
-      // console.log(this);
+  function isValidForm(){
+      //console.log(document.getElementById("remove").textContent);
+
+      return confirm("Delete this user?");
   }
 
   // Get the element with id="defaultOpen" and click on it
