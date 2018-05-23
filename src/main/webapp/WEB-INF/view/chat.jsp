@@ -40,7 +40,7 @@
 <script>
 	// scroll the chat div to the bottom
 	function scrollChat() {
-		var chatDiv = document.getElementById('chat');
+		var chatDiv = document.querySelector('.chat');
 		chatDiv.scrollTop = chatDiv.scrollHeight;
 	};
 </script>
@@ -89,7 +89,7 @@
 
 					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
 					</span>
-					
+
 				</div>
 
 				<%

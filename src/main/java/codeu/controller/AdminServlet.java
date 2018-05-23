@@ -352,11 +352,11 @@ public class AdminServlet extends HttpServlet {
       throws IOException, ServletException {
     String changeAdminStatusButton = request.getParameter("change_admin_status");
     String confirmButton = request.getParameter("confirm");
-    String meUsername = (String) request.getSession().getAttribute("user");
-    User meUser = userStore.getUser(meUsername);
+    String currUsername = (String) request.getSession().getAttribute("user");
+    User currUser = userStore.getUser(currUsername);
 
     // If user not an admin, banish them to the homepage
-    if (meUser == null || !meUser.getAdminStatus()) {
+    if (currUser == null || !currUser.getAdminStatus()) {
       // user is not an admin
       response.sendRedirect("/");
       return;
