@@ -27,7 +27,7 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
-  public final Set <UUID> members;
+  public final Set<UUID> members;
   /**
    * Constructs a new Conversation.
    *
@@ -36,15 +36,23 @@ public class Conversation {
    * @param title the title of this Conversation
    * @param creation the creation time of this Conversation
    */
+  public Conversation(UUID id, UUID owner, String title, Instant creation, Set<UUID> members) {
+    this.id = id;
+    this.owner = owner;
+    this.creation = creation;
+    this.title = title;
+    this.members = members;
+    addMember(owner);
+  }
+
   public Conversation(UUID id, UUID owner, String title, Instant creation) {
     this.id = id;
     this.owner = owner;
     this.creation = creation;
     this.title = title;
-    members = new HashSet<UUID>();
+    this.members = new HashSet<UUID>();
     addMember(owner);
   }
-
   /** Returns the ID of this Conversation. */
   public UUID getId() {
     return id;

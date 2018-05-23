@@ -30,7 +30,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+import java.util.*;
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
  * sets the state of the applications's data objects from the current contents of its Datastore. It
@@ -130,7 +130,18 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+        String[] arr = ((String)entity.getProperty("members")).split(",", 0);
+        Set<UUID> members = new HashSet<UUID>();
+        for (int i = 0; i <arr.length; i++){
+          if (i==0){
+            arr[i] = arr[i].substring(1);
+          } if (i == arr.length-1){
+            arr[i] = arr[i].substring(0,arr[i].length()-2);
+          }
+          UUID val = UUID.fromString(arr[i]);
+          members.add(val);
+        }
+        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
         conversations.add(conversation);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -207,6 +218,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("members", conversation.getMembers().toString());
     datastore.put(conversationEntity);
   }
 }

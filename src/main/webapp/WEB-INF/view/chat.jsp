@@ -79,16 +79,18 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <h3>Members</h3>
     <p>These are the members in the Conversation.</p>
       <%
-       Set<UUID> userUUIDs = new HashSet<UUID>();
-        for (Message message : messages) {
-          UUID authorUUID = UserStore.getInstance()
-            .getUser(message.getAuthorId()).getId();
-          String author  = UserStore.getInstance()
-            .getUser(message.getAuthorId()).getName();
-          if (!userUUIDs.contains(authorUUID)){
-            userUUIDs.add(authorUUID);
+
+       Set<UUID> userUUIDs = conversation.getMembers();
+        for (UUID user : userUUIDs) {
+          String uuidToString = user.toString();
+          String author = "";
+          try{
+            author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
+          }catch(Exception e){
+
+          }
       %>
-        <div id="oneUser"><%= author %>
+        <div id="oneUser"><%= author%>
       <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
 
         <span id="removeBtn"><button type="submit" value= "<%= author%>" name="remove" id= "remove">Remove <%= author%></button></span>
@@ -96,7 +98,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       </form>
       </div>
       <%
-          }
+
         }
       %>
   </div>

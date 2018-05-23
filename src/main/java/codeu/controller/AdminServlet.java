@@ -156,6 +156,7 @@ public class AdminServlet extends HttpServlet {
               UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
       userStore.addUser(user);
       currentUser = user;
+      currentConversation.addMember(UUID.nameUUIDFromBytes(userName.getBytes()));
     }
   }
 

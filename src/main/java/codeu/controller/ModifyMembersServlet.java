@@ -78,6 +78,7 @@ public class ModifyMembersServlet extends HttpServlet {
         String sV = request.getParameter("remove");
         //load conversation & remove user from list
         System.out.println(sV);
+
         response.sendRedirect("/chat/" + conversationTitle);
   }
 
