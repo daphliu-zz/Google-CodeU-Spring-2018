@@ -121,7 +121,7 @@
 		  if (request.getSession().getAttribute("user") != null) {
 		%>
 		<form action="/chat/<%=conversation.getTitle()%>" id="form"
-			method="POST">
+			method="POST" style="margin-bottom:200px">
 			<p>
 				<button class="editor-button" type="button" id="bBtn"
 					style="font-weight: bold" onclick="setFunction('Bold');" />
