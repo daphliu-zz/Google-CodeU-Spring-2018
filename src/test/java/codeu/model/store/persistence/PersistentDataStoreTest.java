@@ -36,39 +36,52 @@ public class PersistentDataStoreTest {
     appEngineTestHelper.tearDown();
   }
 
+  private User findUser(Iterable<User> users, String name) {
+    for (User user : users) {
+      if (user.getName().equals(name)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
     String nameOne = "test_username_one";
     String passwordOne = "password_one";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne);
+    boolean adminStatusOne = false; 
+    User inputUserOne = new User(idOne, nameOne, passwordOne, creationOne, adminStatusOne);
 
     UUID idTwo = UUID.randomUUID();
     String nameTwo = "test_username_two";
     String passwordTwo = "password_two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo);
+    boolean adminStatusTwo = true;
+    User inputUserTwo = new User(idTwo, nameTwo, passwordTwo, creationTwo, adminStatusTwo);
 
     // save
-    persistentDataStore.writeThrough(inputUserOne);
-    persistentDataStore.writeThrough(inputUserTwo);
+    persistentDataStore.createUser(inputUserOne);
+    persistentDataStore.createUser(inputUserTwo);
 
     // load
     List<User> resultUsers = persistentDataStore.loadUsers();
 
     // confirm that what we saved matches what we loaded
-    User resultUserOne = resultUsers.get(0);
+    User resultUserOne = findUser(resultUsers, "test_username_one");
     Assert.assertEquals(idOne, resultUserOne.getId());
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(passwordOne, resultUserOne.getHashedPassword());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
+    Assert.assertEquals(adminStatusOne, resultUserOne.getAdminStatus());
 
-    User resultUserTwo = resultUsers.get(1);
+    User resultUserTwo = findUser(resultUsers, "test_username_two");
     Assert.assertEquals(idTwo, resultUserTwo.getId());
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(passwordTwo, resultUserTwo.getHashedPassword());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
+    Assert.assertEquals(adminStatusTwo, resultUserTwo.getAdminStatus());
   }
 
   @Test

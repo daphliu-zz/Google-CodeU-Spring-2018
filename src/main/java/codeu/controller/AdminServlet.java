@@ -6,6 +6,7 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.persistence.PersistentDataStoreException;
 import java.io.*;
 import java.io.IOException;
 import java.time.Instant;
@@ -66,6 +67,22 @@ public class AdminServlet extends HttpServlet {
     this.userStore = userStore;
   }
 
+  private void loadStats(HttpServletRequest request) {
+    int numUsers = userStore.numUsers();
+    int numConversations = conversationStore.getNumConversations();
+    int numMessages = messageStore.getNumMessages();
+    String newestUser = "";
+    if (userStore.getLastUser() != null) {
+      newestUser = userStore.getLastUser().getName();
+    }
+    String mostActiveUser = getMostActiveUser();
+    request.setAttribute("numUsers", numUsers);
+    request.setAttribute("numConversations", numConversations);
+    request.setAttribute("numMessages", numMessages);
+    request.setAttribute("newestUser", newestUser);
+    request.setAttribute("mostActiveUser", mostActiveUser);
+  }
+
   /** Gets the Most Active User based off of the user who has sent the most messages */
   String getMostActiveUser() {
     Map<User, Integer> usersToMessages = new HashMap<User, Integer>();
@@ -114,19 +131,7 @@ public class AdminServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    int numUsers = userStore.numUsers();
-    int numConversations = conversationStore.getNumConversations();
-    int numMessages = messageStore.getNumMessages();
-    String newestUser = "";
-    if (userStore.getLastUser() != null) {
-      newestUser = userStore.getLastUser().getName();
-    }
-    String mostActiveUser = getMostActiveUser();
-    request.setAttribute("numUsers", numUsers);
-    request.setAttribute("numConversations", numConversations);
-    request.setAttribute("numMessages", numMessages);
-    request.setAttribute("newestUser", newestUser);
-    request.setAttribute("mostActiveUser", mostActiveUser);
+    loadStats(request);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 
@@ -153,7 +158,11 @@ public class AdminServlet extends HttpServlet {
     } catch (Exception e) { // user is not in database
       User user =
           new User(
-              UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
+              UUID.nameUUIDFromBytes(userName.getBytes()),
+              userName,
+              "password",
+              Instant.now(),
+              false);
       userStore.addUser(user);
       currentUser = user;
     }
@@ -178,7 +187,7 @@ public class AdminServlet extends HttpServlet {
     try {
       user = userStore.getUserFromPD(narratorNameUUID);
     } catch (Exception e) {
-      //make new Narrator user if doesn't exist
+      // make new Narrator user if doesn't exist
       appendUser(userName);
     }
     String title = currentTitle + "_" + line;
@@ -213,10 +222,8 @@ public class AdminServlet extends HttpServlet {
     return didFind;
   }
 
-  /**
-   * read from file & parses text to store in database
-   */
-  void readFile(BufferedReader bufferedReader) throws Exception {
+  /** read from file & parses text to store in database */
+  void readFile(BufferedReader bufferedReader) throws IOException {
     String line = null;
     boolean addToLine = false;
     String charactersWord = "";
@@ -275,43 +282,99 @@ public class AdminServlet extends HttpServlet {
     appendMessage(lastM);
   }
 
-/*
-* Displays new messages from user of a selected text file & updates stats to
-* include the new messages
-*/
+  private void postConfirmTitle(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
+    String selectedValue = request.getParameter("titles");
+    String specificFile = "";
+    if (selectedValue.equals("romandjul")) {
+      specificFile = "romandjul.txt";
+      currentTitle = "R&J";
+    }
+    if (selectedValue.equals("julcaesar")) {
+      specificFile = "julcaesar.txt";
+      currentTitle = "JulC";
+    }
+    if (selectedValue.equals("midsumDream")) {
+      specificFile = "midsumDream.txt";
+      currentTitle = "MidsumDream";
+    }
+    if (selectedValue.equals("tempest")) {
+      specificFile = "tempest.txt";
+      currentTitle = "Tempest";
+    }
+    try {
+      String findFile = "../../src/main/java/codeu/controller/" + specificFile;
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
+      readFile(bufferedReader); // works with files that begin with ACT
+      bufferedReader.close();
+    } catch (IOException e) {
+      // error
+    }
+  }
+
+  /**
+   * This function fires when a user submits the testdata form. It loads test data if the user
+   * clicked the confirm button.
+   */
+  public void postAdminStatusButton(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException, PersistentDataStoreException {
+    String changeAdminStatusButton = request.getParameter("change_admin_status");
+    String editUsername = request.getParameter("username");
+    User editUser = userStore.getUser(editUsername);
+
+    if (editUser == null) {
+      request.setAttribute("error", "Not a user.");
+    } else {
+      if (changeAdminStatusButton.equals("promote")) {
+        if (editUser.getAdminStatus()) {
+          request.setAttribute("error", "User is already an admin.");
+        } else {
+          userStore.setIsAdmin(editUser, true);
+          request.setAttribute("success", "Promoted the user to admin!");
+        }
+      } else {
+        if (editUser.getAdminStatus()) {
+          userStore.setIsAdmin(editUser, false);
+          request.setAttribute("success", "Demoted the admin to user :(");
+        } else {
+          request.setAttribute("error", "User is already not an admin.");
+        }
+      }
+    }
+  }
+
+  /*
+   * Displays new messages from user of a selected text file & updates stats to
+   * include the new messages
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String selectedValue = request.getParameter("titles");
+    String changeAdminStatusButton = request.getParameter("change_admin_status");
     String confirmButton = request.getParameter("confirm");
+    String currUsername = (String) request.getSession().getAttribute("user");
+    User currUser = userStore.getUser(currUsername);
 
-    if (confirmButton != null) {
-      String specificFile = "";
-      if (selectedValue.equals("romandjul")) {
-        specificFile = "romandjul.txt";
-        currentTitle = "R&J";
-      }
-      if (selectedValue.equals("julcaesar")) {
-        specificFile = "julcaesar.txt";
-        currentTitle = "JulC";
-      }
-      if (selectedValue.equals("midsumDream")) {
-        specificFile = "midsumDream.txt";
-        currentTitle = "MidsumDream";
-      }
-      if (selectedValue.equals("tempest")) {
-        specificFile = "tempest.txt";
-        currentTitle = "Tempest";
-      }
-      try {
-        String findFile = "../../src/main/java/codeu/controller/" + specificFile;
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
-        readFile(bufferedReader); // works with files that begin with ACT
-        bufferedReader.close();
-      } catch (Exception e) {
-        //error
-      }
+    // If user not an admin, banish them to the homepage
+    if (currUser == null || !currUser.getAdminStatus()) {
+      // user is not an admin
+      response.sendRedirect("/");
+      return;
     }
-    response.sendRedirect("/");
+    try {
+      // If they pressed the button to change admin status
+      if (changeAdminStatusButton != null) {
+        postAdminStatusButton(request, response);
+        // If they pressed the confirm button in the title select form
+      } else if (confirmButton != null) {
+        postConfirmTitle(request, response);
+        response.sendRedirect("/adminStats");
+        return;
+      }
+    } catch (PersistentDataStoreException e) {
+      request.setAttribute("error", "Internal error");
+    }
+    loadStats(request);
+    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }

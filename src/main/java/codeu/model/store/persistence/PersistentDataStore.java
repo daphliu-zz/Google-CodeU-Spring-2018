@@ -55,9 +55,10 @@ public class PersistentDataStore {
     Entity entity = datastore.get(key);
     UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
     String userName = (String) entity.getProperty("username");
+    boolean is_admin = (boolean) entity.getProperty("is_admin");
     String password = (String) entity.getProperty("password");
     Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    User user = new User(uuid, userName, password, creationTime);
+    User user = new User(uuid, userName, password, creationTime, is_admin);
     return user;
   }
 
@@ -83,7 +84,8 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, password, creationTime);
+        boolean is_admin = (boolean) entity.getProperty("is_admin");
+        User user = new User(uuid, userName, password, creationTime, is_admin);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -163,17 +165,31 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
     return messages;
   }
 
-  /** Write a User object to the Datastore service. */
-  public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users", user.getId().toString()); // setting Key to be UUID
-    userEntity.setProperty("uuid", user.getId().toString());
+  /** Write a new User object to the Datastore service. */
+  public void createUser(User user) {
+    String uuid = user.getId().toString();
+    Entity userEntity = new Entity("chat-users", uuid);
+    userEntity.setProperty("uuid", uuid);
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getHashedPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", user.getAdminStatus());
+    datastore.put(userEntity);
+  }
+
+  /** Update a User object to the Datastore service. */
+  public void updateUserAdminStatus(User user, boolean is_admin) throws EntityNotFoundException {
+    String uuid = user.getId().toString();
+    Key key = KeyFactory.createKey("chat-users", uuid);
+    Entity userEntity = datastore.get(key);
+    userEntity.setProperty("uuid", uuid);
+    userEntity.setProperty("username", user.getName());
+    userEntity.setProperty("password", user.getHashedPassword());
+    userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", is_admin);
     datastore.put(userEntity);
   }
 

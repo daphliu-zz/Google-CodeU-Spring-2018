@@ -40,7 +40,7 @@
 <script>
 	// scroll the chat div to the bottom
 	function scrollChat() {
-		var chatDiv = document.getElementById('chat');
+		var chatDiv = document.querySelector('.chat');
 		chatDiv.scrollTop = chatDiv.scrollHeight;
 	};
 </script>
@@ -89,7 +89,7 @@
 
 					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
 					</span>
-					
+
 				</div>
 
 				<%
@@ -121,7 +121,7 @@
 		  if (request.getSession().getAttribute("user") != null) {
 		%>
 		<form action="/chat/<%=conversation.getTitle()%>" id="form"
-			method="POST">
+			method="POST" style="margin-bottom:200px">
 			<p>
 				<button class="editor-button" type="button" id="bBtn"
 					style="font-weight: bold" onclick="setFunction('Bold');" />

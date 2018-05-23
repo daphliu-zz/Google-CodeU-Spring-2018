@@ -22,17 +22,12 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
-import com.google.appengine.api.datastore.Text;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -143,12 +138,12 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
-      Message message =
-          new Message(
-              UUID.randomUUID(), conversation.getId(), user.getId(), messageContent, Instant.now());
+    Message message =
+        new Message(
+            UUID.randomUUID(), conversation.getId(), user.getId(), messageContent, Instant.now());
 
-      messageStore.addMessage(message);
-    
+    messageStore.addMessage(message);
+
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
   }

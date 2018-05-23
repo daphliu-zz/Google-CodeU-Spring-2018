@@ -1,5 +1,7 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,12 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.mindrot.jbcrypt.BCrypt;
-
-import codeu.model.data.User;
-import codeu.model.store.basic.UserStore;
 
 public class RegisterServletTest {
 
@@ -66,7 +65,8 @@ public class RegisterServletTest {
 
     Mockito.verify(mockUserStore).addUser(userArgumentCaptor.capture());
     Assert.assertEquals(userArgumentCaptor.getValue().getName(), "test username");
-    Assert.assertTrue(BCrypt.checkpw("abcdtest", userArgumentCaptor.getValue().getHashedPassword()));
+    Assert.assertTrue(
+        BCrypt.checkpw("abcdtest", userArgumentCaptor.getValue().getHashedPassword()));
     Mockito.verify(mockResponse).sendRedirect("/login");
   }
 
