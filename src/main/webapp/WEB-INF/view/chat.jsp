@@ -116,7 +116,7 @@
 		<input type="file" id="btn_file" accept="image/*"
 			onchange="setFunction('InsertIMG')" style="display: none"> <img
 			src="" id="output">
-		<script src="http://localhost:8080/js/TextEditor.js"></script>
+		<script src="/js/TextEditor.js"></script>
 		<%
 		  if (request.getSession().getAttribute("user") != null) {
 		%>
