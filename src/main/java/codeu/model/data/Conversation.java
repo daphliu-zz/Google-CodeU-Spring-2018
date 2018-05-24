@@ -85,5 +85,8 @@ public class Conversation {
     members.remove(oldUser);
   }
 
+  public boolean isMember(UUID potentialMember){
+    return members.contains(potentialMember);
+  }
 
 }

@@ -21,6 +21,7 @@ import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -70,8 +71,27 @@ public class ConversationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+    String username = (String) request.getSession().getAttribute("user");
+    User user = userStore.getUser(username);
+
     List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
+    List<Conversation> toShow = new ArrayList<Conversation>(conversations);
+    if (user == null) { //if no user, show no conversations
+      toShow.clear();
+    } else{
+      toShow = conversationStore.getAllConversations();
+    }
+    for (Conversation conversation : conversations){
+      if (user != null){
+        System.out.println("in convo servlect with user id: ");
+        System.out.println(user.getId());
+        if (!conversation.isMember(user.getId())){
+          toShow.remove(conversation);
+        }
+      }
+    }
+    //only display conversation that the user is a member of
+    request.setAttribute("conversations", toShow);
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 

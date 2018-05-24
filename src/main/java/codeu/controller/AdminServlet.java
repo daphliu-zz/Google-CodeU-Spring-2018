@@ -32,6 +32,7 @@ public class AdminServlet extends HttpServlet {
   private Conversation currentConversation = null;
   private User currentUser = null;
   private String currentTitle = "";
+  private Set<UUID> membersInConvo = new HashSet<UUID>();
   private static final String NARRATOR = "NARRATOR";
   /** Set up state for handling the load test data request. */
   @Override
@@ -163,7 +164,8 @@ public class AdminServlet extends HttpServlet {
         System.out.println("IN append user: ");
       //  System.out.println(currentConversation.getId());
         if (currentConversation !=null){
-          conversationStore.addMemberinPD(currentConversation.getId(), UUID.nameUUIDFromBytes(userName.getBytes()));
+          membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
+          //conversationStore.addMemberinPD(currentConversation.getId(), UUID.nameUUIDFromBytes(userName.getBytes()));
         }
 
       } catch(Exception m){
@@ -290,7 +292,12 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
-
+    if (conversationStore.isTitleTaken(currentConversation.getTitle())){
+      conversationStore.removeConversationFromInStoreList(currentConversation);
+      Conversation toAdd = new Conversation(currentConversation.getId(), currentConversation.getOwnerId(), currentConversation.getTitle(), currentConversation.getCreationTime(), membersInConvo);
+      //UUID id, UUID owner, String title, Instant creation, Set<UUID> members
+      conversationStore.addConversation(toAdd);
+    }
   }
 
 /*
