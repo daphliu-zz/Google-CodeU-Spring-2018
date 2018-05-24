@@ -76,7 +76,6 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     </div>
         <hr/>
 
-
     <div id="rmMember" class="tabcontent">
     <h3>Members</h3>
     <p>These are the members in the Conversation.</p>
@@ -85,27 +84,23 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
        Set<UUID> userUUIDs = conversation.getMembers();
         for (UUID userID : userUUIDs) {
           String uuidToString = userID.toString();
-          System.out.println("In chat.jsp");
-          System.out.println(uuidToString);
           String author = "";
           try{
             author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
-            System.out.println("Found this user");
-
           }catch(Exception e){
             e.printStackTrace();
-          }
+          } if (!userID.equals(conversation.getOwnerId())){
+
+
       %>
         <div id="oneUser"><%= author%>
       <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
-
         <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
-
         <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
       </form>
       </div>
       <%
-
+          }
         }
       %>
   </div>
@@ -136,44 +131,33 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
-
     <hr/>
+    
 </div>
-
-
-
-
 
 <div id = "addMember"  class = "tabcontent">
   <h2> Discover: </h2>
   <h3> Add new members: </h3>
   <%
- List<User> users = UserStore.getInstance().getAllUsers();
-    for (User user : users) {
-      String userN = user.getName();
-      UUID userUUID = user.getId();
-      if (!conversation.isMember(user.getId())){
-
+    List<User>
+      users = UserStore.getInstance().getAllUsers();
+        for (User user : users) {
+          String userN = user.getName();
+          UUID userUUID = user.getId();
+          if (!conversation.isMember(user.getId())){
   %>
-
   <p><%= userN %></p>
   <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
     <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
     <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
   </form>
-
   <%
       }
     }
   %>
 </div>
-
-
-
-
-
-
   </div>
+
   <script>
   //changes between tabs
   function openTab(evt, tabName) {
@@ -191,7 +175,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
   }
   //error checking to delete specific user
   function isValidForm(){
-      return confirm("Delete this user?");
+      return confirm("With this User?");
   }
 
   // Get the element with id="defaultOpen" and click on it so makes that the active tab

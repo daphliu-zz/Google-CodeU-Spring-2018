@@ -155,24 +155,15 @@ public class AdminServlet extends HttpServlet {
       User user =
           new User(
               UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
-      System.out.println("adding this todatatbase pd : ");
-      System.out.println(userNameUUID);
-      System.out.println("taht awas usernameeuuid");
       userStore.addUser(user);
       currentUser = user;
-      try{
-        System.out.println("IN append user: ");
-      //  System.out.println(currentConversation.getId());
-        if (currentConversation !=null){
+      try {
+        if (currentConversation != null) {
           membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
-          //conversationStore.addMemberinPD(currentConversation.getId(), UUID.nameUUIDFromBytes(userName.getBytes()));
         }
-
-      } catch(Exception m){
-        System.out.println("didn't work ");
+      } catch (Exception m) {
         m.printStackTrace();
       }
-
     }
   }
 
@@ -195,14 +186,12 @@ public class AdminServlet extends HttpServlet {
     try {
       user = userStore.getUserFromPD(narratorNameUUID);
     } catch (Exception e) {
-      //make new Narrator user if doesn't exist
+      // make new Narrator user if doesn't exist
       appendUser(userName);
     }
     String title = currentTitle + "_" + line;
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
-    System.out.println("THIS IS CONVO ID: ");
-    System.out.println(conversation.getId());
     conversationStore.addConversation(conversation);
     currentConversation = conversation;
   }
@@ -232,9 +221,7 @@ public class AdminServlet extends HttpServlet {
     return didFind;
   }
 
-  /**
-   * read from file & parses text to store in database
-   */
+  /** read from file & parses text to store in database */
   void readFile(BufferedReader bufferedReader) throws Exception {
     String line = null;
     boolean addToLine = false;
@@ -292,18 +279,24 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
-    if (conversationStore.isTitleTaken(currentConversation.getTitle())){
+    if (conversationStore.isTitleTaken(currentConversation.getTitle())) {
       conversationStore.removeConversationFromInStoreList(currentConversation);
-      Conversation toAdd = new Conversation(currentConversation.getId(), currentConversation.getOwnerId(), currentConversation.getTitle(), currentConversation.getCreationTime(), membersInConvo);
-      //UUID id, UUID owner, String title, Instant creation, Set<UUID> members
+      Conversation toAdd =
+          new Conversation(
+              currentConversation.getId(),
+              currentConversation.getOwnerId(),
+              currentConversation.getTitle(),
+              currentConversation.getCreationTime(),
+              membersInConvo);
+      // UUID id, UUID owner, String title, Instant creation, Set<UUID> members
       conversationStore.addConversation(toAdd);
     }
   }
 
-/*
-* Displays new messages from user of a selected text file & updates stats to
-* include the new messages
-*/
+  /*
+   * Displays new messages from user of a selected text file & updates stats to
+   * include the new messages
+   */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -334,7 +327,7 @@ public class AdminServlet extends HttpServlet {
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
       } catch (Exception e) {
-        //error
+        // error
         e.printStackTrace();
       }
     }
