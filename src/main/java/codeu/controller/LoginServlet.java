@@ -72,7 +72,7 @@ public class LoginServlet extends HttpServlet {
       User user = userStore.getUser(username);
       if (BCrypt.checkpw(password, user.getHashedPassword())) {
         request.getSession().setAttribute("user", username);
-        if (user.getAdminStatus()) {
+        if (user.getAdminStatus() && user.getAdminStatus() != null) {
           request.getSession().setAttribute("is_admin", true);
           response.sendRedirect("/adminStats");
           return;

@@ -32,9 +32,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * This class handles all interactions with Google App Engine's Datastore service. On startup it
- * sets the state of the applications's data objects from the current contents of its Datastore. It
- * also performs writes of new of modified objects back to the Datastore.
+ * This class handles all interactions with Google App Engine's Datastore
+ * service. On startup it sets the state of the applications's data objects from
+ * the current contents of its Datastore. It also performs writes of new of
+ * modified objects back to the Datastore.
  */
 public class PersistentDataStore {
 
@@ -42,14 +43,14 @@ public class PersistentDataStore {
   private DatastoreService datastore;
 
   /**
-   * Constructs a new PersistentDataStore and sets up its state to begin loading objects from the
-   * Datastore service.
+   * Constructs a new PersistentDataStore and sets up its state to begin loading
+   * objects from the Datastore service.
    */
   public PersistentDataStore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  /*Retrieves a User Object given User UUID as string*/
+  /* Retrieves a User Object given User UUID as string */
   public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
     Key key = KeyFactory.createKey("chat-users", userN);
     Entity entity = datastore.get(key);
@@ -65,8 +66,8 @@ public class PersistentDataStore {
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
@@ -84,7 +85,13 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        boolean is_admin = (boolean) entity.getProperty("is_admin");
+        // is_admin may be null for the users already exist in datastore
+        // is_admin is casted as an Object to do null check
+        Boolean is_admin = (Boolean) entity.getProperty("is_admin");
+        if (is_admin == null)
+          is_admin = false;
+        // User constructor takes in is_admin as primitive so would be converted
+        // utomatically
         User user = new User(uuid, userName, password, creationTime, is_admin);
         users.add(user);
       } catch (Exception e) {
@@ -99,10 +106,11 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all Conversation objects from the Datastore service and returns them in a List.
+   * Loads all Conversation objects from the Datastore service and returns them in
+   * a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
@@ -134,10 +142,11 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all Message objects from the Datastore service and returns them in a List.
+   * Loads all Message objects from the Datastore service and returns them in a
+   * List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
