@@ -81,13 +81,17 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <%
 
        Set<UUID> userUUIDs = conversation.getMembers();
-        for (UUID user : userUUIDs) {
-          String uuidToString = user.toString();
+        for (UUID userID : userUUIDs) {
+          String uuidToString = userID.toString();
+          System.out.println("In chat.jsp");
+          System.out.println(uuidToString);
           String author = "";
           try{
             author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
-          }catch(Exception e){
+            System.out.println("Found this user");
 
+          }catch(Exception e){
+            e.printStackTrace();
           }
       %>
         <div id="oneUser"><%= author%>

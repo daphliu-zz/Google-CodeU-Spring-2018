@@ -66,11 +66,9 @@ public class ModifyMembersServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
   throws IOException, ServletException
   {
-    // Getting request information without the hostname.
-
         String uri = request.getRequestURI();
         //String boolAppera = request.getParameter("onclick");
-      //  System.out.println(boolAppera);
+        //  System.out.println(boolAppera);
         System.out.println(uri);
         System.out.println("HELLO");
         String conversationTitle= request.getParameter("chatTitle");

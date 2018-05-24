@@ -154,9 +154,23 @@ public class AdminServlet extends HttpServlet {
       User user =
           new User(
               UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
+      System.out.println("adding this todatatbase pd : ");
+      System.out.println(userNameUUID);
+      System.out.println("taht awas usernameeuuid");
       userStore.addUser(user);
       currentUser = user;
-      currentConversation.addMember(UUID.nameUUIDFromBytes(userName.getBytes()));
+      try{
+        System.out.println("IN append user: ");
+      //  System.out.println(currentConversation.getId());
+        if (currentConversation !=null){
+          conversationStore.addMemberinPD(currentConversation.getId(), UUID.nameUUIDFromBytes(userName.getBytes()));
+        }
+
+      } catch(Exception m){
+        System.out.println("didn't work ");
+        m.printStackTrace();
+      }
+
     }
   }
 
@@ -185,6 +199,8 @@ public class AdminServlet extends HttpServlet {
     String title = currentTitle + "_" + line;
     Conversation conversation =
         new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+    System.out.println("THIS IS CONVO ID: ");
+    System.out.println(conversation.getId());
     conversationStore.addConversation(conversation);
     currentConversation = conversation;
   }
@@ -274,6 +290,7 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
+
   }
 
 /*
@@ -311,6 +328,7 @@ public class AdminServlet extends HttpServlet {
         bufferedReader.close();
       } catch (Exception e) {
         //error
+        e.printStackTrace();
       }
     }
     response.sendRedirect("/");

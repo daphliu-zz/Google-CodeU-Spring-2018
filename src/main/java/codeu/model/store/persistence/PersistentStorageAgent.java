@@ -93,6 +93,10 @@ public class PersistentStorageAgent {
     return persistentDataStore.getConversationFromPD(convoUUID);
   }
 
+  public void updateConversationMembers(Conversation conversation) throws EntityNotFoundException {
+    persistentDataStore.updateConversationMembers(conversation);
+  }
+
   /**
    * Retrieve all Message objects from the Datastore service. The returned list may be empty.
    *

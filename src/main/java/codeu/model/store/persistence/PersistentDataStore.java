@@ -98,13 +98,35 @@ public class PersistentDataStore {
 
   /*Retrieves a Conversation Object given Convo UUID as string*/
   public Conversation getConversationFromPD(String convoUUID) throws EntityNotFoundException {
-    Key key = KeyFactory.createKey("chat-conversation", convoUUID);
+    System.out.println("in conversationpd with convoUUID : " + convoUUID);
+    Key key = KeyFactory.createKey("chat-conversations", convoUUID);
     Entity entity = datastore.get(key);
     UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
     UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
     String title = (String) entity.getProperty("title");
     Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+    System.out.println("made it right before retreiving members");
+    System.out.println("String version : " + (String)entity.getProperty("members"));
+    String[] arr = ((String)entity.getProperty("members")).split(",", 0);
+    System.out.println("and this is to strgin from arra: ");
+    System.out.println(Arrays.toString(arr));
+    Set<UUID> members = new HashSet<UUID>();
+    for (int i = 0; i <arr.length; i++){
+      if (i==0){
+        arr[i] = arr[i].substring(1);
+      } if (i == arr.length-1){
+        arr[i] = arr[i].substring(0,arr[i].length()-1);
+      }
+      System.out.println("these are vals of arr[i] : ");
+      System.out.println(arr[i]);
+      String stringVal = arr[i].replaceAll("\\s+","");
+      UUID val = UUID.fromString(stringVal);
+      members.add(val);
+      System.out.println(val);
+    }
+    System.out.println("made set");
+    Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
+    System.out.println("made convo");
     return conversation;
   }
 
@@ -136,9 +158,12 @@ public class PersistentDataStore {
           if (i==0){
             arr[i] = arr[i].substring(1);
           } if (i == arr.length-1){
-            arr[i] = arr[i].substring(0,arr[i].length()-2);
+            arr[i] = arr[i].substring(0,arr[i].length()-1);
           }
-          UUID val = UUID.fromString(arr[i]);
+          System.out.println("these are vals of arr[i] : ");
+          System.out.println(arr[i]);
+          String stringVal = arr[i].replaceAll("\\s+","");
+          UUID val = UUID.fromString(stringVal);
           members.add(val);
         }
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
@@ -153,6 +178,20 @@ public class PersistentDataStore {
 
     return conversations;
   }
+
+  //toAdd will be true when wanting to add new members else will be false to remove
+  public void updateConversationMembers(Conversation conversation) throws EntityNotFoundException {
+    String uuid = conversation.getId().toString();
+    Key key = KeyFactory.createKey("chat-conversations", uuid);
+    Entity conversationEntity = datastore.get(key);
+    conversationEntity.setProperty("uuid", conversation.getId().toString());
+    conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
+    conversationEntity.setProperty("title", conversation.getTitle());
+    conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("members", conversation.getMembers().toString());
+    datastore.put(conversationEntity);
+  }
+
 
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.

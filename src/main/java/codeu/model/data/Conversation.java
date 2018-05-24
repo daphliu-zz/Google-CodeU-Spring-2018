@@ -73,18 +73,17 @@ public class Conversation {
     return creation;
   }
 
-  /** Adds member to this Conversation*/
-  public void addMember(UUID newUser){
-    members.add(newUser);
-  }
-
   /** Returns the member list of this Conversation*/
   public Set<UUID> getMembers(){
     return members;
   }
-
-  /** Removes a member from the members list*/
-  public void removeMember(UUID removeUser){
-    members.remove(removeUser);
+  public void addMember(UUID newUser){
+    members.add(newUser);
   }
+
+  public void removeMember(UUID oldUser){
+    members.remove(oldUser);
+  }
+
+
 }

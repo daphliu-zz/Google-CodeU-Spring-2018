@@ -133,4 +133,26 @@ public class ConversationStore {
     return 0;
   }
 
+  /** Adds member to this Conversation*/
+  public void addMemberinPD(UUID convoUUID, UUID newUser) throws EntityNotFoundException{
+    System.out.println("in add mbr pd");
+    String convoUUIDString = convoUUID.toString();
+    System.out.println("this is convouui.tostring " + convoUUIDString);
+    Conversation convo =  persistentStorageAgent.getConversationFromPD(convoUUIDString);
+    System.out.println("getting past gettingconvofrompd");
+    System.out.println(convo.getMembers().size());
+    convo.addMember(newUser);
+    System.out.println(convo.getMembers().size());
+    //Conversation newConvo = new Conversation (convoUUID, convo.getOwnerId(), convo.getTitle(), convo.getCreationTime(), convo.getMembers());
+    //UUID id, UUID owner, String title, Instant creation, Set<UUID> member
+    persistentStorageAgent.updateConversationMembers(convo);
+    //updatePersistenDatabase
+  }
+
+  /** Removes a member from the members list*/
+  public void removeMemberinPD(UUID removeUser) throws EntityNotFoundException{
+    // members.remove(removeUser);
+    // updateConversationMembers(this);
+    //updatePersistentDatabase
+  }
 }
