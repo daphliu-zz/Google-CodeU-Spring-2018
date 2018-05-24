@@ -1,3 +1,4 @@
+
 // Copyright 2017 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -8,7 +9,7 @@
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// WITHOUT WmembersAsStringsANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
@@ -27,10 +28,11 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Text;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 import java.util.UUID;
-import java.util.*;
+import java.util.membersAsStringsayList;
+
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
  * sets the state of the applications's data objects from the current contents of its Datastore. It
@@ -69,7 +71,7 @@ public class PersistentDataStore {
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
-    List<User> users = new ArrayList<>();
+    List<User> users = new membersAsStringsayList<>();
 
     // Retrieve all users from the datastore.
     // & sorts users in retrieval of database by creation time to make getting
@@ -98,35 +100,29 @@ public class PersistentDataStore {
 
   /*Retrieves a Conversation Object given Convo UUID as string*/
   public Conversation getConversationFromPD(String convoUUID) throws EntityNotFoundException {
-    System.out.println("in conversationpd with convoUUID : " + convoUUID);
     Key key = KeyFactory.createKey("chat-conversations", convoUUID);
     Entity entity = datastore.get(key);
     UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
     UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
     String title = (String) entity.getProperty("title");
     Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    System.out.println("made it right before retreiving members");
-    System.out.println("String version : " + (String)entity.getProperty("members"));
-    String[] arr = ((String)entity.getProperty("members")).split(",", 0);
-    System.out.println("and this is to strgin from arra: ");
-    System.out.println(Arrays.toString(arr));
+    String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
     Set<UUID> members = new HashSet<UUID>();
-    for (int i = 0; i <arr.length; i++){
-      if (i==0){
-        arr[i] = arr[i].substring(1);
-      } if (i == arr.length-1){
-        arr[i] = arr[i].substring(0,arr[i].length()-1);
+    // gets membersAsStrings and changes to UUIDs and puts into set
+    for (int i = 0; i < membersAsStrings.length; i++) {
+      if (i == 0) {
+        membersAsStrings[i] = membersAsStrings[i].substring(1);
       }
-      System.out.println("these are vals of arr[i] : ");
-      System.out.println(arr[i]);
-      String stringVal = arr[i].replaceAll("\\s+","");
+      if (i == membersAsStrings.length - 1) {
+        membersAsStrings[i] = membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
+      }
+      // gets rid of whitespace from string array in order to cast as UUID
+      String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
       UUID val = UUID.fromString(stringVal);
       members.add(val);
-      System.out.println(val);
     }
-    System.out.println("made set");
+
     Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
-    System.out.println("made convo");
     return conversation;
   }
 
@@ -138,7 +134,7 @@ public class PersistentDataStore {
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
-    List<Conversation> conversations = new ArrayList<>();
+    List<Conversation> conversations = new membersAsStringsayList<>();
 
     // Retrieve all conversations from the datastore.
     // & sorts conversations in database by creation time to have conversations
@@ -152,17 +148,19 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String[] arr = ((String)entity.getProperty("members")).split(",", 0);
+        String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
         Set<UUID> members = new HashSet<UUID>();
-        for (int i = 0; i <arr.length; i++){
-          if (i==0){
-            arr[i] = arr[i].substring(1);
-          } if (i == arr.length-1){
-            arr[i] = arr[i].substring(0,arr[i].length()-1);
+        // gets membersAsStrings and changes to UUIDs and puts into set
+        for (int i = 0; i < membersAsStrings.length; i++) {
+          if (i == 0) {
+            membersAsStrings[i] = membersAsStrings[i].substring(1);
           }
-          System.out.println("these are vals of arr[i] : ");
-          System.out.println(arr[i]);
-          String stringVal = arr[i].replaceAll("\\s+","");
+          if (i == membersAsStrings.length - 1) {
+            membersAsStrings[i] =
+                membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
+          }
+          // gets rid of whitespace from string array in order to cast as UUID
+          String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
           UUID val = UUID.fromString(stringVal);
           members.add(val);
         }
@@ -179,7 +177,7 @@ public class PersistentDataStore {
     return conversations;
   }
 
-  //toAdd will be true when wanting to add new members else will be false to remove
+  /*gets a given conversation object and updates it with new info mostly for members update*/
   public void updateConversationMembers(Conversation conversation) throws EntityNotFoundException {
     String uuid = conversation.getId().toString();
     Key key = KeyFactory.createKey("chat-conversations", uuid);
@@ -192,7 +190,6 @@ public class PersistentDataStore {
     datastore.put(conversationEntity);
   }
 
-
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
    *
@@ -201,7 +198,7 @@ public class PersistentDataStore {
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
-    List<Message> messages = new ArrayList<>();
+    List<Message> messages = new membersAsStringsayList<>();
 
     // Retrieve all messages from the datastore.
     // & sorts messages in database by creation time to display the flow of the
@@ -252,7 +249,8 @@ public class PersistentDataStore {
 
   /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Conversation conversation) {
-    Entity conversationEntity = new Entity("chat-conversations", conversation.getId().toString());//query based on UUID
+    Entity conversationEntity =
+        new Entity("chat-conversations", conversation.getId().toString()); // query based on UUID
     conversationEntity.setProperty("uuid", conversation.getId().toString());
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());

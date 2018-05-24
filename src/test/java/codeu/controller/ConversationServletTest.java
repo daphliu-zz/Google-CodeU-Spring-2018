@@ -70,9 +70,10 @@ public class ConversationServletTest {
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
     Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
-//    conversationServlet.doGet(mockRequest, mockResponse);
-  //  Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
+    //    conversationServlet.doGet(mockRequest, mockResponse);
+    //  Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
     //Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    
   }
 
   @Test
