@@ -9,7 +9,7 @@
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WmembersAsStringsANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
@@ -31,7 +31,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.List;
 import java.util.UUID;
-import java.util.membersAsStringsayList;
+import java.util.ArrayList;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -71,7 +71,7 @@ public class PersistentDataStore {
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
-    List<User> users = new membersAsStringsayList<>();
+    List<User> users = new ArrayList<>();
 
     // Retrieve all users from the datastore.
     // & sorts users in retrieval of database by creation time to make getting
@@ -134,7 +134,7 @@ public class PersistentDataStore {
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
-    List<Conversation> conversations = new membersAsStringsayList<>();
+    List<Conversation> conversations = new ArrayList<>();
 
     // Retrieve all conversations from the datastore.
     // & sorts conversations in database by creation time to have conversations
@@ -198,7 +198,7 @@ public class PersistentDataStore {
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
-    List<Message> messages = new membersAsStringsayList<>();
+    List<Message> messages = new ArrayList<>();
 
     // Retrieve all messages from the datastore.
     // & sorts messages in database by creation time to display the flow of the

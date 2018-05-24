@@ -92,7 +92,7 @@ public class ModifyMembersServlet extends HttpServlet {
         // database
         conversationStore.addConversationToInStoreList(newConvo);
       } catch (Exception e) {
-      
+
       }
     }
     if (sV != null) { // means remove btn was pushed
