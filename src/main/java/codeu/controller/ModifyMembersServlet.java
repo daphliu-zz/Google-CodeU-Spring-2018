@@ -86,17 +86,27 @@ public class ModifyMembersServlet extends HttpServlet {
         System.out.println(sV);
         if (addM!=null){ //means addM was pushed
           try{
+            System.out.println("This is addM + " + addM);
             conversationStore.removeConversationFromInStoreList(conversation);
             conversationStore.addMemberinPD(conversation.getId(), UUID.fromString(addM));
             Conversation newConvo = conversationStore.getConversationFromPD(conversation.getId());
-
-            conversationStore.addConversation(newConvo);
+            //still needs to add to current conversationStore since only added to persistent database
+            conversationStore.addConversationToInStoreList(newConvo);
           } catch(Exception e){
             System.out.println("in modify members catch stmetn");
           }
         }
         if (sV!=null){ //means remove btn was pushed
-
+          try{
+            System.out.println("this is sV" + sV);
+              conversationStore.removeConversationFromInStoreList(conversation);
+              conversationStore.removeMemberinPD(conversation.getId(), UUID.fromString(sV));
+              Conversation newConvo = conversationStore.getConversationFromPD(conversation.getId());
+              //still needs to add to current conversationStore since only added to persistent database
+              conversationStore.addConversationToInStoreList(newConvo);
+          } catch(Exception f){
+              System.out.println("in modify rm members catch stmetn");
+          }
 
         }
         System.out.println(addM);

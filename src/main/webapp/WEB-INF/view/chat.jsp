@@ -99,7 +99,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
         <div id="oneUser"><%= author%>
       <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
 
-        <span id="removeBtn"><button type="submit" value= "<%= author%>" name="remove" id= "remove">Remove <%= author%></button></span>
+        <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
 
         <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
       </form>
@@ -145,6 +145,8 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
 
 <div id = "addMember"  class = "tabcontent">
+  <h2> Discover: </h2>
+  <h3> Add new members: </h3>
   <%
  List<User> users = UserStore.getInstance().getAllUsers();
     for (User user : users) {
@@ -153,8 +155,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       if (!conversation.isMember(user.getId())){
 
   %>
-  <h2> Discover: </h2>
-  <h3> Add new members: </h3>
+
   <p><%= userN %></p>
   <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
     <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
