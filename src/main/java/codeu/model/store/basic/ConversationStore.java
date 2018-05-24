@@ -148,7 +148,6 @@ public class ConversationStore {
     System.out.println(convo.getMembers().size());
     convo.addMember(newUser);
     System.out.println(convo.getMembers().size());
-    //Conversation newConvo = new Conversation (convoUUID, convo.getOwnerId(), convo.getTitle(), convo.getCreationTime(), convo.getMembers());
     //UUID id, UUID owner, String title, Instant creation, Set<UUID> member
     persistentStorageAgent.updateConversationMembers(convo);
     //updatePersistenDatabase

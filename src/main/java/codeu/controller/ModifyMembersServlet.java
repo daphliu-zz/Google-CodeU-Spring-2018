@@ -66,16 +66,40 @@ public class ModifyMembersServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
   throws IOException, ServletException
   {
-        String uri = request.getRequestURI();
+    //Conversation curr = (Conversation)request.getAttribute("conversation");
+    //String tryT = curr.getTitle();
+    //System.out.println("is this name? " + tryT);
+    //TODO: redirect if user is not member of conversaoin
+      //  Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
+        //String uri = request.getRequestURI();
         //String boolAppera = request.getParameter("onclick");
         //  System.out.println(boolAppera);
-        System.out.println(uri);
+        //System.out.println(uri);
         System.out.println("HELLO");
         String conversationTitle= request.getParameter("chatTitle");
+        Conversation conversation = conversationStore.getConversationWithTitle(conversationTitle);
         System.out.println(conversationTitle);
         String sV = request.getParameter("remove");
+        String addM = request.getParameter("addMbr");
+
         //load conversation & remove user from list
         System.out.println(sV);
+        if (addM!=null){ //means addM was pushed
+          try{
+            conversationStore.removeConversationFromInStoreList(conversation);
+            conversationStore.addMemberinPD(conversation.getId(), UUID.fromString(addM));
+            Conversation newConvo = conversationStore.getConversationFromPD(conversation.getId());
+
+            conversationStore.addConversation(newConvo);
+          } catch(Exception e){
+            System.out.println("in modify members catch stmetn");
+          }
+        }
+        if (sV!=null){ //means remove btn was pushed
+
+
+        }
+        System.out.println(addM);
 
         response.sendRedirect("/chat/" + conversationTitle);
   }

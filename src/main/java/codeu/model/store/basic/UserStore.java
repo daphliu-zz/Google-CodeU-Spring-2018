@@ -146,4 +146,9 @@ public class UserStore {
     }
     return null;
   }
+
+  /**Returns all users*/
+  public List<User> getAllUsers(){
+    return users;
+  }
 }

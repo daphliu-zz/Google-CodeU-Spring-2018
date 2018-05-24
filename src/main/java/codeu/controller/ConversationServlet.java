@@ -27,6 +27,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 
 /** Servlet class responsible for the conversations page. */
 public class ConversationServlet extends HttpServlet {
@@ -76,19 +77,22 @@ public class ConversationServlet extends HttpServlet {
 
     List<Conversation> conversations = conversationStore.getAllConversations();
     List<Conversation> toShow = new ArrayList<Conversation>(conversations);
+
     if (user == null) { //if no user, show no conversations
       toShow.clear();
     } else{
       toShow = conversationStore.getAllConversations();
     }
-    for (Conversation conversation : conversations){
-      if (user != null){
-        System.out.println("in convo servlect with user id: ");
-        System.out.println(user.getId());
-        if (!conversation.isMember(user.getId())){
-          toShow.remove(conversation);
+    for (Iterator<Conversation> iterator = toShow.iterator(); iterator.hasNext();) {
+        Conversation conversation= iterator.next();
+        if (user!=null) {
+          System.out.println("this is user id : "  + user.getId().toString());
+          if (!conversation.isMember(user.getId())){
+            System.out.println("not a member of conversation");
+            // Remove the current element from the iterator and the list.
+            iterator.remove();
+          }
         }
-      }
     }
     //only display conversation that the user is a member of
     request.setAttribute("conversations", toShow);
@@ -137,6 +141,7 @@ public class ConversationServlet extends HttpServlet {
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
     conversationStore.addConversation(conversation);
+    //TODO: check here that user cannot access if not loggedin
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }

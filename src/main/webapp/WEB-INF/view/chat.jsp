@@ -71,11 +71,13 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
     <hr/>
     <div class="tab">
       <button class="tablinks" onclick="openTab(event, 'biggerChat')" id = "defaultOpen">Chat</button>
-      <button class="tablinks" onclick="openTab(event, 'addMember')">Members</button>
+      <button class="tablinks" onclick="openTab(event, 'rmMember')">Remove Members</button>
+      <button class="tablinks" onclick="openTab(event, 'addMember')">Add Members</button>
     </div>
+        <hr/>
 
 
-    <div id="addMember" class="tabcontent">
+    <div id="rmMember" class="tabcontent">
     <h3>Members</h3>
     <p>These are the members in the Conversation.</p>
       <%
@@ -98,6 +100,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
 
         <span id="removeBtn"><button type="submit" value= "<%= author%>" name="remove" id= "remove">Remove <%= author%></button></span>
+
         <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
       </form>
       </div>
@@ -136,8 +139,42 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
 
     <hr/>
 </div>
+
+
+
+
+
+<div id = "addMember"  class = "tabcontent">
+  <%
+ List<User> users = UserStore.getInstance().getAllUsers();
+    for (User user : users) {
+      String userN = user.getName();
+      UUID userUUID = user.getId();
+      if (!conversation.isMember(user.getId())){
+
+  %>
+  <h2> Discover: </h2>
+  <h3> Add new members: </h3>
+  <p><%= userN %></p>
+  <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+    <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
+    <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
+  </form>
+
+  <%
+      }
+    }
+  %>
+</div>
+
+
+
+
+
+
   </div>
   <script>
+  //changes between tabs
   function openTab(evt, tabName) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
@@ -151,13 +188,12 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       document.getElementById(tabName).style.display = "block";
       evt.currentTarget.className += " active";
   }
+  //error checking to delete specific user
   function isValidForm(){
-      //console.log(document.getElementById("remove").textContent);
-
       return confirm("Delete this user?");
   }
 
-  // Get the element with id="defaultOpen" and click on it
+  // Get the element with id="defaultOpen" and click on it so makes that the active tab
    document.getElementById("defaultOpen").click();
   </script>
 </body>
