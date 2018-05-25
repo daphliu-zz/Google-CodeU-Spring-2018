@@ -56,11 +56,6 @@ input {
 button {
   font-size: 18px;
 }
-#id {
+#remove {
   float: right;
-}
-
-.oneUser{
-  display: flex;
-  justify-content: space-between;
 }

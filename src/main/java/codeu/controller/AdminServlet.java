@@ -279,6 +279,9 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
+    //updates persistent database with member list of current conversatoin &
+    //gets the "old"/initial conversation added in order to update its memberlist
+    //makes a check to ensure the conversation is in conversation store
     if (conversationStore.isTitleTaken(currentConversation.getTitle())) {
       conversationStore.removeConversationFromInStoreList(currentConversation);
       Conversation toAdd =

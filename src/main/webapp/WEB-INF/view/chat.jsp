@@ -89,18 +89,21 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
             author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
           }catch(Exception e){
             e.printStackTrace();
-          } if (!userID.equals(conversation.getOwnerId())){
+          }
 
 
       %>
-        <div id="oneUser"><%= author%>
-      <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
-        <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
+      <div id="oneUser"><%= author%>
+
+        <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+            <%  if (!userID.equals(conversation.getOwnerId())){%>
+            <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
+            <%  } %>
         <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
       </form>
       </div>
       <%
-          }
+
         }
       %>
   </div>
@@ -132,7 +135,7 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       <p><a href="/login">Login</a> to send a message.</p>
     <% } %>
     <hr/>
-    
+
 </div>
 
 <div id = "addMember"  class = "tabcontent">

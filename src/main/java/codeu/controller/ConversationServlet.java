@@ -76,24 +76,18 @@ public class ConversationServlet extends HttpServlet {
     User user = userStore.getUser(username);
 
     List<Conversation> conversations = conversationStore.getAllConversations();
-    List<Conversation> toShow = new ArrayList<Conversation>(conversations);
+    List<Conversation> toShow = new ArrayList<Conversation>();
 
-    if (user == null) { //if no user, show no conversations
-      toShow.clear();
-    } else{
-      toShow = conversationStore.getAllConversations();
-    }
-    for (Iterator<Conversation> iterator = toShow.iterator(); iterator.hasNext();) {
-        Conversation conversation= iterator.next();
-        if (user!=null) {
-          System.out.println("this is user id : "  + user.getId().toString());
-          if (!conversation.isMember(user.getId())){
-            System.out.println("not a member of conversation");
-            // Remove the current element from the iterator and the list.
-            iterator.remove();
-          }
+    if (user!=null){
+      for(Conversation conversation : conversations){
+        if (conversation.isMember(user.getId())){
+          System.out.println("is a member of conversation");
+          // Remove the current element from the iterator and the list.
+          toShow.add(conversation);
         }
+      }
     }
+
     //only display conversation that the user is a member of
     request.setAttribute("conversations", toShow);
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
