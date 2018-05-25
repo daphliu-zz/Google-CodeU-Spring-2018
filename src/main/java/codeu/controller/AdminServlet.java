@@ -104,6 +104,7 @@ public class AdminServlet extends HttpServlet {
         try {
           messageAuthor = userStore.getUserFromPD(messageAuthorID.toString());
         } catch (Exception e) {
+          throw new Error(e);
         }
         if (usersToMessages.containsKey(messageAuthor)) {
           int prevValue = usersToMessages.get(messageAuthor);
@@ -328,7 +329,7 @@ public class AdminServlet extends HttpServlet {
       bufferedReader.close();
     } catch (Exception e) {
       // error
-      //throw new Error(e);
+      throw new Error(e);
     }
   }
 
