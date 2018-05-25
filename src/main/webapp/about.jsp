@@ -46,12 +46,13 @@
       <p>
        A brief introduction to the members of Team 007 and the use of this chat app.
       </p>
+
       <div class="members">
         <div>
-          <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;">
+          <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:300px; height:320px;">
           <p id="memberInfo">
             <strong>Name:</strong> Daphne Liu </br>
-            <strong>Education:</strong> 3rd year in Computer Science at University of British Columbia</br>
+            <strong>Education:</strong> University of British Columbia, Computer Science</br>
             <strong>Interests:</strong> Mobile, VR, Doctor Who </br>
             <strong>Achievements: </strong>Supported login form to confirm validity of users and redirect
             to sessions Added custom routing and database manipulation in Java for
@@ -59,16 +60,53 @@
             with JavaScript using service workers.
          </p>
        </div>
-        <div>  <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
-        <div class="members">
-        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
-          </div>
 
-        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
-            </div>
-              <div class="members">
-        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
+        <div>
+          <img src="memberPhotos/blank.png" alt="Member: Ken Wang" style="width:300px; height:320px;">
+            <p id="memberInfo">
+              <strong>Name:</strong> Ken Wang </br>
+              <strong>Education:</strong>University of Utah, Computer Science</br>
+              <strong>Interests:</strong> </br>
+              <strong>Achievements: </strong> Styling text in messages
+           </p>
+          </div>
+        </div>
+
+
+        <div class="members">
+        <div>
+          <img src="memberPhotos/natasha.jpeg" alt="Member: Natasha Sarkar" style="width:300px; height:320px;">
+            <p id="memberInfo">
+              <strong>Name:</strong> Natasha Sarkar </br>
+              <strong>Education:</strong> UCLA, Computer Science & Computer Engineering</br>
+              <strong>Interests:</strong>  </br>
+              <strong>Achievements: </strong> Styling text in messages
+           </p>
+         </div>
+        <div>
+           <img src="memberPhotos/sonia.jpg" alt="Member: Sonia Velasco" style="width:300px; height:320px;">
+          <p id="memberInfo">
+            <strong>Name:</strong> Sonia Velasco </br>
+            <strong>Education:</strong>Stanford University, Computer Science</br>
+            <strong>Interests:</strong> BTS </br>
+            <strong>Achievements: </strong> Implemented access to site statistics;
+            Allowed access control to conversations with users being able to delete/add
+            members to a conversation
+         </p>
+       </div>
       </div>
+
+        <div class="members">
+        <div>
+          <img src="memberPhotos/desiye.jpeg" alt="Member: Desiye Collier" style="width:300px; height:320px;">
+            <p id="memberInfo">
+              <strong>Name:</strong> Desiye Collier </br>
+              <strong>Project Advisor: </strong>Google Software Engineer on the Adwords API team
+           </p>
+         </div>
+      </div>
+
+
     </div>
 
       <ul>
@@ -80,7 +118,7 @@
     conversations.  </li>
       </ul>
 
-    </div>
+
   </div>
 </body>
 </html>
