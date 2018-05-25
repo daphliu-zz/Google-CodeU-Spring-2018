@@ -66,12 +66,16 @@ public class ConversationServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
+    // String userName  = (String) mockRequest.getSession().getAttribute("user");
+    // User user = mockUserStore.getUser(userName);
     List<Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
         new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
     Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
 
     conversationServlet.doGet(mockRequest, mockResponse);
+    //TODO: this won't work since can't compare list of conversations
+    //since won't display anything unless correct user is logged in
     //Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
 

@@ -68,7 +68,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /** Gets the Most Active User based off of the user who has sent the most messages */
-  String getMostActiveUser() {
+  String getMostActiveUser(){
     Map<User, Integer> usersToMessages = new HashMap<User, Integer>();
     // go through all conversations & gets number of messages &
     // keeps track of all users number of messages
@@ -157,13 +157,9 @@ public class AdminServlet extends HttpServlet {
               UUID.nameUUIDFromBytes(userName.getBytes()), userName, "password", Instant.now());
       userStore.addUser(user);
       currentUser = user;
-      try {
-        if (currentConversation != null) {
-          membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
-        }
-      } catch (Exception m) {
-        m.printStackTrace();
-      }
+    }
+    if (currentConversation != null) {
+        membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
     }
   }
 
@@ -179,7 +175,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /*adds conversation to persistent data store*/
-  void appendConversation(String line) {
+  void appendConversation(String line) throws Exception{
     String userName = NARRATOR;
     String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User user = null;
@@ -197,7 +193,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   // Saves the character's message to the character before switching to a new user
-  void changeToNewUser(String charactersWord, String newUser) {
+  void changeToNewUser(String charactersWord, String newUser) throws Exception{
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
         appendMessage(charactersWord);
@@ -208,7 +204,7 @@ public class AdminServlet extends HttpServlet {
     }
   }
 
-  boolean foundWordNarratorDictates(String firstWord, String charactersWord) {
+  boolean foundWordNarratorDictates(String firstWord, String charactersWord) throws Exception{
     boolean didFind = true;
     if (firstWord.equals("**Exit")
         || firstWord.equals("Enter")
@@ -329,9 +325,9 @@ public class AdminServlet extends HttpServlet {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
         readFile(bufferedReader); // works with files that begin with ACT
         bufferedReader.close();
-      } catch (Exception e) {
+      } catch (Throwable e) {
         // error
-        e.printStackTrace();
+         throw new Error(e);
       }
     }
     response.sendRedirect("/");
