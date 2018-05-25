@@ -81,7 +81,6 @@ public class ConversationServlet extends HttpServlet {
     if (user!=null){
       for(Conversation conversation : conversations){
         if (conversation.isMember(user.getId()) || user.getAdminStatus()){
-          System.out.println("is a member of conversation");
           // Remove the current element from the iterator and the list.
           toShow.add(conversation);
         }

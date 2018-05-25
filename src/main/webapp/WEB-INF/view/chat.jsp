@@ -93,7 +93,7 @@
               try{
                 author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
               }catch(Exception e){
-                e.printStackTrace();
+                throw new Error(e);
               }
           %>
           <div id="oneUser"><%= author%>
