@@ -18,12 +18,12 @@
 <head>
   <title>Login</title>
   <link rel="stylesheet" href="/css/main.css">
-  <style> 
+  <style>
       label {
         display: inline-block;
         width: 100px;
       }
-   </style> 
+   </style>
 </head>
 <body>
 

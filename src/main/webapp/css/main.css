@@ -46,6 +46,7 @@ nav a {
 
 h1 {
 	color: #757575;
+	
 }
 
 input {
@@ -103,7 +104,7 @@ button {
 }
 
 .msglist {
-	
+
 }
 
 .btn {
@@ -123,4 +124,22 @@ button {
 
 .btn:hover {
 	background-color: #c0c0c0;
+}
+
+
+.members {
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.members > div {
+  width: 350px;
+  margin: 10px;
+  line-height: 20px;
+  font-size: 15px;
+}
+#memberInfo{
+	font-size: 15px;
+	font-style: Bold;
 }

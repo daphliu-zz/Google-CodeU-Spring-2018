@@ -36,36 +36,46 @@
 
   <div id="container">
     <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+      style="width:100%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About the CodeU Chat App</h1>
+      <h1>About Team 007's CodeU Chat App</h1>
       <p>
-        This is an example chat application designed to be a starting point
-        for your CodeU project team work. Here's some stuff to think about:
+       A brief introduction to the members of Team 007 and the use of this chat app.
       </p>
+      <div class="members">
+        <div>
+          <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;">
+          <p id="memberInfo">
+            <strong>Name:</strong> Daphne Liu </br>
+            <strong>Education:</strong> 3rd year in Computer Science at University of British Columbia</br>
+            <strong>Interests:</strong> Mobile, VR, Doctor Who </br>
+            <strong>Achievements: </strong>Supported login form to confirm validity of users and redirect
+            to sessions Added custom routing and database manipulation in Java for
+            administrators Introduced offline support by caching HTML pages and CSS
+            with JavaScript using service workers.
+         </p>
+       </div>
+        <div>  <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
+        <div class="members">
+        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
+          </div>
+
+        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
+            </div>
+              <div class="members">
+        <div> <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:320px; height:320px;"></div>
+      </div>
+    </div>
 
       <ul>
-        <li><strong>Algorithms and data structures:</strong> We've made the app
-            and the code as simple as possible. You will have to extend the
-            existing data structures to support your enhancements to the app,
-            and also make changes for performance and scalability as your app
-            increases in complexity.</li>
-        <li><strong>Look and feel:</strong> The focus of CodeU is on the Java
-          side of things, but if you're particularly interested you might use
-          HTML, CSS, and JavaScript to make the chat app prettier.</li>
-        <li><strong>Customization:</strong> Think about a group you care about.
-          What needs do they have? How could you help? Think about technical
-          requirements, privacy concerns, and accessibility and
-          internationalization.</li>
+        <li><strong>Usage: </strong> Feel free to create new accounts and add users
+        to conversations. In order to view our stats page, simply have "admin"
+         as the username with no password. </li>
+        <li><strong>Features:</strong> The user can edit their text using our
+      text editor. One can also view stats on usage. The user can control who views their
+    conversations.  </li>
       </ul>
 
-      <p>
-        This is your code now. Get familiar with it and get comfortable
-        working with your team to plan and make changes. Start by updating the
-        homepage and this about page to tell your users more about your team.
-        This page should also be used to describe the features and improvements
-        you've added.
-      </p>
     </div>
   </div>
 </body>

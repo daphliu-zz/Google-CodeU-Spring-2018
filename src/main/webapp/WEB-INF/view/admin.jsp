@@ -16,6 +16,7 @@
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
+        <a href="/testdata">Load Test Data</a>
   </nav>
 
   <div id="container">
@@ -30,7 +31,7 @@
       <p>Most Active User: <%= request.getAttribute("mostActiveUser")%></p>
 
     </form>
-  
+
   </div>
     <div id="container">
       <h1> Import Data</h1>
