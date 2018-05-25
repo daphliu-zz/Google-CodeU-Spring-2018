@@ -91,7 +91,7 @@
           <p id="memberInfo">
             <strong>Sonia Velasco</strong>  </br>
             <strong>Education:</strong>Stanford University, Computer Science</br>
-            <strong>Interests:</strong> BTS </br>
+            <strong>Interests:</strong> BTS, photography </br>
             <strong>Achievements: </strong> Implemented access to site statistics;
             Allowed access control to conversations with users being able to delete/add
             members to a conversation
