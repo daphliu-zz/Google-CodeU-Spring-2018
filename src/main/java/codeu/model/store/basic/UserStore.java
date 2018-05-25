@@ -15,9 +15,9 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.User;
+import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import com.google.appengine.api.datastore.EntityNotFoundException;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -87,8 +87,8 @@ public class UserStore {
   }
 
   /*
-  * Gets user directly from persistent database
-  */
+   * Gets user directly from persistent database
+   */
   public User getUserFromPD(String userUUID) throws EntityNotFoundException {
     return persistentStorageAgent.getUserFromPDatabase(userUUID);
   }
@@ -110,7 +110,7 @@ public class UserStore {
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     users.add(user);
-    persistentStorageAgent.writeThrough(user);
+    persistentStorageAgent.createUser(user);
   }
 
   /** Return true if the given username is known to the application. */
@@ -150,5 +150,15 @@ public class UserStore {
   /**Returns all users*/
   public List<User> getAllUsers(){
     return users;
+  }
+ /** Returns the user with flipped is_admin flag */
+  public void setIsAdmin(User user, boolean is_admin) throws PersistentDataStoreException {
+    try {
+      persistentStorageAgent.updateUserAdminStatus(user, is_admin);
+    } catch (EntityNotFoundException e) {
+      throw new RuntimeException("user does not exist in database");
+    }
+    users = persistentStorageAgent.loadUsers();
+
   }
 }

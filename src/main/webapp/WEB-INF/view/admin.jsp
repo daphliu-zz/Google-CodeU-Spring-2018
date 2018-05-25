@@ -30,6 +30,7 @@
       <p>Most Active User: <%= request.getAttribute("mostActiveUser")%></p>
 
     </form>
+  
   </div>
     <div id="container">
       <h1> Import Data</h1>
@@ -44,6 +45,27 @@
       </select>
       <button type="submit" value="confirm" name="confirm">Confirm</button>
       <%-- TODO: have Submit button reload page to show data for file uploaded--%>
+    </div>
+
+    </div>
+    <div id="container">
+      <h1> Manage Admins</h1>
+      <%-- Allow for admins to promote or demote an user to/from admin status--%>
+      <form action="/adminStats" method="POST">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username">
+        <br/><br/>
+        <button type="submit" value="promote" name="change_admin_status">Promote</button>
+        <button type="submit" value="demote" name="change_admin_status">Demote</button>
+      </form>
+
+      <% if(request.getAttribute("error") != null){ %>
+        <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+      <% } %>
+
+      <% if(request.getAttribute("success") != null){ %>
+        <h2 style="color:green"><%= request.getAttribute("success") %></h2>
+      <% } %>
     </div>
 </body>
 </html>

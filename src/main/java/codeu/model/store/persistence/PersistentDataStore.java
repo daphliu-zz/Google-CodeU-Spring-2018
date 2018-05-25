@@ -34,9 +34,10 @@ import java.util.UUID;
 import java.util.ArrayList;
 
 /**
- * This class handles all interactions with Google App Engine's Datastore service. On startup it
- * sets the state of the applications's data objects from the current contents of its Datastore. It
- * also performs writes of new of modified objects back to the Datastore.
+ * This class handles all interactions with Google App Engine's Datastore
+ * service. On startup it sets the state of the applications's data objects from
+ * the current contents of its Datastore. It also performs writes of new of
+ * modified objects back to the Datastore.
  */
 public class PersistentDataStore {
 
@@ -44,30 +45,31 @@ public class PersistentDataStore {
   private DatastoreService datastore;
 
   /**
-   * Constructs a new PersistentDataStore and sets up its state to begin loading objects from the
-   * Datastore service.
+   * Constructs a new PersistentDataStore and sets up its state to begin loading
+   * objects from the Datastore service.
    */
   public PersistentDataStore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
   }
 
-  /*Retrieves a User Object given User UUID as string*/
+  /* Retrieves a User Object given User UUID as string */
   public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
     Key key = KeyFactory.createKey("chat-users", userN);
     Entity entity = datastore.get(key);
     UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
     String userName = (String) entity.getProperty("username");
+    boolean is_admin = (boolean) entity.getProperty("is_admin");
     String password = (String) entity.getProperty("password");
     Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    User user = new User(uuid, userName, password, creationTime);
+    User user = new User(uuid, userName, password, creationTime, is_admin);
     return user;
   }
 
   /**
    * Loads all User objects from the Datastore service and returns them in a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<User> loadUsers() throws PersistentDataStoreException {
 
@@ -85,7 +87,14 @@ public class PersistentDataStore {
         String userName = (String) entity.getProperty("username");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        User user = new User(uuid, userName, password, creationTime);
+        // is_admin may be null for the users already exist in datastore
+        // is_admin is casted as an Object to do null check
+        Boolean is_admin = (Boolean) entity.getProperty("is_admin");
+        if (is_admin == null)
+          is_admin = false;
+        // User constructor takes in is_admin as primitive so would be converted
+        // utomatically
+        User user = new User(uuid, userName, password, creationTime, is_admin);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -127,10 +136,11 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all Conversation objects from the Datastore service and returns them in a List.
+   * Loads all Conversation objects from the Datastore service and returns them in
+   * a List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
 
@@ -191,10 +201,11 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all Message objects from the Datastore service and returns them in a List.
+   * Loads all Message objects from the Datastore service and returns them in a
+   * List.
    *
-   * @throws codeu.model.store.persistence.PersistentDataStoreException if an error was detected
-   *     during the load from the Datastore service
+   * @throws codeu.model.store.persistence.PersistentDataStoreException if an
+   *         error was detected during the load from the Datastore service
    */
   public List<Message> loadMessages() throws PersistentDataStoreException {
 
@@ -212,7 +223,7 @@ public class PersistentDataStore {
         UUID conversationUuid = UUID.fromString((String) entity.getProperty("conv_uuid"));
         UUID authorUuid = UUID.fromString((String) entity.getProperty("author_uuid"));
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String content = ((Text) entity.getProperty("content")).getValue();
+        String content = (String) entity.getProperty("content"); 
         Message message = new Message(uuid, conversationUuid, authorUuid, content, creationTime);
         messages.add(message);
       } catch (Exception e) {
@@ -222,17 +233,31 @@ public class PersistentDataStore {
         throw new PersistentDataStoreException(e);
       }
     }
-
     return messages;
   }
 
-  /** Write a User object to the Datastore service. */
-  public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users", user.getId().toString()); // setting Key to be UUID
-    userEntity.setProperty("uuid", user.getId().toString());
+  /** Write a new User object to the Datastore service. */
+  public void createUser(User user) {
+    String uuid = user.getId().toString();
+    Entity userEntity = new Entity("chat-users", uuid);
+    userEntity.setProperty("uuid", uuid);
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("password", user.getHashedPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", user.getAdminStatus());
+    datastore.put(userEntity);
+  }
+
+  /** Update a User object to the Datastore service. */
+  public void updateUserAdminStatus(User user, boolean is_admin) throws EntityNotFoundException {
+    String uuid = user.getId().toString();
+    Key key = KeyFactory.createKey("chat-users", uuid);
+    Entity userEntity = datastore.get(key);
+    userEntity.setProperty("uuid", uuid);
+    userEntity.setProperty("username", user.getName());
+    userEntity.setProperty("password", user.getHashedPassword());
+    userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("is_admin", is_admin);
     datastore.put(userEntity);
   }
 
@@ -242,7 +267,7 @@ public class PersistentDataStore {
     messageEntity.setProperty("uuid", message.getId().toString());
     messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
-    messageEntity.setProperty("content", new Text(message.getContent()));
+    messageEntity.setProperty("content", message.getContent()); 
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
   }

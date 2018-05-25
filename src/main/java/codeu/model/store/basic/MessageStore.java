@@ -107,9 +107,9 @@ public class MessageStore {
     this.messages = messages;
   }
 
-  /**Gets the number of total messages */
-  public int getNumMessages(){
-    if (messages != null){
+  /** Gets the number of total messages */
+  public int getNumMessages() {
+    if (messages != null) {
       return messages.size();
     }
     return 0;

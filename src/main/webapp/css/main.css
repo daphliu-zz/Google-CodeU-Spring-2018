@@ -12,50 +12,120 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 body {
-  margin: 0;
-  font-family: sans-serif;
-  line-height: 1.6;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #444;
-  background-color: #eeeeee;
+	margin: 0;
+	font-family: sans-serif;
+	line-height: 1.6;
+	font-size: 18px;
+	line-height: 1.6;
+	color: #444;
+	background-color: #eeeeee;
 }
 
 nav {
-  background-color: #283593;
+	background-color: #283593;
 }
 
 nav a {
-  color: white;
-  display: inline-block;
-  font-size: 24px;
-  margin: 15px;
-  text-decoration: none;
+	color: white;
+	display: inline-block;
+	font-size: 24px;
+	margin: 15px;
+	text-decoration: none;
 }
 
 #navTitle {
-  font-size: 36px;
+	font-size: 36px;
 }
 
 #container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
 }
 
 h1 {
-  color: #757575;
+	color: #757575;
 }
 
 input {
-  font-size: 18px;
+	font-size: 18px;
 }
 
 button {
-  font-size: 18px;
+	font-size: 18px;
 }
+
+.chat {
+	width: 800px;
+	height: 600px;
+	border: 1px solid #666;
+	margin: 50px auto 0;
+	background: #f9f9f9;
+	border-left: 2px solid #999;
+	border-right: 2px solid #999;
+	border-top: 2px solid #999;
+	border-bottom: 2px solid #999;
+	border-radius: 5px;
+	box-shadow: 2px 2px 12px #999;
+	overflow: auto;
+}
+
+.msg {
+	padding: 2px;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.notusertalk {
+	margin: 10px;
+}
+
+.notusertalk span {
+	display: inline-block;
+	background: #0181cc;
+	border-radius: 10px;
+	color: #fff;
+	padding: 5px 10px;
+}
+
 #remove {
   float: right;
+}
+
+
+.usertalk {
+	margin: 10px;
+	text-align: right;
+}
+
+.usertalk span {
+	display: inline-block;
+	background: #ef8201;
+	border-radius: 10px;
+	color: #fff;
+	padding: 5px 10px;
+}
+
+.msglist {
+
+}
+
+.btn {
+	background-color: #999;
+	width: 80px;
+	height: 80px;
+	border: none;
+	color: white;
+	border-radius: 6px;
+	text-align: center;
+	font-size: 15px;
+	cursor: pointer;
+	float: right;
+	margin-top: 10px;
+	box-shadow: 2px 2px 12px #999;
+}
+
+.btn:hover {
+	background-color: #c0c0c0;
 }

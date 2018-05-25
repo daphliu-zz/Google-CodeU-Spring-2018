@@ -28,8 +28,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /** Servlet class responsible for the chat page. */
 public class ChatServlet extends HttpServlet {
@@ -140,16 +138,9 @@ public class ChatServlet extends HttpServlet {
 
     String messageContent = request.getParameter("message");
 
-    // this removes any HTML from the message content
-    String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
-
     Message message =
         new Message(
-            UUID.randomUUID(),
-            conversation.getId(),
-            user.getId(),
-            cleanedMessageContent,
-            Instant.now());
+            UUID.randomUUID(), conversation.getId(), user.getId(), messageContent, Instant.now());
 
     messageStore.addMessage(message);
 
