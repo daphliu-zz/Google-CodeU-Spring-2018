@@ -51,7 +51,7 @@
         <div>
           <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:300px; height:320px;">
           <p id="memberInfo">
-            <strong>Name:</strong> Daphne Liu </br>
+            <strong>Daphne Liu</strong>  </br>
             <strong>Education:</strong> University of British Columbia, Computer Science</br>
             <strong>Interests:</strong> Mobile, VR, Doctor Who </br>
             <strong>Achievements: </strong>Supported login form to confirm validity of users and redirect
@@ -62,12 +62,15 @@
        </div>
 
         <div>
-          <img src="memberPhotos/blank.png" alt="Member: Ken Wang" style="width:300px; height:320px;">
+          <img src="memberPhotos/ken.jpg" alt="Member: Ken Wang" style="width:300px; height:320px;">
             <p id="memberInfo">
-              <strong>Name:</strong> Ken Wang </br>
+              <strong>Ken Wang</strong> </br>
               <strong>Education:</strong>University of Utah, Computer Science</br>
-              <strong>Interests:</strong> </br>
-              <strong>Achievements: </strong> Styling text in messages
+              <strong>Interests:</strong> Entertaining Arts, Game engineering, Web</br>
+              <strong>Achievements: </strong>Created Register related page and the backend servlet
+              for new users. Reinvented the wheel of a Rich Text Editor for the purpose of a
+              better looking and functional Chat page. Beautified the Chat page.
+
            </p>
           </div>
         </div>
@@ -75,9 +78,9 @@
 
         <div class="members">
         <div>
-          <img src="memberPhotos/natasha.jpeg" alt="Member: Natasha Sarkar" style="width:300px; height:320px;">
+          <img src="memberPhotos/blank.png" alt="Member: Natasha Sarkar" style="width:300px; height:320px;">
             <p id="memberInfo">
-              <strong>Name:</strong> Natasha Sarkar </br>
+              <strong>Natasha Sarkar</strong>  </br>
               <strong>Education:</strong> UCLA, Computer Science & Computer Engineering</br>
               <strong>Interests:</strong>  </br>
               <strong>Achievements: </strong> Styling text in messages
@@ -86,7 +89,7 @@
         <div>
            <img src="memberPhotos/sonia.jpg" alt="Member: Sonia Velasco" style="width:300px; height:320px;">
           <p id="memberInfo">
-            <strong>Name:</strong> Sonia Velasco </br>
+            <strong>Sonia Velasco</strong>  </br>
             <strong>Education:</strong>Stanford University, Computer Science</br>
             <strong>Interests:</strong> BTS </br>
             <strong>Achievements: </strong> Implemented access to site statistics;
@@ -100,7 +103,7 @@
         <div>
           <img src="memberPhotos/desiye.jpeg" alt="Member: Desiye Collier" style="width:300px; height:320px;">
             <p id="memberInfo">
-              <strong>Name:</strong> Desiye Collier </br>
+              <strong>Desiye Collier</strong>  </br>
               <strong>Project Advisor: </strong>Google Software Engineer on the Adwords API team
            </p>
          </div>
