@@ -33,6 +33,7 @@ public class AdminServlet extends HttpServlet {
   private Conversation currentConversation = null;
   private User currentUser = null;
   private String currentTitle = "";
+  private Set<UUID> membersInConvo = new HashSet<UUID>();
   private static final String NARRATOR = "NARRATOR";
   /** Set up state for handling the load test data request. */
   @Override
@@ -103,6 +104,7 @@ public class AdminServlet extends HttpServlet {
         try {
           messageAuthor = userStore.getUserFromPD(messageAuthorID.toString());
         } catch (Exception e) {
+          throw new Error(e);
         }
         if (usersToMessages.containsKey(messageAuthor)) {
           int prevValue = usersToMessages.get(messageAuthor);
@@ -166,6 +168,9 @@ public class AdminServlet extends HttpServlet {
       userStore.addUser(user);
       currentUser = user;
     }
+    if (currentConversation != null) {
+      membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
+    }
   }
 
   /*Puts a message into PersistentDataStore*/
@@ -180,7 +185,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /*adds conversation to persistent data store*/
-  void appendConversation(String line) {
+  void appendConversation(String line) throws Exception {
     String userName = NARRATOR;
     String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User user = null;
@@ -198,7 +203,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   // Saves the character's message to the character before switching to a new user
-  void changeToNewUser(String charactersWord, String newUser) {
+  void changeToNewUser(String charactersWord, String newUser) throws Exception {
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
         appendMessage(charactersWord);
@@ -209,7 +214,7 @@ public class AdminServlet extends HttpServlet {
     }
   }
 
-  boolean foundWordNarratorDictates(String firstWord, String charactersWord) {
+  boolean foundWordNarratorDictates(String firstWord, String charactersWord) throws Exception {
     boolean didFind = true;
     if (firstWord.equals("**Exit")
         || firstWord.equals("Enter")
@@ -223,7 +228,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /** read from file & parses text to store in database */
-  void readFile(BufferedReader bufferedReader) throws IOException {
+  void readFile(BufferedReader bufferedReader) throws Exception {
     String line = null;
     boolean addToLine = false;
     String charactersWord = "";
@@ -280,6 +285,20 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
+    // updates persistent database with member list of current conversatoin &
+    // gets the "old"/initial conversation added in order to update its memberlist
+    // makes a check to ensure the conversation is in conversation store
+    if (conversationStore.isTitleTaken(currentConversation.getTitle())) {
+      conversationStore.removeConversationFromInStoreList(currentConversation);
+      Conversation toAdd =
+          new Conversation(
+              currentConversation.getId(),
+              currentConversation.getOwnerId(),
+              currentConversation.getTitle(),
+              currentConversation.getCreationTime(),
+              membersInConvo);
+      conversationStore.addConversation(toAdd);
+    }
   }
 
   private void postConfirmTitle(HttpServletRequest request, HttpServletResponse response)
@@ -303,12 +322,13 @@ public class AdminServlet extends HttpServlet {
       currentTitle = "Tempest";
     }
     try {
-      String findFile = "../../src/main/java/codeu/controller/" + specificFile;
+      String findFile = "WEB-INF/" + specificFile;
       BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
       readFile(bufferedReader); // works with files that begin with ACT
       bufferedReader.close();
-    } catch (IOException e) {
+    } catch (Exception e) {
       // error
+      throw new Error(e);
     }
   }
 

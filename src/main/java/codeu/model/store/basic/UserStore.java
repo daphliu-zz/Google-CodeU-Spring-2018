@@ -147,6 +147,10 @@ public class UserStore {
     return null;
   }
 
+  /** Returns all users */
+  public List<User> getAllUsers() {
+    return users;
+  }
   /** Returns the user with flipped is_admin flag */
   public void setIsAdmin(User user, boolean is_admin) throws PersistentDataStoreException {
     try {

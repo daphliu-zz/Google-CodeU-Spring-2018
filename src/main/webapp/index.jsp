@@ -32,15 +32,16 @@
     <a href="/conversations">Conversations</a>
     <% if(request.getParameter("offline") != null){ %>
     <% } else if(request.getSession().getAttribute("user") != null){ %>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <a href="/logout">Logout</a>
     <% } else{ %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/testdata">Load Test Data</a>
+
     <% if(request.getSession().getAttribute("is_admin") != null){ %>
       <a href="/adminStats">Admin Stats</a>
+      <a href="/testdata">Load Test Data</a>
     <% } %>
   </nav>
 
@@ -59,7 +60,16 @@
             project.</li>
         <li>You can <a href="/testdata">load test data</a> to fill the site with
             example data.</li>
+        <li><strong>Usage: </strong> Feel free to create new accounts, conversation and add users
+        to conversations. In order to view our stats page, use "admin" as 
+         the username with no password. </li>
+        <li><strong>Features:</strong> The chat app can run offline. The user can stylize their text in the chat room.
+        An administrator can also view site statistics and change other users' admin status. The user can control who views their
+    conversations.  </li>
       </ul>
+
+
+  </div>
     </div>
   </div>
 </body>

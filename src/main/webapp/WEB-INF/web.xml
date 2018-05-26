@@ -37,6 +37,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>LogOutServlet</servlet-name>
+    <servlet-class>codeu.controller.LogOutServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LogOutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>ConversationServlet</servlet-name>
     <servlet-class>codeu.controller.ConversationServlet</servlet-class>
   </servlet>
@@ -86,6 +96,16 @@
   <servlet-mapping>
     <servlet-name>AdminServlet</servlet-name>
     <url-pattern>/adminStats</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ModifyMembersServlet</servlet-name>
+    <servlet-class>codeu.controller.ModifyMembersServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ModifyMembersServlet</servlet-name>
+    <url-pattern>/modMembers</url-pattern>
   </servlet-mapping>
 
 </web-app>

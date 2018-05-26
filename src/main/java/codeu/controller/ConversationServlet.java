@@ -21,11 +21,13 @@ import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Iterator;
 
 /** Servlet class responsible for the conversations page. */
 public class ConversationServlet extends HttpServlet {
@@ -69,13 +71,28 @@ public class ConversationServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
-    request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
-  }
+        throws IOException, ServletException {
+      String username = (String) request.getSession().getAttribute("user");
+      User user = userStore.getUser(username);
 
-  /**
+      List<Conversation> conversations = conversationStore.getAllConversations();
+      List<Conversation> toShow = new ArrayList<Conversation>();
+
+      if (user != null) {
+        for (Conversation conversation : conversations) {
+          if (conversation.isMember(user.getId()) || user.getAdminStatus()) {
+            // Remove the current element from the iterator and the list.
+            toShow.add(conversation);
+          }
+        }
+      }
+
+      // only display conversation that the user is a member of
+      request.setAttribute("conversations", toShow);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+    }
+
+    /**
    * This function fires when a user submits the form on the conversations page. It gets the
    * logged-in username from the session and the new conversation title from the submitted form
    * data. It uses this to create a new Conversation object that it adds to the model.
@@ -117,6 +134,7 @@ public class ConversationServlet extends HttpServlet {
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
     conversationStore.addConversation(conversation);
+    //TODO: check here that user cannot access if not loggedin
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }

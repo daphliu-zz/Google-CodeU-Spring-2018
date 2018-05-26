@@ -68,12 +68,14 @@ public class PersistentStorageAgent {
   public List<User> loadUsers() throws PersistentDataStoreException {
     return persistentDataStore.loadUsers();
   }
+
   /*
    * Retrieves a User Object given userUUID from Datastore
    */
   public User getUserFromPDatabase(String userN) throws EntityNotFoundException {
     return persistentDataStore.getUserFromPDatabase(userN);
   }
+
   /**
    * Retrieve all Conversation objects from the Datastore service. The returned list may be empty.
    *
@@ -82,6 +84,20 @@ public class PersistentStorageAgent {
    */
   public List<Conversation> loadConversations() throws PersistentDataStoreException {
     return persistentDataStore.loadConversations();
+  }
+
+  /*
+   * Retrieves a User Object given conversationUUID from Datastore
+   */
+  public Conversation getConversationFromPD(String convoUUID) throws EntityNotFoundException {
+    return persistentDataStore.getConversationFromPD(convoUUID);
+  }
+
+  /*
+   * Updates the persitent datastore conversation that was based off an old conversation with new params
+   */
+  public void updateConversationMembers(Conversation conversation) throws EntityNotFoundException {
+    persistentDataStore.updateConversationMembers(conversation);
   }
 
   /**
