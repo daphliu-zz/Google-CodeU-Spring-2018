@@ -111,20 +111,23 @@ public class PersistentDataStore {
     UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
     String title = (String) entity.getProperty("title");
     Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-    String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
     Set<UUID> members = new HashSet<UUID>();
-    // gets membersAsStrings and changes to UUIDs and puts into set
-    for (int i = 0; i < membersAsStrings.length; i++) {
-      if (i == 0) {
-        membersAsStrings[i] = membersAsStrings[i].substring(1);
+    if (entity.getProperty("members")!= null){
+      String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
+
+      // gets membersAsStrings and changes to UUIDs and puts into set
+      for (int i = 0; i < membersAsStrings.length; i++) {
+        if (i == 0) {
+          membersAsStrings[i] = membersAsStrings[i].substring(1);
+        }
+        if (i == membersAsStrings.length - 1) {
+          membersAsStrings[i] = membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
+        }
+        // gets rid of whitespace from string array in order to cast as UUID
+        String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
+        UUID val = UUID.fromString(stringVal);
+        members.add(val);
       }
-      if (i == membersAsStrings.length - 1) {
-        membersAsStrings[i] = membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
-      }
-      // gets rid of whitespace from string array in order to cast as UUID
-      String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
-      UUID val = UUID.fromString(stringVal);
-      members.add(val);
     }
 
     Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
@@ -153,21 +156,23 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
         Set<UUID> members = new HashSet<UUID>();
-        // gets membersAsStrings and changes to UUIDs and puts into set
-        for (int i = 0; i < membersAsStrings.length; i++) {
-          if (i == 0) {
-            membersAsStrings[i] = membersAsStrings[i].substring(1);
+        if (entity.getProperty("members")!= null){
+          String[] membersAsStrings = ((String) entity.getProperty("members")).split(",", 0);
+          // gets membersAsStrings and changes to UUIDs and puts into set
+          for (int i = 0; i < membersAsStrings.length; i++) {
+            if (i == 0) {
+              membersAsStrings[i] = membersAsStrings[i].substring(1);
+            }
+            if (i == membersAsStrings.length - 1) {
+              membersAsStrings[i] =
+                  membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
+            }
+            // gets rid of whitespace from string array in order to cast as UUID
+            String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
+            UUID val = UUID.fromString(stringVal);
+            members.add(val);
           }
-          if (i == membersAsStrings.length - 1) {
-            membersAsStrings[i] =
-                membersAsStrings[i].substring(0, membersAsStrings[i].length() - 1);
-          }
-          // gets rid of whitespace from string array in order to cast as UUID
-          String stringVal = membersAsStrings[i].replaceAll("\\s+", "");
-          UUID val = UUID.fromString(stringVal);
-          members.add(val);
         }
         Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, members);
         conversations.add(conversation);
