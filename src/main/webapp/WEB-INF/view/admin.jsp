@@ -30,8 +30,9 @@
       <p>Most Active User: <%= request.getAttribute("mostActiveUser")%></p>
 
     </form>
-  
+
   </div>
+
     <div id="container">
       <h1> Import Data</h1>
       <%-- Allow for user upload data--%>
@@ -44,7 +45,6 @@
           <option value="tempest">Tempest</option>
       </select>
       <button type="submit" value="confirm" name="confirm">Confirm</button>
-      <%-- TODO: have Submit button reload page to show data for file uploaded--%>
     </div>
 
     </div>

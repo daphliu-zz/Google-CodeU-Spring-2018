@@ -16,10 +16,11 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Conversation;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.appengine.api.datastore.EntityNotFoundException;
 import java.util.UUID;
+
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
  * saves to PersistentStorageAgent. It's a singleton so all servlet classes can access the same
@@ -93,12 +94,12 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
   /*Adds in-store conversation list to update*/
-  public void addConversationToInStoreList(Conversation conversation){
+  public void addConversationToInStoreList(Conversation conversation) {
     conversations.add(conversation);
   }
 
   /*Removes from in-store conversation list to update*/
-  public void removeConversationFromInStoreList(Conversation conversation){
+  public void removeConversationFromInStoreList(Conversation conversation) {
     conversations.remove(conversation);
   }
 
@@ -123,8 +124,8 @@ public class ConversationStore {
     return null;
   }
 
-  /** Returns Conversation retrieved from Persistent Database*/
-  public Conversation getConversationFromPD(UUID convoUUID) throws EntityNotFoundException{
+  /** Returns Conversation retrieved from Persistent Database */
+  public Conversation getConversationFromPD(UUID convoUUID) throws EntityNotFoundException {
     String convoUUIDString = convoUUID.toString();
     return persistentStorageAgent.getConversationFromPD(convoUUIDString);
   }
@@ -142,20 +143,18 @@ public class ConversationStore {
     return 0;
   }
 
-  /** Adds member to this Conversation*/
-  public void addMemberinPD(UUID convoUUID, UUID newUser) throws EntityNotFoundException{
+  /** Adds member to this Conversation by updating persistent datastore */
+  public void addMemberinPD(UUID convoUUID, UUID newUser) throws EntityNotFoundException {
     String convoUUIDString = convoUUID.toString();
-    Conversation convo =  persistentStorageAgent.getConversationFromPD(convoUUIDString);
+    Conversation convo = persistentStorageAgent.getConversationFromPD(convoUUIDString);
     convo.addMember(newUser);
-    //UUID id, UUID owner, String title, Instant creation, Set<UUID> member
     persistentStorageAgent.updateConversationMembers(convo);
-    //updatePersistenDatabase
   }
 
-  /** Removes a member from the members list*/
-  public void removeMemberinPD(UUID convoUUID, UUID removeUser) throws EntityNotFoundException{
+  /** Removes a member from the members list in persistent datastore */
+  public void removeMemberinPD(UUID convoUUID, UUID removeUser) throws EntityNotFoundException {
     String convoUUIDString = convoUUID.toString();
-    Conversation convo =  persistentStorageAgent.getConversationFromPD(convoUUIDString);
+    Conversation convo = persistentStorageAgent.getConversationFromPD(convoUUIDString);
     convo.removeMember(removeUser);
     persistentStorageAgent.updateConversationMembers(convo);
   }

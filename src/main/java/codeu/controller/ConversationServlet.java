@@ -71,28 +71,28 @@ public class ConversationServlet extends HttpServlet {
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-    String username = (String) request.getSession().getAttribute("user");
-    User user = userStore.getUser(username);
+        throws IOException, ServletException {
+      String username = (String) request.getSession().getAttribute("user");
+      User user = userStore.getUser(username);
 
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    List<Conversation> toShow = new ArrayList<Conversation>();
+      List<Conversation> conversations = conversationStore.getAllConversations();
+      List<Conversation> toShow = new ArrayList<Conversation>();
 
-    if (user!=null){
-      for(Conversation conversation : conversations){
-        if (conversation.isMember(user.getId()) || user.getAdminStatus()){
-          // Remove the current element from the iterator and the list.
-          toShow.add(conversation);
+      if (user != null) {
+        for (Conversation conversation : conversations) {
+          if (conversation.isMember(user.getId()) || user.getAdminStatus()) {
+            // Remove the current element from the iterator and the list.
+            toShow.add(conversation);
+          }
         }
       }
+
+      // only display conversation that the user is a member of
+      request.setAttribute("conversations", toShow);
+      request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
     }
 
-    //only display conversation that the user is a member of
-    request.setAttribute("conversations", toShow);
-    request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
-  }
-
-  /**
+    /**
    * This function fires when a user submits the form on the conversations page. It gets the
    * logged-in username from the session and the new conversation title from the submitted form
    * data. It uses this to create a new Conversation object that it adds to the model.

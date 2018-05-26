@@ -85,7 +85,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /** Gets the Most Active User based off of the user who has sent the most messages */
-  String getMostActiveUser(){
+  String getMostActiveUser() {
     Map<User, Integer> usersToMessages = new HashMap<User, Integer>();
     // go through all conversations & gets number of messages &
     // keeps track of all users number of messages
@@ -169,7 +169,7 @@ public class AdminServlet extends HttpServlet {
       currentUser = user;
     }
     if (currentConversation != null) {
-        membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
+      membersInConvo.add(UUID.nameUUIDFromBytes(userName.getBytes()));
     }
   }
 
@@ -185,7 +185,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   /*adds conversation to persistent data store*/
-  void appendConversation(String line) throws Exception{
+  void appendConversation(String line) throws Exception {
     String userName = NARRATOR;
     String narratorNameUUID = UUID.nameUUIDFromBytes(userName.getBytes()).toString();
     User user = null;
@@ -203,7 +203,7 @@ public class AdminServlet extends HttpServlet {
   }
 
   // Saves the character's message to the character before switching to a new user
-  void changeToNewUser(String charactersWord, String newUser) throws Exception{
+  void changeToNewUser(String charactersWord, String newUser) throws Exception {
     if (currentUser != null) {
       if (!charactersWord.equals("")) {
         appendMessage(charactersWord);
@@ -214,7 +214,7 @@ public class AdminServlet extends HttpServlet {
     }
   }
 
-  boolean foundWordNarratorDictates(String firstWord, String charactersWord) throws Exception{
+  boolean foundWordNarratorDictates(String firstWord, String charactersWord) throws Exception {
     boolean didFind = true;
     if (firstWord.equals("**Exit")
         || firstWord.equals("Enter")
@@ -285,9 +285,9 @@ public class AdminServlet extends HttpServlet {
     }
     String lastM = savedLine;
     appendMessage(lastM);
-    //updates persistent database with member list of current conversatoin &
-    //gets the "old"/initial conversation added in order to update its memberlist
-    //makes a check to ensure the conversation is in conversation store
+    // updates persistent database with member list of current conversatoin &
+    // gets the "old"/initial conversation added in order to update its memberlist
+    // makes a check to ensure the conversation is in conversation store
     if (conversationStore.isTitleTaken(currentConversation.getTitle())) {
       conversationStore.removeConversationFromInStoreList(currentConversation);
       Conversation toAdd =
@@ -297,7 +297,6 @@ public class AdminServlet extends HttpServlet {
               currentConversation.getTitle(),
               currentConversation.getCreationTime(),
               membersInConvo);
-      // UUID id, UUID owner, String title, Instant creation, Set<UUID> members
       conversationStore.addConversation(toAdd);
     }
   }

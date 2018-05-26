@@ -50,6 +50,7 @@
 </script>
 
 </head>
+
 <body onload="scrollChat()">
 
 	<nav>
@@ -57,8 +58,7 @@
 		<%
 		  if (request.getSession().getAttribute("user") != null) {
 		%>
-		<a>Hello <%=request.getSession().getAttribute("user")%>!
-		</a>
+		<a>Hello <%=request.getSession().getAttribute("user")%>!</a>
 		<%
 		  } else {
 		%>
@@ -70,7 +70,6 @@
 	</nav>
 
 	<div id="container">
-
 		<h1><%=conversation.getTitle()%>
 			<a href="" style="float: right">&#8635;</a>
 		</h1>
@@ -81,10 +80,11 @@
       <button class="tablinks" onclick="openTab(event, 'rmMember')">Remove Members</button>
       <button class="tablinks" onclick="openTab(event, 'addMember')">Add Members</button>
     </div>
-        <hr/>
-        <div id="rmMember" class="tabcontent">
-        <h3>Members</h3>
-        <p>These are the members in the Conversation.</p>
+    <hr/>
+
+      <div id="rmMember" class="tabcontent">
+      <h3>Members</h3>
+      <p>These are the members in the Conversation.</p>
           <%
            Set<UUID> userUUIDs = conversation.getMembers();
             for (UUID userID : userUUIDs) {
@@ -97,16 +97,14 @@
               }
           %>
           <div id="oneUser"><%= author%>
-
             <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
-                <%  if (!userID.equals(conversation.getOwnerId())){%>
-                <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
-                <%  } %>
+            <%  if (!userID.equals(conversation.getOwnerId())){%>
+            <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
+            <%  } %>
             <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
-          </form>
+            </form>
           </div>
           <%
-
             }
           %>
       </div>
@@ -115,104 +113,96 @@
         <h2> Discover: </h2>
         <h3> Add new members: </h3>
         <%
-          List<User>
-            users = UserStore.getInstance().getAllUsers();
-              for (User user : users) {
-                String userN = user.getName();
-                UUID userUUID = user.getId();
-                if (!conversation.isMember(user.getId())){
+          List<User> users = UserStore.getInstance().getAllUsers();
+          for (User user : users) {
+              String userN = user.getName();
+              UUID userUUID = user.getId();
+              if (!conversation.isMember(user.getId())){
         %>
-        <p><%= userN %></p>
-        <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
-          <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
-          <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
-        </form>
-        <%
+              <p><%= userN %></p>
+              <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+                <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
+                <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
+              </form>
+          <%
+              }
             }
-          }
-        %>
+          %>
       </div>
-<div id = "biggerChat"  class = "tabcontent">
-		<div class="chat">
-			<div class="msglist" id="words">
-				<%
-				  for (Message message : messages) {
-								String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-				%>
-				<%
-				  if (!author.equals(request.getSession().getAttribute("user"))) {
-				%>
-				<div class="notusertalk">
-					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
-					</span>
-				</div>
-				<%
-				  } else {
-				%>
-				<div class="usertalk">
-					<span> <strong>You:</strong> <%=message.getContent()%>
-					</span>
-				</div>
-				<%
-				  }
-				 }
-				%>
-			</div>
-		</div>
 
-		<hr />
-		<input type="file" id="btn_file" accept="image/*"
-			onchange="setFunction('InsertIMG')" style="display: none"> <img
-			src="" id="output">
-		<script src="/js/TextEditor.js"></script>
-		<%
-		  if (request.getSession().getAttribute("user") != null) {
-		%>
-		<form action="/chat/<%=conversation.getTitle()%>" id="form"
-			method="POST" style="margin-bottom:200px">
-			<p>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Bold');" />
-				B
-				</button>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Italic');" />
-				I
-				</button>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Underline');" />
-				U
-				</button>
-			</p>
-			<p>
-				<iframe id="editor" width="700px" height="60px"
-					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
+      <div id = "biggerChat"  class = "tabcontent">
+        <div class="chat">
+    			<div class="msglist" id="words">
+    				<% for (Message message : messages) {
+    					     String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+    				       if (!author.equals(request.getSession().getAttribute("user"))) {
+    				%>
+    				    <div class="notusertalk">
+    					     <span> <strong><%=author%>:</strong> <%=message.getContent()%>	</span>
+    				    </div>
+    				<%
+    				  } else {
+    				%>
+    				    <div class="usertalk">
+    					     <span> <strong>You:</strong> <%=message.getContent()%>	</span>
+    				    </div>
+    				<%
+    				    }
+    				  }
+    				%>
+    			</div>
+    		</div>
+      	<hr />
+      		<input type="file" id="btn_file" accept="image/*"
+      			onchange="setFunction('InsertIMG')" style="display: none"> <img
+      			src="" id="output">
+      		<script src="/js/TextEditor.js"></script>
+      		<%
+      		  if (request.getSession().getAttribute("user") != null) {
+      		%>
 
-				<input type="hidden" id="inHTML" name="message" />
-				<button type="button" class="btn" value="Send"
-					onclick="doSubmitForm()">Submit</button>
-				<br/>
-			</p>
-		</form>
+      		<form action="/chat/<%=conversation.getTitle()%>" id="form"
+      			method="POST" style="margin-bottom:200px">
+      			<p>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Bold');" />
+      				B
+      				</button>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Italic');" />
+      				I
+      				</button>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Underline');" />
+      				U
+      				</button>
+      			</p>
+      			<p>
+      				<iframe id="editor" width="700px" height="60px"
+      					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
 
-		<script>
-			init('editor');
-		</script>
-		<%
-			} else {
-		%>
-		<p>
-			<a href="/login">Login</a> to send a message.
-		</p>
-		<%
-			}
-		%>
-		<hr />
-</div>
+      				<input type="hidden" id="inHTML" name="message" />
+      				<button type="button" class="btn" value="Send"
+      					onclick="doSubmitForm()">Submit</button>
+      				<br/>
+      			</p>
+      		</form>
 
+      		<script>
+      			init('editor');
+      		</script>
+      		<%
+      			} else {
+      		%>
+      		<p>
+      			<a href="/login">Login</a> to send a message.
+      		</p>
+      		<%
+      			}
+      		%>
+      		<hr />
+      </div>
 	</div>
-
-
 
   <script>
   //changes between tabs

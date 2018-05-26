@@ -87,12 +87,15 @@ public class PersistentStorageAgent {
   }
 
   /*
-  * Retrieves a User Object given conversationUUID from Datastore
-  */
+   * Retrieves a User Object given conversationUUID from Datastore
+   */
   public Conversation getConversationFromPD(String convoUUID) throws EntityNotFoundException {
     return persistentDataStore.getConversationFromPD(convoUUID);
   }
 
+  /*
+   * Updates the persitent datastore conversation that was based off an old conversation with new params
+   */
   public void updateConversationMembers(Conversation conversation) throws EntityNotFoundException {
     persistentDataStore.updateConversationMembers(conversation);
   }
