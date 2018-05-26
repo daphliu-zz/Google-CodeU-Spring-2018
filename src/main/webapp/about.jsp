@@ -49,27 +49,27 @@
 
       <div class="members">
         <div>
-          <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:300px; height:320px;">
+          <img src="memberPhotos/daphne.jpg" alt="Member: Daphne Liu" style="width:300px; height:320px;object-fit: contain;">
           <p id="memberInfo">
             <strong>Daphne Liu</strong>  </br>
             <strong>Education:</strong> University of British Columbia, Computer Science</br>
-            <strong>Interests:</strong> Mobile, VR, Doctor Who </br>
-            <strong>Achievements: </strong>Supported login form to confirm validity of users and redirect
-            to sessions Added custom routing and database manipulation in Java for
-            administrators Introduced offline support by caching HTML pages and CSS
+            <strong>Interests:</strong> Mobile, Web, VR, Doctor Who </br>
+            <strong>Achievements: </strong>Supported login and logout form to confirm validity of users or redirect
+            to sessions  </br> Added custom routing and database manipulation in Java for
+            administrators </br> Introduced offline support by caching HTML pages and CSS
             with JavaScript using service workers.
          </p>
        </div>
 
         <div>
-          <img src="memberPhotos/ken.jpg" alt="Member: Ken Wang" style="width:300px; height:320px;">
+          <img src="memberPhotos/ken.jpg" alt="Member: Ken Wang" style="width:300px; height:320px; object-fit: contain;">
             <p id="memberInfo">
               <strong>Ken Wang</strong> </br>
               <strong>Education:</strong>University of Utah, Computer Science</br>
               <strong>Interests:</strong> Entertaining Arts, Game engineering, Web</br>
               <strong>Achievements: </strong>Created Register related page and the backend servlet
-              for new users. Reinvented the wheel of a Rich Text Editor for the purpose of a
-              better looking and functional Chat page. Beautified the Chat page.
+              for new users.  </br> Reinvented the wheel of a Rich Text Editor for the purpose of a
+              better looking and functional Chat page.  </br> Beautified the Chat page.
 
            </p>
           </div>
@@ -78,7 +78,7 @@
 
         <div class="members">
         <div>
-          <img src="memberPhotos/blank.png" alt="Member: Natasha Sarkar" style="width:300px; height:320px;">
+          <img src="memberPhotos/blank.png" alt="Member: Natasha Sarkar" style="width:300px; height:320px; object-fit: contain;">
             <p id="memberInfo">
               <strong>Natasha Sarkar</strong>  </br>
               <strong>Education:</strong> UCLA, Computer Science & Computer Engineering</br>
@@ -87,12 +87,12 @@
            </p>
          </div>
         <div>
-           <img src="memberPhotos/sonia.jpg" alt="Member: Sonia Velasco" style="width:300px; height:320px;">
+           <img src="memberPhotos/sonia.jpg" alt="Member: Sonia Velasco" style="width:300px; height:320px; object-fit: contain;">
           <p id="memberInfo">
             <strong>Sonia Velasco</strong>  </br>
             <strong>Education:</strong>Stanford University, Computer Science</br>
             <strong>Interests:</strong> BTS, photography </br>
-            <strong>Achievements: </strong> Implemented access to site statistics;
+            <strong>Achievements: </strong> Implemented access to site statistics; </br>
             Allowed access control to conversations with users being able to delete/add
             members to a conversation
          </p>
@@ -101,7 +101,7 @@
 
         <div class="members">
         <div>
-          <img src="memberPhotos/desiye.jpeg" alt="Member: Desiye Collier" style="width:300px; height:320px;">
+          <img src="memberPhotos/desiye.jpeg" alt="Member: Desiye Collier" style="width:300px; height:320px; object-fit: contain;">
             <p id="memberInfo">
               <strong>Desiye Collier</strong>  </br>
               <strong>Project Advisor: </strong>Google Software Engineer on the Adwords API team
