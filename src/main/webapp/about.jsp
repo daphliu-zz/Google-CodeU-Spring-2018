@@ -53,7 +53,7 @@
           <p id="memberInfo">
             <strong>Daphne Liu</strong>  </br>
             <strong>Education:</strong> University of British Columbia, Computer Science</br>
-            <strong>Interests:</strong> Mobile, Web, VR, Doctor Who </br>
+            <strong>Interests:</strong> Mobile, Web, Project Management, Doctor Who </br>
             <strong>Achievements: </strong> </br>Supported login and logout functionality to confirm validity of users or redirect
             to sessions  </br> Added custom routing and database manipulation in Java for
             administrators </br> Introduced offline support by caching HTML pages and CSS
@@ -109,19 +109,5 @@
          </div>
       </div>
 
-
-    </div>
-
-      <ul>
-        <li><strong>Usage: </strong> Feel free to create new accounts and add users
-        to conversations. In order to view our stats page, simply have "admin"
-         as the username with no password. </li>
-        <li><strong>Features:</strong> The user can edit their text using our
-      text editor. One can also view stats on usage. The user can control who views their
-    conversations.  </li>
-      </ul>
-
-
-  </div>
 </body>
 </html>
