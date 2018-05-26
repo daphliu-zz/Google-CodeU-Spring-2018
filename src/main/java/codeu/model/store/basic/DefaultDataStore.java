@@ -138,8 +138,10 @@ public class DefaultDataStore {
       try {
         // loads conversation & adds user to members list
         conversations.remove(conversation);
-        conversation.addMember(author.getId());
-        PersistentStorageAgent.getInstance().updateConversationMembers(conversation);
+        Conversation getConvo = PersistentStorageAgent.getInstance()
+            .getConversationFromPD(conversation.getId().toString());
+        getConvo.addMember(author.getId());
+        PersistentStorageAgent.getInstance().updateConversationMembers(getConvo);
         Conversation newConvo =
             PersistentStorageAgent.getInstance()
                 .getConversationFromPD(conversation.getId().toString());
