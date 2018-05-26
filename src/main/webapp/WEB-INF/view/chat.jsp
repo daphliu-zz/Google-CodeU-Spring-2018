@@ -67,6 +67,10 @@
 		  }
 		%>
 		<a href="/about.jsp">About</a>
+    <% if(request.getSession().getAttribute("is_admin") != null){ %>
+      <a href="/adminStats">Admin Stats</a>
+      <a href="/testdata">Load Test Data</a>
+    <% } %>
 	</nav>
 
 	<div id="container">

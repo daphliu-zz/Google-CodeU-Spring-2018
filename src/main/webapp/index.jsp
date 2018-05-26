@@ -38,9 +38,10 @@
       <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
-    <a href="/testdata">Load Test Data</a>
+
     <% if(request.getSession().getAttribute("is_admin") != null){ %>
       <a href="/adminStats">Admin Stats</a>
+      <a href="/testdata">Load Test Data</a>
     <% } %>
   </nav>
 
