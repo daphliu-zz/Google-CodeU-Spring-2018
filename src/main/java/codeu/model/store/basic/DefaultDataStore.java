@@ -141,8 +141,8 @@ public class DefaultDataStore {
         conversation.addMember(author.getId());
         PersistentStorageAgent.getInstance().updateConversationMembers(conversation);
         Conversation newConvo = PersistentStorageAgent.getInstance().getConversationFromPD(conversation.getId().toString());
-        // still needs to update to current conversationStore since only added to persistent
-        // database
+        // still needs to update to current conversations since only added to persistent
+        // database so adds updated version to current conversations
         conversations.add(newConvo);
       } catch (Exception e) {
         throw new Error(e);
