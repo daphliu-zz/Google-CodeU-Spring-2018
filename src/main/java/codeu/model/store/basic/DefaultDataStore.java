@@ -133,6 +133,20 @@ public class DefaultDataStore {
               UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
+
+      //adding members
+      try {
+        // loads conversation & adds user to members list
+        conversations.remove(conversation);
+        conversation.addMember(author.getId());
+        PersistentStorageAgent.getInstance().updateConversationMembers(conversation);
+        Conversation newConvo = PersistentStorageAgent.getInstance().getConversationFromPD(conversation.getId().toString());
+        // still needs to update to current conversationStore since only added to persistent
+        // database
+        conversations.add(newConvo);
+      } catch (Exception e) {
+        throw new Error(e);
+      }
     }
   }
 
