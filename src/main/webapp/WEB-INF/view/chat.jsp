@@ -13,10 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
-<%@ page import="java.util.List"%>
-<%@ page import="codeu.model.data.Conversation"%>
-<%@ page import="codeu.model.data.Message"%>
-<%@ page import="codeu.model.store.basic.UserStore"%>
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.Message" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.UUID" %>
 <%
   Conversation conversation = (Conversation) request.getAttribute("conversation");
 			List<Message> messages = (List<Message>) request.getAttribute("messages");
@@ -46,6 +50,7 @@
 </script>
 
 </head>
+
 <body onload="scrollChat()">
 
 	<nav>
@@ -53,8 +58,7 @@
 		<%
 		  if (request.getSession().getAttribute("user") != null) {
 		%>
-		<a>Hello <%=request.getSession().getAttribute("user")%>!
-		</a>
+		<a>Hello <%=request.getSession().getAttribute("user")%>!</a>
 		<%
 		  } else {
 		%>
@@ -70,108 +74,162 @@
 	</nav>
 
 	<div id="container">
-
 		<h1><%=conversation.getTitle()%>
 			<a href="" style="float: right">&#8635;</a>
 		</h1>
-
 		<hr />
 
-		<div class="chat">
-			<div class="msglist" id="words">
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'biggerChat')" id = "defaultOpen">Chat</button>
+      <button class="tablinks" onclick="openTab(event, 'rmMember')">Remove Members</button>
+      <button class="tablinks" onclick="openTab(event, 'addMember')">Add Members</button>
+    </div>
+    <hr/>
 
-				<%
-				  for (Message message : messages) {
-								String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
-				%>
+      <div id="rmMember" class="tabcontent">
+      <h3>Members</h3>
+      <p>These are the members in the Conversation.</p>
+          <%
+           Set<UUID> userUUIDs = conversation.getMembers();
+            for (UUID userID : userUUIDs) {
+              String uuidToString = userID.toString();
+              String author = "";
+              try{
+                author = UserStore.getInstance().getUserFromPD(uuidToString).getName();
+              }catch(Exception e){
+                throw new Error(e);
+              }
+          %>
+          <div id="oneUser"><%= author%>
+            <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+            <%  if (!userID.equals(conversation.getOwnerId())){%>
+            <span id="removeBtn"><button type="submit" value= "<%= userID%>" name="remove" id= "remove">Remove <%= author%></button></span>
+            <%  } %>
+            <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
+            </form>
+          </div>
+          <%
+            }
+          %>
+      </div>
 
-				<%
-				  if (!author.equals(request.getSession().getAttribute("user"))) {
-				%>
+      <div id = "addMember"  class = "tabcontent">
+        <h2> Discover: </h2>
+        <h3> Add new members: </h3>
+        <%
+          List<User> users = UserStore.getInstance().getAllUsers();
+          for (User user : users) {
+              String userN = user.getName();
+              UUID userUUID = user.getId();
+              if (!conversation.isMember(user.getId())){
+        %>
+              <p><%= userN %></p>
+              <form action="/modMembers" method="POST" onsubmit="return isValidForm()">
+                <span id="addBtn"><button type="submit" value= "<%= userUUID%>" name="addMbr" id= "add">Add <%= userN%></button></span>
+                <input type = "hidden" name="chatTitle" value= "<%= conversation.getTitle() %>"/>
+              </form>
+          <%
+              }
+            }
+          %>
+      </div>
 
-				<div class="notusertalk">
+      <div id = "biggerChat"  class = "tabcontent">
+        <div class="chat">
+    			<div class="msglist" id="words">
+    				<% for (Message message : messages) {
+    					     String author = UserStore.getInstance().getUser(message.getAuthorId()).getName();
+    				       if (!author.equals(request.getSession().getAttribute("user"))) {
+    				%>
+    				    <div class="notusertalk">
+    					     <span> <strong><%=author%>:</strong> <%=message.getContent()%>	</span>
+    				    </div>
+    				<%
+    				  } else {
+    				%>
+    				    <div class="usertalk">
+    					     <span> <strong>You:</strong> <%=message.getContent()%>	</span>
+    				    </div>
+    				<%
+    				    }
+    				  }
+    				%>
+    			</div>
+    		</div>
+      	<hr />
+      		<input type="file" id="btn_file" accept="image/*"
+      			onchange="setFunction('InsertIMG')" style="display: none"> <img
+      			src="" id="output">
+      		<script src="/js/TextEditor.js"></script>
+      		<%
+      		  if (request.getSession().getAttribute("user") != null) {
+      		%>
 
-					<span> <strong><%=author%>:</strong> <%=message.getContent()%>
-					</span>
+      		<form action="/chat/<%=conversation.getTitle()%>" id="form"
+      			method="POST" style="margin-bottom:200px">
+      			<p>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Bold');" />
+      				B
+      				</button>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Italic');" />
+      				I
+      				</button>
+      				<button class="editor-button" type="button" id="bBtn"
+      					style="font-weight: bold" onclick="setFunction('Underline');" />
+      				U
+      				</button>
+      			</p>
+      			<p>
+      				<iframe id="editor" width="700px" height="60px"
+      					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
 
-				</div>
+      				<input type="hidden" id="inHTML" name="message" />
+      				<button type="button" class="btn" value="Send"
+      					onclick="doSubmitForm()">Submit</button>
+      				<br/>
+      			</p>
+      		</form>
 
-				<%
-				  } else {
-				%>
-
-				<div class="usertalk">
-					<span> <strong>You:</strong> <%=message.getContent()%>
-					</span>
-				</div>
-
-				<%
-				  }
-				%>
-
-				<%
-				  }
-				%>
-			</div>
-
-		</div>
-
-		<hr />
-		<input type="file" id="btn_file" accept="image/*"
-			onchange="setFunction('InsertIMG')" style="display: none"> <img
-			src="" id="output">
-		<script src="/js/TextEditor.js"></script>
-		<%
-		  if (request.getSession().getAttribute("user") != null) {
-		%>
-		<form action="/chat/<%=conversation.getTitle()%>" id="form"
-			method="POST" style="margin-bottom:200px">
-			<p>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Bold');" />
-				B
-				</button>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Italic');" />
-				I
-				</button>
-				<button class="editor-button" type="button" id="bBtn"
-					style="font-weight: bold" onclick="setFunction('Underline');" />
-				U
-				</button>
-			</p>
-			<p>
-				<iframe id="editor" width="700px" height="60px"
-					style="border: 0px; marginheight: 2px; marginwidth: 2px"></iframe>
-
-				<input type="hidden" id="inHTML" name="message" />
-				<button type="button" class="btn" value="Send"
-					onclick="doSubmitForm()">Submit</button>
-				<br />
-			</p>
-		</form>
-
-		<script>
-			init('editor');
-		</script>
-
-		<%
-			} else {
-		%>
-		<p>
-			<a href="/login">Login</a> to send a message.
-		</p>
-		<%
-			}
-		%>
-
-		<hr />
-
-
-
+      		<script>
+      			init('editor');
+      		</script>
+      		<%
+      			} else {
+      		%>
+      		<p>
+      			<a href="/login">Login</a> to send a message.
+      		</p>
+      		<%
+      			}
+      		%>
+      		<hr />
+      </div>
 	</div>
 
+  <script>
+  //changes between tabs
+  function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+  }
+  //error checking to delete specific user
+  function isValidForm(){
+      return confirm("With this User?");
+  }
 
-
+  // Get the element with id="defaultOpen" and click on it so makes that the active tab
+   document.getElementById("defaultOpen").click();
+  </script>
 </body>
 </html>

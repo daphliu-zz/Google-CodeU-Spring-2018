@@ -15,6 +15,8 @@
 package codeu.model.data;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -26,7 +28,7 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
-
+  public final Set<UUID> members;
   /**
    * Constructs a new Conversation.
    *
@@ -35,13 +37,23 @@ public class Conversation {
    * @param title the title of this Conversation
    * @param creation the creation time of this Conversation
    */
+  public Conversation(UUID id, UUID owner, String title, Instant creation, Set<UUID> members) {
+    this.id = id;
+    this.owner = owner;
+    this.creation = creation;
+    this.title = title;
+    this.members = members;
+    addMember(owner);
+  }
+
   public Conversation(UUID id, UUID owner, String title, Instant creation) {
     this.id = id;
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.members = new HashSet<UUID>();
+    addMember(owner);
   }
-
   /** Returns the ID of this Conversation. */
   public UUID getId() {
     return id;
@@ -60,5 +72,25 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns the member list of this Conversation */
+  public Set<UUID> getMembers() {
+    return members;
+  }
+
+  /*adds user to member list*/
+  public void addMember(UUID newUser) {
+    members.add(newUser);
+  }
+
+  /*removes member from member list*/
+  public void removeMember(UUID oldUser) {
+    members.remove(oldUser);
+  }
+
+  /*Returns true if user is a member of conversation*/
+  public boolean isMember(UUID potentialMember) {
+    return members.contains(potentialMember);
   }
 }

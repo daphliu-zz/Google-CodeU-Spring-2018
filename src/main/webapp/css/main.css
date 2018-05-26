@@ -90,6 +90,10 @@ button {
 	padding: 5px 10px;
 }
 
+#remove {
+  float: right;
+}
+
 .usertalk {
 	margin: 10px;
 	text-align: right;
@@ -126,7 +130,6 @@ button {
 	background-color: #c0c0c0;
 }
 
-
 .members {
   display: flex;
 
@@ -143,3 +146,4 @@ button {
 	font-size: 15px;
 	font-style: Bold;
 }
+
