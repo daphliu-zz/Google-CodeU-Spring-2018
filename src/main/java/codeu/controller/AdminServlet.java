@@ -322,7 +322,7 @@ public class AdminServlet extends HttpServlet {
       currentTitle = "Tempest";
     }
     try {
-      String findFile = "../../src/main/java/codeu/controller/" + specificFile;
+      String findFile = "WEB-INF/" + specificFile;
       BufferedReader bufferedReader = new BufferedReader(new FileReader(findFile));
       readFile(bufferedReader); // works with files that begin with ACT
       bufferedReader.close();
