@@ -12,26 +12,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+html {
+	min-height: 100%;
+}
+
 body {
 	margin: 0;
 	font-family: sans-serif;
 	line-height: 1.6;
 	font-size: 18px;
 	line-height: 1.6;
-	color: #444;
-	background-color: #eeeeee;
+	color: #fff;
+	background-color: #202020;
+	background-image: url('/007.png');
+    background-size: 500px;
+    background-repeat: no-repeat;
+	background-position: bottom right;
+	text-shadow: #000 1px 1px;
+    min-height: 100%;
+}
+
+a:link {
+	color: #527fb9;
+}
+a:visited {
+	color: #8768a2;
 }
 
 nav {
-	background-color: #283593;
+	background-color: #e0e0e0;
+	text-shadow: none;
 }
 
 nav a {
-	color: white;
+	color: black;
 	display: inline-block;
 	font-size: 24px;
 	margin: 15px;
 	text-decoration: none;
+}
+
+nav a:link, nav a:visited {
+	color: black;
 }
 
 #navTitle {
@@ -45,8 +67,7 @@ nav a {
 }
 
 h1 {
-	color: #757575;
-	
+	color: #ffffff;
 }
 
 input {

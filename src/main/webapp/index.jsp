@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>007 Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
   <script>
     if ('serviceWorker' in navigator) {
@@ -28,7 +28,7 @@
 <body>
 
   <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
+    <a id="navTitle" href="/">007 Chat App</a>
     <a href="/conversations">Conversations</a>
     <% if(request.getParameter("offline") != null){ %>
     <% } else if(request.getSession().getAttribute("user") != null){ %>
@@ -47,10 +47,10 @@
 
   <div id="container">
     <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px; padding-right: 20%; padding-top: 0.2%;">
 
-      <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+      <h1>Google CodeU Mentorship 2018</h1>
+      <h2>This is 007... Team 007</h2>
 
       <ul>
         <li><a href="/login">Login</a> to get started.</li>
